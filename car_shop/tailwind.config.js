@@ -13,6 +13,14 @@ export default {
       'lg': '1.2vh',
       'xl': '1.8vh',
       'full': '999999vh',
+    },
+
+    colors: {
+      'semiblack': 'rgba(0,0,0,0.6)',
+      'darkwhite': 'rgba(255,255,255,0.2)',
+      'grayshade': 'rgba(167,167,167,0.6)',
+      'midnight': '#2f2f3f',
+
     }
   },
   plugins: [],
