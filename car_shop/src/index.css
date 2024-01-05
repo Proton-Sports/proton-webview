@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "bold";
+  src: url(./assets/fonts/SFPRODISPLAYBOLD.OTF);
+}
+
+@font-face {
+  font-family: "normal";
+  src: url(./assets/fonts/SFPRODISPLAYREGULAR.OTF);
+}
+
+@font-face {
+  font-family: "medium";
+  src: url(./assets/fonts/SFPRODISPLAYMEDIUM.OTF);
+}
+
+
+.font-bold {
+  font-family: 'bold';
+
+}
+
+body {
+  overflow: hidden!important;
+}
+
+
+.font {
+  font-family: 'normal';
+
+}
+
+.font-medium {
+  font-family: 'medium';
+
+}
+
+.bg {
+  background-image: url('./assets/bg.jpg');
+  width: 100%;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.light-bulb {
+  position: absolute;
+  top: 80%;
+  left: 5%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(53, 19, 206);
+  width: 80vh;
+  height: 80vh;
+  border-radius: 100vh;
+  filter: blur(15vh);
+  opacity: 0.4;
+  z-index: 0;
+  font-size: 0px;
+}
+
+
+.light-bulb2 {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(143, 23, 212);
+  width: 80vh;
+  height: 80vh;
+  border-radius: 100vh;
+  filter: blur(15vh);
+  opacity: 0.5;
+  z-index: 0;
+  font-size: 0px;
+
+}
+
+
+.light-bulb3 {
+  position: absolute;
+  top: 10%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(78, 123, 182);
+  width: 80vh;
+  height: 80vh;
+  border-radius: 100vh;
+  filter: blur(15vh);
+  opacity: 0.5;
+  z-index: 0;
+  font-size: 0px;
+
+}
+
+
+
+::-webkit-scrollbar {
+ width: 0.4vh;
+}
+   
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 1);
+ border-radius: 100000px;
+}
+   
+      /* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(77, 77, 77);
+  border-radius: 100000px;
+}
+   
+      /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+   background: rgb(84, 84, 84);
+}
+
+.text-fix {
+  height:5vh;
+  
+  width:5vh;
+  
+  line-height: 4.2vh;
+}
+
+.text-fix > p {
+  margin-left: 0.6vh;
+}
+
+.transition-opac {
+  transition: 0.5s all;
+  transition-delay: 0.4s;
+}
+
+.transition-opac-bulbs {
+  transition: 0.5s all;
+}
