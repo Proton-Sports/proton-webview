@@ -139,15 +139,15 @@ function closeSelectItem() {
                       {Object.keys(vehicles).map((category) => (
                         <motion.button
                           key={category}
-                          className={`w-full hover:bg-[#2f2f3f] transition-colors ${
-                            selectedCategory === category ? 'bg-[#2f2f3f]' : ''
+                          className={`w-full hover:bg-midnight transition-colors ${
+                            selectedCategory === category ? 'bg-midnight' : ''
                           }`}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => handleCategoryClick(category)}
                         >
                           <motion.div
-                            className={`text-white flex items-center bg-[rgba(0,0,0,0.6)] p-[1.2vh] border-b-[0.01vh] border-b-[rgba(255,255,255,0.2)] w-full ${
-                              selectedCategory === category ? 'bg-[#2f2f3f]' : ''
+                            className={`text-white flex items-center bg-semiblack p-[1.2vh] border-b-[0.01vh] border-b-darkwhite w-full ${
+                              selectedCategory === category ? 'bg-midnight' : ''
                             }`}
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -177,15 +177,15 @@ function closeSelectItem() {
                         {Object.keys(ownedVehicles).map((category) => (
                           <motion.button
                             key={category}
-                            className={`w-full hover:bg-[#2f2f3f] transition-colors ${
-                              selectedOwnedCategory === category ? 'bg-[#2f2f3f]' : ''
+                            className={`w-full hover:bg-midnight transition-colors ${
+                              selectedOwnedCategory === category ? 'bg-midnight' : ''
                             }`}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleOwnedCategoryClick(category)}
                           >
                             <motion.div
-                              className={`text-white flex items-center bg-[rgba(0,0,0,0.6)] p-[1.2vh] border-b-[0.01vh] border-b-[rgba(255,255,255,0.2)] w-full ${
-                                selectedOwnedCategory === category ? 'bg-[#2f2f3f]' : ''
+                              className={`text-white flex items-center bg-semiblack p-[1.2vh] border-b-[0.01vh] border-b-darkwhite w-full ${
+                                selectedOwnedCategory === category ? 'bg-midnight' : ''
                               }`}
                               initial={{ opacity: 0, y: -10 }}
                               animate={{ opacity: 1, y: 0 }}
@@ -221,7 +221,7 @@ function closeSelectItem() {
 
         <div className='mt-[11.3vh] overflow-x-hidden pr-[0.8vh] max-h-[60vh]'>
       <motion.div
-        className='bg-[rgba(0,0,0,0.6)] pt-[2vh] rounded-md overflow-hidden w-[30vh] text-[1.8vh] h-fit ml-[2vh]'
+        className='bg-semiblack pt-[2vh] rounded-md overflow-hidden w-[30vh] text-[1.8vh] h-fit ml-[2vh]'
         initial='hidden'
         animate={selectedOwnedCategory ? 'visible' : 'hidden'}
         exit='hidden'
@@ -242,11 +242,11 @@ function closeSelectItem() {
             {ownedVehicles[selectedOwnedCategory as keyof typeof ownedVehicles]?.map((item) => (
               <motion.button
                 key={item.name}
-                className={`w-full hover:bg-[#2f2f3f] transition-colors`}
+                className={`w-full hover:bg-midnight transition-colors`}
                 whileTap={{ scale: 0.95 }}
               >
                 <motion.div
-                  className={`text-white flex items-center bg-[rgba(0,0,0,0.6)] p-[1.2vh] border-b-[0.01vh] border-b-[rgba(255,255,255,0.2)] w-full`}
+                  className={`text-white flex items-center bg-semiblack p-[1.2vh] border-b-[0.01vh] border-b-darkwhite w-full`}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
@@ -269,7 +269,7 @@ function closeSelectItem() {
     
     <div className='mt-[11.3vh] overflow-x-hidden pr-[0.8vh] max-h-[60vh]'>
       <motion.div
-        className='bg-[rgba(0,0,0,0.6)] pt-[2vh] rounded-md overflow-hidden w-[30vh] text-[1.8vh] h-fit ml-[2vh]'
+        className='bg-semiblack pt-[2vh] rounded-md overflow-hidden w-[30vh] text-[1.8vh] h-fit ml-[2vh]'
         initial='hidden'
         animate={selectedCategory ? 'visible' : 'hidden'}
         exit='hidden'
@@ -291,11 +291,11 @@ function closeSelectItem() {
               <motion.button
               onClick={() => selectItem(item.name)}
                 key={item.name}
-                className={`w-full hover:bg-[#2f2f3f] transition-colors`}
+                className={`w-full hover:bg-midnight transition-colors`}
                 whileTap={{ scale: 0.95 }}
               >
                 <motion.div
-                  className={`text-white flex items-center bg-[rgba(0,0,0,0.6)] p-[1.2vh] border-b-[0.01vh] border-b-[rgba(255,255,255,0.2)] w-full`}
+                  className={`text-white flex items-center bg-semiblack p-[1.2vh] border-b-[0.01vh] border-b-darkwhite w-full`}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
@@ -324,7 +324,7 @@ function closeSelectItem() {
       </div>
     </div>
 
-    <div className='font z-10 absolute top-[10vh] right-[6vh] -translate-x-1/2 -translate-y-1/2 font text-[1.6vh] text-black  uppercase bg-[rgb(255,255,255)] text-fix rounded-md border-[0.5vh] border-[rgba(167,167,167,0.6)]'>
+    <div className='font z-10 absolute top-[10vh] right-[6vh] -translate-x-1/2 -translate-y-1/2 font text-[1.6vh] text-black  uppercase bg-[rgb(255,255,255)] text-fix rounded-md border-[0.5vh] border-grayshade'>
         <p>esc</p>
     </div>
 
@@ -332,7 +332,7 @@ function closeSelectItem() {
       <div className={buyVehicleSelected ? 'opacity-0 transition-opacity hide-display' : 'opacity-100 transition-opacity'}>
           <div className='flex'>
 
-          <div className='mr-[3vh] flex items-center space-x-[1vh] bg-[rgba(0,0,0,0.6)] p-[1vh] pl-[2vh] pr-[2vh] rounded-sm uppercase text-white text-[1.6vh]'>
+          <div className='mr-[3vh] flex items-center space-x-[1vh] bg-semiblack p-[1vh] pl-[2vh] pr-[2vh] rounded-sm uppercase text-white text-[1.6vh]'>
             <p>Pick a color</p>
 
             <button className='bg-white text-white w-[2.6vh] h-[2.6vh] rounded-full'>
@@ -341,7 +341,7 @@ function closeSelectItem() {
             <button className='bg-red-600 text-red-600 w-[2.6vh] h-[2.6vh] rounded-full'>
               .
             </button>
-            <button className='bg-blue-500 text-blue-500 w-[2.6vh] h-[2.6vh] rounded-full border-[0.4vh] border-[#ce93dd]'>
+            <button className='bg-blue-500 text-blue-500 w-[2.6vh] h-[2.6vh] rounded-full'>
               .
             </button>
             <button className='bg-yellow-500 text-yellow-500 w-[2.6vh] h-[2.6vh] rounded-full'>
@@ -351,7 +351,7 @@ function closeSelectItem() {
               .
             </button>
           </div>
-          <div className='space-x-[1.4vh] text-[2vh]  bg-[rgba(0,0,0,0.6)] p-[1vh] pl-[2vh] pr-[2vh] rounded-sm'>
+          <div className='space-x-[1.4vh] text-[2vh]  bg-semiblack p-[1vh] pl-[2vh] pr-[2vh] rounded-sm'>
             <button className='bg-[#6acf5d] pl-[2vh] pr-[2vh] p-[0.6vh] rounded-sm' onClick={() => buySelectItem()}><BiSolidPurchaseTag /></button>
             <button className='bg-[#f35656] pl-[2vh] pr-[2vh] p-[0.6vh] rounded-sm' onClick={() => closeSelectItem()}><IoClose /></button>
           </div>
