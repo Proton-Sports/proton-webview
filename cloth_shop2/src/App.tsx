@@ -67,11 +67,11 @@ function App() {
     alt.on("shop:cloth:menuStatus", (value: boolean) => {
       toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
     });
-  
+
     // @ts-ignore
     alt.on("shop:cloth:ownedClothes", (data) => {
       setOwnedClothes(data);
-  
+
       {
         /*
         send data in this format
@@ -87,11 +87,11 @@ function App() {
         */
       }
     });
-  
+
     // @ts-ignore
     alt.on("shop:cloth:notOwnedClothes", (data) => {
       setClothes(data);
-  
+
       {
         /*
         send data in this format
@@ -113,17 +113,16 @@ function App() {
         */
       }
     });
-  
+
     return () => {
-    // @ts-ignore
+      // @ts-ignore
       alt.off("shop:cloth:ownedClothes");
-    // @ts-ignore
+      // @ts-ignore
       alt.off("shop:cloth:menuStatus");
-    // @ts-ignore
+      // @ts-ignore
       alt.off("shop:cloth:notOwnedClothes");
     };
   }, []);
-  
 
   function buyItem(item: string) {
     // @ts-ignore
