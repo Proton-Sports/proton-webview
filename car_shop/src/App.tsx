@@ -133,7 +133,7 @@ function closeSelectItem() {
                   </div>
                 <div className='mt-[3vh] overflow-x-hidden pr-[0.8vh] max-h-[60vh]'>
 
-                  <div className=' bg-[rgba(0,0,0,0.6)] pt-[2vh] rounded-md overflow-hidden w-[30vh] text-[1.8vh]'>
+                  <div className=' bg-semiblack pt-[2vh] rounded-md overflow-hidden w-[30vh] text-[1.8vh]'>
                     <h2 className='text-white uppercase mb-[2vh] text-center'>Categories</h2>
                     <motion.div>
                       {Object.keys(vehicles).map((category) => (

@@ -20,6 +20,7 @@ export default {
       'darkwhite': 'rgba(255,255,255,0.2)',
       'grayshade': 'rgba(167,167,167,0.6)',
       'midnight': '#2f2f3f',
+      'white': '#fff'
 
     }
   },
