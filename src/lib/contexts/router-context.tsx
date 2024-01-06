@@ -32,7 +32,6 @@ export default function RouterProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    console.log('useEffect');
     function handleMountRoute(path: string) {
       mountRoute(path);
     }
