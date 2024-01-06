@@ -65,56 +65,65 @@ function App() {
   useEffect(() => {
     // @ts-ignore
     alt.on("shop:cloth:menuStatus", (value: boolean) => {
-      toggleMenu(value); // sorry for that i made toggleMenu false opens, and true closes menu
+      toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
     });
-
+  
     // @ts-ignore
     alt.on("shop:cloth:ownedClothes", (data) => {
       setOwnedClothes(data);
-
+  
       {
         /*
         send data in this format
         {
-        Shirts: [
-          { name: 'Striped Shirt', choosed: true },
-          { name: 'Graphic Tee', choosed: false },
-        ],
-        Pants: [
-          { name: 'Jeans', choosed: false },
-        ],
-      }
-    */
+          Shirts: [
+            { name: 'Striped Shirt', choosed: true },
+            { name: 'Graphic Tee', choosed: false },
+          ],
+          Pants: [
+            { name: 'Jeans', choosed: false },
+          ],
+        }
+        */
       }
     });
-
+  
     // @ts-ignore
     alt.on("shop:cloth:notOwnedClothes", (data) => {
       setClothes(data);
-
+  
       {
         /*
-      send data in this format
-
-      {
-        Shirts: [
-          { name: 'Striped Shirt', price: '25' },
-          { name: 'Graphic Tee', price: '20' },
-        ],
-        Pants: [
-          { name: 'Jeans', price: '40' },
-          { name: 'Chinos', price: '30' },
-        ],
-        Hats: [
-          { name: 'Blueberry Hat', price: '15' },
-          { name: 'Snapback Cap', price: '20' },
-        ],
-      }
-
-    */
+        send data in this format
+  
+        {
+          Shirts: [
+            { name: 'Striped Shirt', price: '25' },
+            { name: 'Graphic Tee', price: '20' },
+          ],
+          Pants: [
+            { name: 'Jeans', price: '40' },
+            { name: 'Chinos', price: '30' },
+          ],
+          Hats: [
+            { name: 'Blueberry Hat', price: '15' },
+            { name: 'Snapback Cap', price: '20' },
+          ],
+        }
+        */
       }
     });
+  
+    return () => {
+    // @ts-ignore
+      alt.off("shop:cloth:ownedClothes");
+    // @ts-ignore
+      alt.off("shop:cloth:menuStatus");
+    // @ts-ignore
+      alt.off("shop:cloth:notOwnedClothes");
+    };
   }, []);
+  
 
   function buyItem(item: string) {
     // @ts-ignore
