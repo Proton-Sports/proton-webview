@@ -31,6 +31,16 @@ export default {
         '3xl': '2.488rem',
         '4xl': '2.986rem',
       },
+      borderRadius: {
+        'none': '0',
+        'sm': '0.3vh',
+        'md': '0.8vh',
+        'lg': '1.2vh',
+        'xl': '1.8vh',
+        'full': '999999vh',
+    },
+
+
     },
   },
   plugins: [],

@@ -4,17 +4,17 @@
 
 @font-face {
   font-family: "bold";
-  src: url(./assets/fonts/SFPRODISPLAYBOLD.OTF);
+  src: url(../assets/fonts/SFPRODISPLAYBOLD.OTF);
 }
 
 @font-face {
   font-family: "normal";
-  src: url(./assets/fonts/SFPRODISPLAYREGULAR.OTF);
+  src: url(../assets/fonts/SFPRODISPLAYREGULAR.OTF);
 }
 
 @font-face {
   font-family: "medium";
-  src: url(./assets/fonts/SFPRODISPLAYMEDIUM.OTF);
+  src: url(../assets/fonts/SFPRODISPLAYMEDIUM.OTF);
 }
 
 
