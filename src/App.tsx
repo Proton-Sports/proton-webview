@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { useRouter } from './lib/contexts/router-context';
 
 export default function App() {
