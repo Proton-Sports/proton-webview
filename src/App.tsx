@@ -1,8 +1,15 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useRouter } from './lib/contexts/router-context';
-
 export default function App() {
   const { route } = useRouter();
+  const { mountRoute, unmountRoute } = useRouter();
+
+
+
+   useEffect(() => {
+     mountRoute('creator_mode');
+
+   }, []);
 
   return (
     <>
