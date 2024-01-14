@@ -1,29 +1,23 @@
-import { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Suspense, useEffect } from 'react';
+import { useRouter } from './lib/contexts/router-context';
 
-import Auth from './views/auth/auth';
-
-function App() {
-  const navigate = useNavigate();
-  const [getRoute, setRoute] = useState("");
-
-  const changeRouter = (route: string, params?: any) => {
-
-    navigate(route, {
-      state: params ? params : {},
-    });
-    setRoute(route);
-  };
+export default function App() {
+  const { route } = useRouter();
+  const { mountRoute, unmountRoute } = useRouter();
 
   useEffect(() => {
-    changeRouter("/auth");
-  }, []);
+    mountRoute('racing_menu');
+  }, [])
 
   return (
-    <Routes>
-      <Route path="/auth" element={<Auth />} />
-    </Routes>
-  )
+    <>
+      {Object.entries(route).map(([key, Component]) => (
+        <Suspense key={key}>
+          <div className="fixed inset-0">
+            <Component />
+          </div>
+        </Suspense>
+      ))}
+    </>
+  );
 }
-
-export default App
