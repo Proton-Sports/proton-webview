@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "light";
+    src: url("/fonts/SFProDisplay-Light.ttf");
+  }
+  
+  @font-face {
+    font-family: "normal";
+    src: url("/fonts/SFProDisplay-Regular.ttf");
+  }
+  
+  @font-face {
+    font-family: "medium";
+    src: url("/fonts/SFProDisplay-Medium.ttf");
+  }
+  
+  @font-face {
+    font-family: "bold";
+    src: url("/fonts/SFProDisplay-Bold.ttf");
+  }
+  
+  @font-face {
+    font-family: "semi-bold";
+    src: url("/fonts/SFProDisplay-Semibold.ttf");
+  }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    overflow: hidden;
+}
+  
+body {
+    font-family: 'normal';
+    background-size: 100%;
+}
