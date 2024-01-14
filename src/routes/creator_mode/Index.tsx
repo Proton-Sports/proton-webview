@@ -109,10 +109,6 @@ export default function Index() {
 
     }
 
-    function switchCameraMode() {
-        alt.emit('racing:creatorMode:switch:cameraMode')
-    }
-
 
 
     return (
@@ -170,12 +166,9 @@ export default function Index() {
     
                                     <div className="mt-8">
                                         <h1 className="uppercase text-center text-md font-bold">Controls</h1>
-                                        <div className="space-x-4 text-sm mt-4 flex flex-wrap">
+                                        <div className="space-x-4 text-sm mt-4 flex">
                                             <button onClick={() => openGridPlacer()} className="bg-bg-1/60 p-1 pl-3 pr-3 rounded-sm hover:bg-bg-1/70 transition-colors w-32 h-8 active:bg-bg-1/90">Grid Placer</button>
                                             <button onClick={() => checkpointPlacer()} className="bg-bg-1/60 p-1 pl-3 pr-3 rounded-sm hover:bg-bg-1/70 transition-colors w-32 h-8 active:bg-bg-1/90">Checkpoint Placer</button>
-                                        </div>
-                                        <div className="text-sm ml-auto mr-auto flex">
-                                            <button onClick={() => switchCameraMode()} className="ml-auto mr-auto bg-bg-1/60 p-1 pl-3 pr-3 rounded-sm hover:bg-bg-1/70 transition-colors w-32 h-12 active:bg-bg-1/90 mt-4">Switch Free camera mode</button>
                                         </div>
     
                                         <div className="mt-8 text-sm flex">
