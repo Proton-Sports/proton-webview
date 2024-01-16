@@ -1,16 +1,11 @@
 import { Suspense, useEffect } from 'react';
 import { useRouter } from './lib/contexts/router-context';
+
 export default function App() {
-  const { route } = useRouter();
-  const { mountRoute, unmountRoute } = useRouter();
-
-
-
-   useEffect(() => {
-     mountRoute('creator_mode');
-
-   }, []);
-
+  const { route, mountRoute } = useRouter();
+  useEffect(() => {
+    mountRoute('creator_mode');
+  }, []);
   return (
     <>
       {Object.entries(route).map(([key, Component]) => (
