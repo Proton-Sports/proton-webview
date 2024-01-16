@@ -62,7 +62,7 @@ function Index() {
     const handleMenuStatus = (value: boolean) => {
       toggleMenu(value); // false opens, true closes the menu
     };
-  
+
     const handleOwnedClothes = (data: any) => {
       setOwnedClothes(data);
       /*
@@ -77,7 +77,7 @@ function Index() {
         }
       */
     };
-  
+
     const handleNotOwnedClothes = (data: any) => {
       setClothes(data);
       /*
@@ -97,18 +97,17 @@ function Index() {
         }
       */
     };
-  
+
     alt.on('shop:cloth:menuStatus', handleMenuStatus);
     alt.on('shop:cloth:ownedClothes', handleOwnedClothes);
     alt.on('shop:cloth:notOwnedClothes', handleNotOwnedClothes);
-  
+
     return () => {
       alt.off('shop:cloth:menuStatus', handleMenuStatus);
       alt.off('shop:cloth:ownedClothes', handleOwnedClothes);
       alt.off('shop:cloth:notOwnedClothes', handleNotOwnedClothes);
     };
   }, []);
-  
 
   function buyItem(item: string) {
     // @ts-ignore

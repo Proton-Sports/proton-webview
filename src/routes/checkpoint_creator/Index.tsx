@@ -12,14 +12,13 @@ export default function Index() {
     const handleMenuStatus = (status: boolean) => {
       setMenuOn(status);
     };
-  
+
     alt.on('racing:checkpointCreator:menu', handleMenuStatus);
-  
+
     return () => {
       alt.off('racing:checkpointCreator:menu', handleMenuStatus);
     };
   }, []);
-  
 
   return (
     <div
