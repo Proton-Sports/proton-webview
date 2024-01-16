@@ -9,15 +9,17 @@ export default function Index() {
   }
 
   useEffect(() => {
-    alt.on('racing:checkpointCreator:menu', (status: boolean) => {
-      setMenuOn(status); // true for open, false for close
-    });
-
+    const handleMenuStatus = (status: boolean) => {
+      setMenuOn(status);
+    };
+  
+    alt.on('racing:checkpointCreator:menu', handleMenuStatus);
+  
     return () => {
-      // TODO: FIX THIS
-      alt.off('racing:checkpointCreator:menu');
+      alt.off('racing:checkpointCreator:menu', handleMenuStatus);
     };
   }, []);
+  
 
   return (
     <div

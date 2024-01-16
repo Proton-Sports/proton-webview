@@ -9,15 +9,17 @@ export default function Index() {
   }
 
   useEffect(() => {
-    alt.on('racing:freemodeCreator:menu', (status: boolean) => {
+    const handleMenuStatus = (status: boolean) => {
       setMenuOn(status); // true for open, false for close
-    });
-
+    };
+  
+    alt.on('racing:freemodeCreator:menu', handleMenuStatus);
+  
     return () => {
-      // TODO: FIX THIS
-      alt.off('racing:freemodeCreator:menu');
+      alt.off('racing:freemodeCreator:menu', handleMenuStatus);
     };
   }, []);
+  
 
   return (
     <div

@@ -10,15 +10,17 @@ export default function Index() {
   }
 
   useEffect(() => {
-    alt.on('racing:racingMenu:menu', (status: boolean) => {
+    const handleMenuStatus = (status: boolean) => {
       setMenuOn(status); // true for open, false for close
-    });
-
+    };
+  
+    alt.on('racing:racingMenu:menu', handleMenuStatus);
+  
     return () => {
-      // TODO: FIX THIS
-      alt.off('racing:racingMenu:menu');
+      alt.off('racing:racingMenu:menu', handleMenuStatus);
     };
   }, []);
+  
 
   return (
     <>
