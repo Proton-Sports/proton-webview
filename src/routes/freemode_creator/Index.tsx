@@ -12,14 +12,13 @@ export default function Index() {
     const handleMenuStatus = (status: boolean) => {
       setMenuOn(status); // true for open, false for close
     };
-  
+
     alt.on('racing:freemodeCreator:menu', handleMenuStatus);
-  
+
     return () => {
       alt.off('racing:freemodeCreator:menu', handleMenuStatus);
     };
   }, []);
-  
 
   return (
     <div

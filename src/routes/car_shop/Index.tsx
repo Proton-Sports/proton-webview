@@ -97,7 +97,7 @@ function Index() {
   useEffect(() => {
     const notOwned = (data: any) => {
       setVehicles(data);
-  
+
       /*
         send data in this format
   
@@ -125,14 +125,14 @@ function Index() {
         }
       */
     };
-  
+
     const menuStatus = (value: boolean) => {
       toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
     };
 
     const handleOwnedVehicles = (data: any) => {
       setOwnedVehicles(data);
-  
+
       /*
         {
           Coupes: [
@@ -146,19 +146,17 @@ function Index() {
         }
       */
     };
-  
+
     alt.on('shop:vehicles:notOwnedVehicles', notOwned);
     alt.on('shop:vehicles:menuStatus', menuStatus);
     alt.on('shop:vehicles:ownedVehicles', handleOwnedVehicles);
-  
+
     return () => {
       alt.off('shop:vehicles:notOwnedVehicles', notOwned);
       alt.off('shop:vehicles:menuStatus', menuStatus);
       alt.off('shop:vehicles:ownedVehicles', handleOwnedVehicles);
     };
   }, []);
-  
-  
 
   function choosenColor(color: string) {
     alt.emit('shop:vehicles:choosenColor', color);

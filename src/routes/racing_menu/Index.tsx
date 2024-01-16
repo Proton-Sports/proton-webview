@@ -13,14 +13,13 @@ export default function Index() {
     const handleMenuStatus = (status: boolean) => {
       setMenuOn(status); // true for open, false for close
     };
-  
+
     alt.on('racing:racingMenu:menu', handleMenuStatus);
-  
+
     return () => {
       alt.off('racing:racingMenu:menu', handleMenuStatus);
     };
   }, []);
-  
 
   return (
     <>

@@ -43,10 +43,10 @@ export default function Index() {
     const handleMenuStatus = (status: boolean) => {
       setMenuOn(status); // true for open, false for close
     };
-  
+
     const handleMapData = (maps: any) => {
       setMaps(maps);
-  
+
       /*
         [
           { name: 'Juicy towns', id: 1 }, // do not duplicate ID !! It's used for sending data which map to edit
@@ -62,17 +62,15 @@ export default function Index() {
         ]
       */
     };
-  
+
     alt.on('racing:creatorMode:menu', handleMenuStatus);
     alt.on('racing:creatorMode:map', handleMapData);
-  
+
     return () => {
       alt.off('racing:creatorMode:menu', handleMenuStatus);
       alt.off('racing:creatorMode:map', handleMapData);
     };
   }, []);
-  
-  
 
   function openCreatorMode(route: string) {
     alt.emit('racing:creatorMode:changePage', route);
