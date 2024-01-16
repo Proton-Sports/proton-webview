@@ -40,35 +40,39 @@ export default function Index() {
   // altv
 
   useEffect(() => {
-    alt.on('racing:creatorMode:menu', (status: boolean) => {
+    const handleMenuStatus = (status: boolean) => {
       setMenuOn(status); // true for open, false for close
-    });
-
-    alt.on('racing:creatorMode:map', (maps) => {
+    };
+  
+    const handleMapData = (maps: any) => {
       setMaps(maps);
-
-      {
-        /*
-            { name: 'Juicy towns', id: 1 }, // do not duplicate ID !! Its used for sending data which map to edit
-            { name: 'Juicy townss', id: 2 },
-            { name: 'Juicy townsss', id: 3 },
-            { name: 'Juicy townssss', id: 4 },
-            { name: 'Long road towns v2 + Juicy south Los Santos', id: 5 },
-            { name: 'Juicy towns', id: 6 },
-            { name: 'Juicy townss', id: 7 },
-            { name: 'Juicy townsss', id: 8 },
-            { name: 'Juicy townssss', id: 9 },
-            { name: 'Long road towns v2 + Juicy south Los Santos', id: 10 }
-        */
-      }
-    });
-
+  
+      /*
+        [
+          { name: 'Juicy towns', id: 1 }, // do not duplicate ID !! It's used for sending data which map to edit
+          { name: 'Juicy townss', id: 2 },
+          { name: 'Juicy townsss', id: 3 },
+          { name: 'Juicy townssss', id: 4 },
+          { name: 'Long road towns v2 + Juicy south Los Santos', id: 5 },
+          { name: 'Juicy towns', id: 6 },
+          { name: 'Juicy townss', id: 7 },
+          { name: 'Juicy townsss', id: 8 },
+          { name: 'Juicy townssss', id: 9 },
+          { name: 'Long road towns v2 + Juicy south Los Santos', id: 10 }
+        ]
+      */
+    };
+  
+    alt.on('racing:creatorMode:menu', handleMenuStatus);
+    alt.on('racing:creatorMode:map', handleMapData);
+  
     return () => {
-      // TODO: FIX THIS
-      alt.off('racing:checkpointCreator:menu');
-      alt.off('racing:creatorMode:map');
+      alt.off('racing:creatorMode:menu', handleMenuStatus);
+      alt.off('racing:creatorMode:map', handleMapData);
     };
   }, []);
+  
+  
 
   function openCreatorMode(route: string) {
     alt.emit('racing:creatorMode:changePage', route);

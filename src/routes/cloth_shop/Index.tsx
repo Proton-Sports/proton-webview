@@ -59,16 +59,13 @@ function Index() {
   // altv data handlings
 
   useEffect(() => {
-    alt.on('shop:cloth:menuStatus', (value: boolean) => {
-      toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
-    });
-
-    alt.on('shop:cloth:ownedClothes', (data) => {
+    const handleMenuStatus = (value: boolean) => {
+      toggleMenu(value); // false opens, true closes the menu
+    };
+  
+    const handleOwnedClothes = (data: any) => {
       setOwnedClothes(data);
-
-      {
-        /*
-        send data in this format
+      /*
         {
           Shirts: [
             { name: 'Striped Shirt', choosed: true },
@@ -78,17 +75,12 @@ function Index() {
             { name: 'Jeans', choosed: false },
           ],
         }
-        */
-      }
-    });
-
-    alt.on('shop:cloth:notOwnedClothes', (data) => {
-      setClothes(data);
-
-      {
-        /*
-        send data in this format
+      */
+    };
   
+    const handleNotOwnedClothes = (data: any) => {
+      setClothes(data);
+      /*
         {
           Shirts: [
             { name: 'Striped Shirt', price: '25' },
@@ -103,19 +95,20 @@ function Index() {
             { name: 'Snapback Cap', price: '20' },
           ],
         }
-        */
-      }
-    });
-
+      */
+    };
+  
+    alt.on('shop:cloth:menuStatus', handleMenuStatus);
+    alt.on('shop:cloth:ownedClothes', handleOwnedClothes);
+    alt.on('shop:cloth:notOwnedClothes', handleNotOwnedClothes);
+  
     return () => {
-      // TODO: FIX THIS
-      alt.off('shop:cloth:ownedClothes');
-      // TODO: FIX THIS
-      alt.off('shop:cloth:menuStatus');
-      // TODO: FIX THIS
-      alt.off('shop:cloth:notOwnedClothes');
+      alt.off('shop:cloth:menuStatus', handleMenuStatus);
+      alt.off('shop:cloth:ownedClothes', handleOwnedClothes);
+      alt.off('shop:cloth:notOwnedClothes', handleNotOwnedClothes);
     };
   }, []);
+  
 
   function buyItem(item: string) {
     // @ts-ignore

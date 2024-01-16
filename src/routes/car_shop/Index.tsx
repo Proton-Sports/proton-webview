@@ -95,39 +95,13 @@ function Index() {
   // altv handlers
 
   useEffect(() => {
-    alt.on('shop:vehicles:menuStatus', (value: boolean) => {
-      toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
-    });
-
-    alt.on('shop:vehicles:ownedVehicles', (data) => {
-      setOwnedVehicles(data);
-
-      {
-        /*
-    {
-    Coupes: [
-      { name: 'Ford' },
-      { name: 'BMW' },
-    ],
-
-    Trucks: [
-      { name: 'Ford' },
-      { name: 'BMW' },
-    ],
-     }
-      */
-      }
-    });
-
-    // @ts-ignore
-    alt.on('shop:vehicles:notOwnedVehicles', (data) => {
+    const notOwned = (data: any) => {
       setVehicles(data);
-
-      {
-        /*
-      send data in this format
-
-      {
+  
+      /*
+        send data in this format
+  
+        {
           Sedans: [
             { name: 'Ford', price: '25000' },
             { name: 'BMW', price: '20000' },
@@ -140,7 +114,6 @@ function Index() {
             { name: 'Ford', price: '25000' },
             { name: 'BMW', price: '20000' },
           ],
-
           Trucks: [
             { name: 'Ford', price: '25000' },
             { name: 'BMW', price: '20000' },
@@ -151,18 +124,41 @@ function Index() {
           ],
         }
       */
-      }
-    });
+    };
+  
+    const menuStatus = (value: boolean) => {
+      toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
+    };
 
+    const handleOwnedVehicles = (data: any) => {
+      setOwnedVehicles(data);
+  
+      /*
+        {
+          Coupes: [
+            { name: 'Ford' },
+            { name: 'BMW' },
+          ],
+          Trucks: [
+            { name: 'Ford' },
+            { name: 'BMW' },
+          ],
+        }
+      */
+    };
+  
+    alt.on('shop:vehicles:notOwnedVehicles', notOwned);
+    alt.on('shop:vehicles:menuStatus', menuStatus);
+    alt.on('shop:vehicles:ownedVehicles', handleOwnedVehicles);
+  
     return () => {
-      // TODO: FIX THIS
-      alt.off('shop:vehicles:ownedVehicles');
-      // TODO: FIX THIS
-      alt.off('shop:vehicles:menuStatus');
-      // TODO: FIX THIS
-      alt.off('shop:vehicles:notOwnedVehicles');
+      alt.off('shop:vehicles:notOwnedVehicles', notOwned);
+      alt.off('shop:vehicles:menuStatus', menuStatus);
+      alt.off('shop:vehicles:ownedVehicles', handleOwnedVehicles);
     };
   }, []);
+  
+  
 
   function choosenColor(color: string) {
     alt.emit('shop:vehicles:choosenColor', color);
