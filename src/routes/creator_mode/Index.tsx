@@ -12,7 +12,7 @@ interface Map {
 
 export default function Index() {
   const [searchBar, setSearchBar] = useState<string>('');
-  const [menuOn, setMenuOn] = useState(true);
+  const [menuOn, setMenuOn] = useState(false);
   const [maps, setMaps] = useState<Map[]>([
     { name: 'Juicy towns', id: 1 }, // do not duplicate ID !! Its used for sending data which map to edit
     { name: 'Juicy townss', id: 2 },
@@ -102,7 +102,7 @@ export default function Index() {
       <div
         className={`${
           menuOn ? 'opacity-100 delay-200' : 'opacity-0'
-        } font container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center min-w-[78vw] max-w-fit`}
+        } font container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center max-w-[78vw] w-fit`}
       >
         <div className="space-y-2 w-[21vh] mr-28">
           <button
@@ -130,7 +130,7 @@ export default function Index() {
             Credits
           </button>
         </div>
-        <div className="flex mr-72">
+        <div className="flex mr-64">
           <div className="">
             <div className="w-72 pb-3 ml-auto mr-auto border-b-[0.2vh] border-b-bg-1/60 mb-4">
               <img src={logo} alt="logo" className="w-36 ml-auto mr-auto" />
