@@ -1,30 +1,13 @@
-import { useState, useEffect } from 'react';
 import '../../lib/stylesheets/style.css';
 
 export default function Index() {
-  const [menuOn, setMenuOn] = useState(false);
-
   function switchCameraMode() {
-    alt.emit('racing:creatorMode:switch:cameraMode:freemode');
+    alt.emit('race:creator:switchToFreeMode');
   }
-
-  useEffect(() => {
-    const handleMenuStatus = (status: boolean) => {
-      setMenuOn(status);
-    };
-
-    alt.on('racing:checkpointCreator:menu', handleMenuStatus);
-
-    return () => {
-      alt.off('racing:checkpointCreator:menu', handleMenuStatus);
-    };
-  }, []);
 
   return (
     <div
-      className={`${
-        menuOn ? 'opacity-100' : 'opacity-0'
-      } font absolute top-[50vh] left-[30vh] -translate-x-1/2 -translate-y-1/2 bg-bg-1/60 space-y-4 p-3 pl-4 pr-4 rounded-md`}
+      className="font absolute top-[50vh] left-[30vh] -translate-x-1/2 -translate-y-1/2 bg-bg-1/60 space-y-4 p-3 pl-4 pr-4 rounded-md"
     >
       <div className="flex items-center space-x-4">
         <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
@@ -55,7 +38,7 @@ export default function Index() {
       </div>
       <div className="text-sm ml-auto mr-auto flex">
         <button
-          onClick={() => switchCameraMode()}
+          onClick={switchCameraMode}
           className="ml-auto mr-auto bg-bg-1/60 p-2 pl-3 pr-3 rounded-sm hover:bg-bg-1/70 transition-colors active:bg-bg-1/90 mt-4"
         >
           Switch to Free camera mode

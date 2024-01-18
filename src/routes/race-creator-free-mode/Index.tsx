@@ -1,30 +1,13 @@
-import { useEffect, useState } from 'react';
 import '../../lib/stylesheets/style.css';
 
 export default function Index() {
-  const [menuOn, setMenuOn] = useState(false);
-
   function switchCameraMode() {
-    alt.emit('racing:creatorMode:switch:cameraMode:normalMode');
+    alt.emit('race:creator:switchToNormalMode');
   }
-
-  useEffect(() => {
-    const handleMenuStatus = (status: boolean) => {
-      setMenuOn(status); // true for open, false for close
-    };
-
-    alt.on('racing:freemodeCreator:menu', handleMenuStatus);
-
-    return () => {
-      alt.off('racing:freemodeCreator:menu', handleMenuStatus);
-    };
-  }, []);
 
   return (
     <div
-      className={`  ${
-        menuOn ? 'opacity-100' : 'opacity-0'
-      }  font absolute top-[50vh] left-[30vh] -translate-x-1/2 -translate-y-1/2 bg-bg-1/60 space-y-4 p-3 pl-4 pr-4 rounded-md`}
+      className="font absolute top-[50vh] left-[30vh] -translate-x-1/2 -translate-y-1/2 bg-bg-1/60 space-y-4 p-3 pl-4 pr-4 rounded-md"
     >
       <div className="flex items-center space-x-4">
         <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
