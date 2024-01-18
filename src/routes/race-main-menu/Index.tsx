@@ -12,7 +12,6 @@ interface Map {
 
 export default function Index() {
   const [searchBar, setSearchBar] = useState<string>('');
-  const [menuOn, setMenuOn] = useState(false);
   const [maps, setMaps] = useState<Map[]>([
     { name: 'Juicy towns', id: 1 }, // do not duplicate ID !! Its used for sending data which map to edit
     { name: 'Juicy townss', id: 2 },
@@ -32,18 +31,14 @@ export default function Index() {
 
   const filteredMaps = maps.filter((map) => map.name.toLowerCase().includes(searchBar));
 
-  const [nameMap, setnameMap] = useState('');
+  const [mapName, setMapName] = useState('');
   const handleChangeMap = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setnameMap(e.target.value);
+    setMapName(e.target.value);
   };
 
   // altv
 
   useEffect(() => {
-    const handleMenuStatus = (status: boolean) => {
-      setMenuOn(status); // true for open, false for close
-    };
-
     const handleMapData = (maps: any) => {
       setMaps(maps);
 
@@ -63,46 +58,43 @@ export default function Index() {
       */
     };
 
-    alt.on('racing:creatorMode:menu', handleMenuStatus);
-    alt.on('racing:creatorMode:map', handleMapData);
+    alt.on('race:creator:map', handleMapData);
 
     return () => {
-      alt.off('racing:creatorMode:menu', handleMenuStatus);
-      alt.off('racing:creatorMode:map', handleMapData);
+      alt.off('race:creator:map', handleMapData);
     };
   }, []);
 
   function openCreatorMode(route: string) {
-    alt.emit('racing:creatorMode:changePage', route);
+    alt.emit('race:creator:changePage', route);
   }
 
   function editMap(map: number) {
-    alt.emit('racing:creatorMode:edit:map', map);
+    alt.emit('race:creator:editMap', map);
   }
 
   function cancelMap() {
-    alt.emit('racing:creatorMode:cancel:map');
-    setnameMap('');
+    alt.emit('race:creator:cancelMap');
+    setMapName('');
   }
 
   function createMap() {
-    alt.emit('racing:creatorMode:create:map', nameMap);
+    if (!mapName) return;
+    alt.emit('race:creator:createMap', mapName);
   }
 
   function checkpointPlacer() {
-    alt.emit('racing:creatorMode:open:checkpointPlacer');
+    alt.emit('race:creator:open:checkpointPlacer');
   }
 
   function openGridPlacer() {
-    alt.emit('racing:creatorMode:open:gridPlacer');
+    alt.emit('race:creator:open:gridPlacer');
   }
 
   return (
     <>
       <div
-        className={`${
-          menuOn ? 'opacity-100 delay-200' : 'opacity-0'
-        } font container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center max-w-[78vw] w-fit`}
+        className="font container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center max-w-[78vw] w-fit"
       >
         <div className="space-y-2 w-[21vh] mr-28">
           <button
@@ -174,7 +166,7 @@ export default function Index() {
                     <input
                       type="text"
                       className="ml-2 text-sm bg-[rgba(0,0,0,0)] pr-3 outline-none p-1"
-                      value={nameMap}
+                      value={mapName}
                       onChange={handleChangeMap}
                       placeholder="Map name"
                     />
@@ -184,13 +176,13 @@ export default function Index() {
                     <h1 className="uppercase text-center text-md font-bold">Controls</h1>
                     <div className="space-x-4 text-sm mt-4 flex">
                       <button
-                        onClick={() => openGridPlacer()}
+                        onClick={openGridPlacer}
                         className="bg-bg-1/60 p-1 pl-3 pr-3 rounded-sm hover:bg-bg-1/70 transition-colors w-32 h-8 active:bg-bg-1/90"
                       >
                         Grid Placer
                       </button>
                       <button
-                        onClick={() => checkpointPlacer()}
+                        onClick={checkpointPlacer}
                         className="bg-bg-1/60 p-1 pl-3 pr-3 rounded-sm hover:bg-bg-1/70 transition-colors w-32 h-8 active:bg-bg-1/90"
                       >
                         Checkpoint Placer
@@ -200,13 +192,13 @@ export default function Index() {
                     <div className="mt-8 text-sm flex">
                       <div className="space-x-8 ml-auto mr-auto">
                         <button
-                          onClick={() => cancelMap()}
+                          onClick={cancelMap}
                           className=" p-1 pl-4 pr-4 rounded-sm bg-bg-1/60 hover:bg-bg-1/70 transition-colors active:bg-bg-1/90"
                         >
                           Cancel
                         </button>
                         <button
-                          onClick={() => createMap()}
+                          onClick={createMap}
                           className="bg-accent-1/60 p-1 pl-4 pr-4 rounded-sm hover:bg-accent-1/75 transition-colors active:bg-accent-1"
                         >
                           Create
@@ -222,14 +214,12 @@ export default function Index() {
       </div>
 
       <div
-        className={`${
-          menuOn ? 'opacity-100 delay-200' : 'opacity-0'
-        } font z-10 absolute top-[10vh] right-[6vh] -translate-x-1/2 -translate-y-1/2 font text-[1.6vh] text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50`}
+        className="font z-10 absolute top-[10vh] right-[6vh] -translate-x-1/2 -translate-y-1/2 font text-[1.6vh] text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50"
       >
         <p>esc</p>
       </div>
 
-      <div className={`${menuOn ? 'opacity-100' : 'opacity-0'} lights`}>
+      <div className="lights">
         <div className="bg-light">.</div>
         <div className="bg-light2">.</div>
         <div className="bg-light3">.</div>
