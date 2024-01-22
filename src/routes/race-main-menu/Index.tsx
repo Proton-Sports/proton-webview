@@ -13,7 +13,7 @@ interface Map {
 export default function Index() {
   const [searchBar, setSearchBar] = useState<string>('');
   const [maps, setMaps] = useState<Map[]>([]);
-  const [editTarget, setEditTarget] = useState<'start' | 'race' | null>(null);
+  const [editType, setEditType] = useState<'start' | 'race' | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchBar(e.target.value.toLowerCase());
@@ -44,7 +44,8 @@ export default function Index() {
   }
 
   function editMap(map: number) {
-    alt.emit('race:creator:editMap', map);
+    if (!editType) return;
+    alt.emit('race:creator:editMap', map, editType);
   }
 
   function cancelMap() {
@@ -140,17 +141,17 @@ export default function Index() {
                     <h1 className="font-bold text-center uppercase text-md">Controls</h1>
                     <div className="flex mt-4 space-x-4 text-sm">
                       <button
-                        onClick={() => setEditTarget('start')}
+                        onClick={() => setEditType('start')}
                         className={`w-32 h-8 p-1 pl-3 pr-3 transition-colors rounded-sm ${
-                          editTarget === 'start' ? 'bg-fg-1 text-bg-1' : 'bg-bg-1/60 hover:bg-bg-1/70 active:bg-bg-1/90'
+                          editType === 'start' ? 'bg-fg-1 text-bg-1' : 'bg-bg-1/60 hover:bg-bg-1/70 active:bg-bg-1/90'
                         }`}
                       >
                         Start points
                       </button>
                       <button
-                        onClick={() => setEditTarget('race')}
+                        onClick={() => setEditType('race')}
                         className={`w-32 h-8 p-1 pl-3 pr-3 transition-colors rounded-sm ${
-                          editTarget === 'race' ? 'bg-fg-1 text-bg-1' : 'bg-bg-1/60 hover:bg-bg-1/70 active:bg-bg-1/90'
+                          editType === 'race' ? 'bg-fg-1 text-bg-1' : 'bg-bg-1/60 hover:bg-bg-1/70 active:bg-bg-1/90'
                         }`}
                       >
                         Race points
