@@ -28,7 +28,6 @@ export default function Index() {
 
   useEffect(() => {
     const handleMapData = (maps: Map[]) => {
-      console.log(maps);
       setMaps(maps);
     };
 
