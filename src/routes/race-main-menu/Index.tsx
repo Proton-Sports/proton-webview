@@ -1,4 +1,4 @@
-import React, { useState, useEffect, type FormEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 import { BiRename } from 'react-icons/bi';
@@ -15,7 +15,7 @@ interface Map {
 
 export default function Index() {
   const [searchBar, setSearchBar] = useState<string>('');
-  const [maps, setMaps] = useState<Map[]>([{ id: 1, name: 'abc' }]);
+  const [maps, setMaps] = useState<Map[]>([]);
   const [editType, setEditType] = useState<'start' | 'race' | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,9 +40,11 @@ export default function Index() {
 
     alt.on('race:creator:map', handleMapData);
     alt.on('race:creator:deleteMap', handleDeleteMap);
+    alt.emit('race:creator:map');
 
     return () => {
       alt.off('race:creator:map', handleMapData);
+      alt.off('race:creator:deleteMap', handleDeleteMap);
     };
   }, []);
 
@@ -144,6 +146,7 @@ export default function Index() {
                                 onSubmit={(e) => {
                                   e.preventDefault();
                                   deleteMap(map.id);
+                                  close();
                                 }}
                               >
                                 <span>Do you want to delete this race map?</span>
