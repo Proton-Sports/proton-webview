@@ -1,114 +1,102 @@
+import Button from '../../lib/components/Button';
 import type { Mode } from './Index';
 
 interface Props {
   onChangeMode: (mode: Mode) => void;
+  onSubmit: () => void;
+  onQuit: () => void;
 }
 
-export default function FreeMode({ onChangeMode }: Props) {
-  function switchCameraMode() {
-    onChangeMode('normal');
-  }
-
+export default function FreeMode({ onChangeMode, onSubmit, onQuit }: Props) {
   return (
-    <div className="font absolute top-[50vh] left-[30vh] -translate-x-1/2 -translate-y-1/2 bg-bg-1/60 space-y-4 p-3 pl-4 pr-4 rounded-md">
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">W</p>
+    <div className="flex items-center h-screen ml-20">
+      <div className="p-4 space-y-4 rounded-md bg-bg-1/60">
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">W</p>
+          </div>
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">S</p>
+          </div>
+          <p>Move forward/backward</p>
         </div>
-        <p>Move forward</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">S</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">A</p>
+          </div>
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">D</p>
+          </div>
+          <p>Move left/right</p>
         </div>
-        <p>Move backward</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">A</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-xs text-fix2 w-12 rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2">Space</p>
+          </div>
+          <div className="font text-bg-1 uppercase bg-fg-1 text-xs text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">Ctrl</p>
+          </div>
+          <p>Move up/down</p>
         </div>
-        <p>Move left</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">D</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-xs text-fix2 w-12 rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2">Shift</p>
+          </div>
+          <p>Speed up</p>
         </div>
-        <p>Move right</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-xs text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">Ctrl</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">1</p>
+          </div>
+          <p>Switch to start points</p>
         </div>
-        <p>Move down</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-xs text-fix2 w-12 rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2">Space</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">2</p>
+          </div>
+          <p>Switch to race points</p>
         </div>
-        <p>Move up</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-xs text-fix2 w-12 rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2">Shift</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">LMB</p>
+          </div>
+          <p>Place a point at red dot</p>
         </div>
-        <p>Speed up</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">1</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">RMB</p>
+          </div>
+          <p>Delete current point</p>
         </div>
-        <p>Switch to race points</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">2</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">U</p>
+          </div>
+          <p>Increase current race point radius</p>
         </div>
-        <p>Switch to start points</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">LMB</p>
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">N</p>
+          </div>
+          <p>Decrease current race point radius</p>
         </div>
-        <p>Place a point at red dot</p>
-      </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">RMB</p>
+        <div className="space-x-2">
+          <Button variant="primary" onClick={onSubmit}>
+            Submit
+          </Button>
+          <Button onClick={() => onChangeMode('normal')}>Switch to normal mode</Button>
+          <Button onClick={onQuit}>Quit</Button>
         </div>
-        <p>Delete current point</p>
-      </div>
-
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">U</p>
-        </div>
-        <p>Increase current race point radius</p>
-      </div>
-
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">N</p>
-        </div>
-        <p>Decrease current race point radius</p>
-      </div>
-
-      <div className="flex ml-auto mr-auto text-sm">
-        <button
-          onClick={() => switchCameraMode()}
-          className="p-2 pl-3 pr-3 mt-4 ml-auto mr-auto transition-colors rounded-sm bg-bg-1/60 hover:bg-bg-1/70 active:bg-bg-1/90"
-        >
-          Switch to normal mode
-        </button>
       </div>
     </div>
   );

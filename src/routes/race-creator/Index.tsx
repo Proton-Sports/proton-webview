@@ -12,6 +12,15 @@ export default function Index() {
     setMode(mode as Mode);
   }
 
-  if (mode === 'normal') return <NormalMode onChangeMode={handleChangeMode} />;
-  return <FreeMode onChangeMode={handleChangeMode} />;
+  function handleSubmit() {
+    alt.emit('race:creator:submit');
+  }
+
+  function handleQuit() {
+    alt.emit('race:creator:stop');
+  }
+
+  if (mode === 'normal')
+    return <NormalMode onChangeMode={handleChangeMode} onSubmit={handleSubmit} onQuit={handleQuit} />;
+  return <FreeMode onChangeMode={handleChangeMode} onSubmit={handleSubmit} onQuit={handleQuit} />;
 }
