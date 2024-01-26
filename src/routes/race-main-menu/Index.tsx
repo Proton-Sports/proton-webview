@@ -3,7 +3,7 @@ import '../../lib/stylesheets/style.css';
 import { FaEdit } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 import { BiRename } from 'react-icons/bi';
-import logo from '../../lib/assets/protonsports.png';
+import Logo from '../../lib/assets/images/logo.png';
 
 interface Map {
   id: number;
@@ -89,7 +89,7 @@ export default function Index() {
         <div className="flex mr-64">
           <div className="">
             <div className="w-72 pb-3 ml-auto mr-auto border-b-[0.2vh] border-b-bg-1/60 mb-4">
-              <img src={logo} alt="logo" className="ml-auto mr-auto w-36" />
+              <img src={Logo} alt="logo" className="ml-auto mr-auto w-36" />
             </div>
             <div className="flex mt-10 space-x-32">
               <div className="text-sm">

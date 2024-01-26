@@ -1,8 +1,11 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useRouter } from './lib/contexts/router-context';
 
 export default function App() {
-  const { route} = useRouter();
+  const { route, mountRoute } = useRouter();
+  useEffect(() => {
+    mountRoute('racing-menu');
+  }, []);
   return (
     <>
       {Object.entries(route).map(([key, Component]) => (
