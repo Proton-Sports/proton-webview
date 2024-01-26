@@ -6,7 +6,6 @@ import { FaHatCowboySide } from 'react-icons/fa';
 import { IoIosArrowForward } from 'react-icons/io';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { IoMdCheckmark } from 'react-icons/io';
-import '../../lib/stylesheets/style.css';
 
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);

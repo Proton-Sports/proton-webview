@@ -7,7 +7,6 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 import { BiSolidPurchaseTag } from 'react-icons/bi';
-import '../../lib/stylesheets/style.css';
 
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
