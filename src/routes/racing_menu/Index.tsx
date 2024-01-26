@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../../lib/stylesheets/style.css';
-import logo from '../../lib/assets/protonsports.png';
+import Logo from '../../lib/assets/images/logo.png';
 
 export default function Index() {
   const [menuOn, setMenuOn] = useState(false);
@@ -28,34 +28,34 @@ export default function Index() {
           menuOn ? 'opacity-100 delay-200' : 'opacity-0'
         }`}
       >
-        <div className="ml-auto mr-auto flex">
+        <div className="flex ml-auto mr-auto">
           <div className="w-[36vh] mr-8 mt-10">
-            <img src={logo} alt="logo" className="w-36 ml-auto mr-auto mb-4" />
+            <img src={Logo} alt="logo" className="mb-4 ml-auto mr-auto w-36" />
             <p className="text-sm text-center">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum, minus.
             </p>
             <div className="space-y-4 w-[21vh] ml-auto mr-auto mt-8">
               <button
                 onClick={() => openCreatorMode('races')}
-                className="bg-bg-1/80 hover:bg-bg-1/65 transition-colors p-2 w-full rounded-md text-sm block"
+                className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/80 hover:bg-bg-1/65"
               >
                 Races
               </button>
               <button
                 onClick={() => openCreatorMode('hosts')}
-                className="bg-bg-1/50 hover:bg-bg-1/65 transition-colors p-2 w-full rounded-md text-sm block"
+                className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
               >
                 Hosts
               </button>
               <button
                 onClick={() => openCreatorMode('creator_mode')}
-                className="bg-bg-1/50 hover:bg-bg-1/65 transition-colors p-2 w-full rounded-md text-sm block"
+                className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
               >
                 Creator mode
               </button>
               <button
                 onClick={() => openCreatorMode('credits')}
-                className="bg-bg-1/50 hover:bg-bg-1/65 transition-colors p-2 w-full rounded-md text-sm block"
+                className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
               >
                 Credits
               </button>
@@ -63,20 +63,20 @@ export default function Index() {
           </div>
 
           <div className="">
-            <div className="space-x-8 mb-2">
+            <div className="mb-2 space-x-8">
               <button>Button</button>
               <button>Button</button>
               <button>Button</button>
               <button>Button</button>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              <div className="w-60 h-32 bg-black">Card</div>
-              <div className="w-60 h-32 bg-black">Card</div>
-              <div className="w-60 h-32 bg-black">Card</div>
-              <div className="w-60 h-32 bg-black">Card</div>
-              <div className="w-60 h-32 bg-black">Card</div>
-              <div className="w-60 h-32 bg-black">Card</div>
-              <div className="w-60 h-32 bg-black">Card</div>
+              <div className="h-32 bg-black w-60">Card</div>
+              <div className="h-32 bg-black w-60">Card</div>
+              <div className="h-32 bg-black w-60">Card</div>
+              <div className="h-32 bg-black w-60">Card</div>
+              <div className="h-32 bg-black w-60">Card</div>
+              <div className="h-32 bg-black w-60">Card</div>
+              <div className="h-32 bg-black w-60">Card</div>
             </div>
           </div>
         </div>
