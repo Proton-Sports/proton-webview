@@ -1,8 +1,11 @@
+@import 'lib/stylesheets/tailwindcss/base.css';
+@import 'lib/stylesheets/style.css';
 @import 'lib/stylesheets/themes/primitives.css';
 @import 'lib/stylesheets/themes/default.css';
 
-@tailwind base;
-@tailwind components;
+@import 'lib/stylesheets/tailwindcss/components.css';
+@import 'lib/stylesheets/components/c-btn.css';
+
 @tailwind utilities;
 
 @layer base {

@@ -1,4 +1,3 @@
-import '../../lib/stylesheets/style.css';
 import type { Mode } from './Index';
 
 interface Props {

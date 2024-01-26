@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import '../../lib/stylesheets/style.css';
 import Logo from '../../lib/assets/images/logo.png';
 
 export default function Index() {

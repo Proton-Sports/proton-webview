@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import '../../lib/stylesheets/style.css';
+import React, { useState, useEffect, type FormEvent } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 import { BiRename } from 'react-icons/bi';
+import { HiTrash } from 'react-icons/hi2';
 import Logo from '../../lib/assets/images/logo.png';
+import Background from '../../lib/assets/images/race-main-menu-bg.webp';
+import { Popover } from '@headlessui/react';
+import Button from '../../lib/components/Button';
 
 interface Map {
   id: number;
@@ -12,7 +15,7 @@ interface Map {
 
 export default function Index() {
   const [searchBar, setSearchBar] = useState<string>('');
-  const [maps, setMaps] = useState<Map[]>([]);
+  const [maps, setMaps] = useState<Map[]>([{ id: 1, name: 'abc' }]);
   const [editType, setEditType] = useState<'start' | 'race' | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +34,12 @@ export default function Index() {
       setMaps(maps);
     };
 
+    function handleDeleteMap(id: number) {
+      setMaps((maps) => maps.filter((x) => x.id !== id));
+    }
+
     alt.on('race:creator:map', handleMapData);
+    alt.on('race:creator:deleteMap', handleDeleteMap);
 
     return () => {
       alt.off('race:creator:map', handleMapData);
@@ -57,10 +65,16 @@ export default function Index() {
     alt.emit('race:creator:createMap', mapName);
   }
 
+  function deleteMap(id: number) {
+    alt.emit('race:creator:deleteMap', id);
+  }
+
   return (
     <>
-      <div className="font container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center max-w-[78vw] w-fit">
-        <div className="space-y-2 w-[21vh] mr-28">
+      <div className="relative flex items-center justify-around w-screen h-screen gap-24">
+        <img src={Background} className="absolute object-cover w-full h-full -z-10" />
+        <div className="absolute w-full h-full select-none -z-10 bg-black/80" />
+        <div className="space-y-2 w-[21vh] p-4">
           <button
             onClick={() => openCreatorMode('races')}
             className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
@@ -86,7 +100,7 @@ export default function Index() {
             Credits
           </button>
         </div>
-        <div className="flex mr-64">
+        <div className="flex p-4">
           <div className="">
             <div className="w-72 pb-3 ml-auto mr-auto border-b-[0.2vh] border-b-bg-1/60 mb-4">
               <img src={Logo} alt="logo" className="ml-auto mr-auto w-36" />
@@ -108,14 +122,43 @@ export default function Index() {
                 <div className="p-2 rounded-sm bg-bg-1/20">
                   <div className="rounded-sm overflow-hidden max-h-[30vh] overflow-y-auto pr-2 w-[34vh]">
                     {filteredMaps.map((map, index) => (
-                      <div key={index} className="flex items-center p-2 bg-bg-1/60">
-                        <p className="mr-4">{map.name.length < 35 ? map.name : `${map.name.slice(0, 32)}...`}</p>
+                      <div key={index} className="flex items-center gap-1 p-2 bg-bg-1/60">
+                        <p className="mr-auto">{map.name.length < 35 ? map.name : `${map.name.slice(0, 32)}...`}</p>
                         <button
                           onClick={() => editMap(map.id)}
-                          className="p-1 ml-auto text-xs transition-colors rounded-sm bg-bg-1/50 h-fit hover:bg-bg-1/70"
+                          className="p-1 text-xs transition-colors rounded-sm bg-bg-1/50 h-fit hover:bg-bg-1/70"
                         >
                           <FaEdit />
                         </button>
+                        <Popover>
+                          <Popover.Button
+                            onClick={() => editMap(map.id)}
+                            className="p-1 text-xs transition-colors rounded-sm bg-bg-1/50 h-fit hover:bg-bg-1/70"
+                          >
+                            <HiTrash />
+                          </Popover.Button>
+                          <Popover.Panel className="absolute">
+                            {({ close }) => (
+                              <form
+                                className="p-4 space-y-2 bg-bg-1"
+                                onSubmit={(e) => {
+                                  e.preventDefault();
+                                  deleteMap(map.id);
+                                }}
+                              >
+                                <span>Do you want to delete this race map?</span>
+                                <div className="w-full space-x-4">
+                                  <Button variant="primary" type="submit">
+                                    Delete
+                                  </Button>
+                                  <Button type="button" onClick={() => close()}>
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </form>
+                            )}
+                          </Popover.Panel>
+                        </Popover>
                       </div>
                     ))}
                   </div>
@@ -159,18 +202,10 @@ export default function Index() {
 
                     <div className="flex mt-8 text-sm">
                       <div className="ml-auto mr-auto space-x-8">
-                        <button
-                          onClick={cancelMap}
-                          className="p-1 pl-4 pr-4 transition-colors rounded-sm bg-bg-1/60 hover:bg-bg-1/70 active:bg-bg-1/90"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={createMap}
-                          className="p-1 pl-4 pr-4 transition-colors rounded-sm bg-accent-1/60 hover:bg-accent-1/75 active:bg-accent-1"
-                        >
+                        <Button onClick={cancelMap}>Cancel</Button>
+                        <Button variant="primary" onClick={createMap}>
                           Create
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -179,17 +214,9 @@ export default function Index() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="font z-10 absolute top-[10vh] right-[6vh] -translate-x-1/2 -translate-y-1/2 font text-[1.6vh] text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50">
-        <p>esc</p>
-      </div>
-
-      <div className="lights">
-        <div className="bg-light">.</div>
-        <div className="bg-light2">.</div>
-        <div className="bg-light3">.</div>
-        <div className="bg-light4">.</div>
+        <div className="font z-10 absolute right-4 top-4 font text-[1.6vh] text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50">
+          <p>esc</p>
+        </div>
       </div>
     </>
   );

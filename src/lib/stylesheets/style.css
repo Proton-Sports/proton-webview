@@ -1,41 +1,34 @@
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @font-face {
-  font-family: "bold";
+  font-family: 'bold';
   src: url(../assets/fonts/SFPRODISPLAYBOLD.OTF);
 }
 
 @font-face {
-  font-family: "normal";
+  font-family: 'normal';
   src: url(../assets/fonts/SFPRODISPLAYREGULAR.OTF);
 }
 
 @font-face {
-  font-family: "medium";
+  font-family: 'medium';
   src: url(../assets/fonts/SFPRODISPLAYMEDIUM.OTF);
 }
 
-
 .font-bold {
   font-family: 'bold';
-
 }
 
 body {
-  overflow: hidden!important;
+  overflow: hidden !important;
 }
-
 
 .font {
   font-family: 'normal';
-
 }
 
 .font-medium {
   font-family: 'medium';
-
 }
 
 .bg-light {
@@ -95,15 +88,14 @@ body {
 }
 
 .text-fix {
-  height:5vh;
-  width:5vh;
+  height: 5vh;
+  width: 5vh;
   line-height: 4.2vh;
 }
 
 .text-fix2 {
-  height:5vh;
+  height: 5vh;
   line-height: 4.2vh;
-
 }
 
 .text-fix2 > p {
@@ -114,11 +106,9 @@ body {
   margin-left: 0.6vh;
 }
 
-
 .text-fix3 {
-  height:5vh;
+  height: 5vh;
   line-height: 4.2vh;
-
 }
 
 .text-fix3 > p {
@@ -127,26 +117,25 @@ body {
 
 ::-webkit-scrollbar {
   width: 0.4vh;
- }
-    
- ::-webkit-scrollbar-track {
-   background: rgba(0, 0, 0, 1);
-  border-radius: 100000px;
- }
-    
-       /* Handle */
- ::-webkit-scrollbar-thumb {
-   background: rgb(77, 77, 77);
-   border-radius: 100000px;
- }
-    
-       /* Handle on hover */
- ::-webkit-scrollbar-thumb:hover {
-    background: rgb(84, 84, 84);
- }
- 
+}
 
- .item {
-  opacity: 1!important;
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 1);
+  border-radius: 100000px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(77, 77, 77);
+  border-radius: 100000px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(84, 84, 84);
+}
+
+.item {
+  opacity: 1 !important;
   transition: 0.3s;
- }
+}

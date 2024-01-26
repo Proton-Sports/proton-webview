@@ -1,0 +1,11 @@
+.c-btn {
+  @apply px-4 py-2 transition-colors rounded-sm;
+}
+
+.c-btn--primary {
+  @apply text-primary-fg bg-primary hover:bg-primary-hover active:bg-primary-active disabled:bg-primary-disabled;
+}
+
+.c-btn--base {
+  @apply text-primary-fg bg-bg-2 hover:bg-bg-hover active:bg-bg-active disabled:bg-bg-disabled;
+}
