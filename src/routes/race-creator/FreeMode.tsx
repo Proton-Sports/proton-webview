@@ -1,26 +1,29 @@
 import '../../lib/stylesheets/style.css';
+import type { Mode } from './Index';
 
-export default function Index() {
+interface Props {
+  onChangeMode: (mode: Mode) => void;
+}
+
+export default function FreeMode({ onChangeMode }: Props) {
   function switchCameraMode() {
-    alt.emit('race:creator:switchToNormalMode');
+    onChangeMode('normal');
   }
 
   return (
-    <div
-      className="font absolute top-[50vh] left-[30vh] -translate-x-1/2 -translate-y-1/2 bg-bg-1/60 space-y-4 p-3 pl-4 pr-4 rounded-md"
-    >
+    <div className="font absolute top-[50vh] left-[30vh] -translate-x-1/2 -translate-y-1/2 bg-bg-1/60 space-y-4 p-3 pl-4 pr-4 rounded-md">
       <div className="flex items-center space-x-4">
         <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
           <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">W</p>
         </div>
-        <p>Move forwards</p>
+        <p>Move forward</p>
       </div>
 
       <div className="flex items-center space-x-4">
         <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
           <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">S</p>
         </div>
-        <p>Move backwards</p>
+        <p>Move backward</p>
       </div>
 
       <div className="flex items-center space-x-4">
@@ -52,39 +55,60 @@ export default function Index() {
       </div>
 
       <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">LM</p>
-        </div>
-        <p>Create a start/race checkpoint</p>
-      </div>
-
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">X</p>
-        </div>
-        <p>Remove start checkpoint</p>
-      </div>
-
-      <div className="flex items-center space-x-4">
-        <div className="font text-bg-1 uppercase bg-fg-1 text-xs text-fix3 w-20 rounded-md border-[0.5vh] border-bg-3/50 relative">
-          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2">Backspace</p>
-        </div>
-        <p>Remove race checkpoint</p>
-      </div>
-
-      <div className="flex items-center space-x-4">
         <div className="font text-bg-1 uppercase bg-fg-1 text-xs text-fix2 w-12 rounded-md border-[0.5vh] border-bg-3/50 relative">
           <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2">Shift</p>
         </div>
         <p>Speed up</p>
       </div>
 
-      <div className="text-sm ml-auto mr-auto flex">
+      <div className="flex items-center space-x-4">
+        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">1</p>
+        </div>
+        <p>Switch to race points</p>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">2</p>
+        </div>
+        <p>Switch to start points</p>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">LMB</p>
+        </div>
+        <p>Place a point at red dot</p>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">RMB</p>
+        </div>
+        <p>Delete current point</p>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">U</p>
+        </div>
+        <p>Increase current race point radius</p>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+          <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">N</p>
+        </div>
+        <p>Decrease current race point radius</p>
+      </div>
+
+      <div className="flex ml-auto mr-auto text-sm">
         <button
           onClick={() => switchCameraMode()}
-          className="ml-auto mr-auto bg-bg-1/60 p-2 pl-3 pr-3 rounded-sm hover:bg-bg-1/70 transition-colors active:bg-bg-1/90 mt-4"
+          className="p-2 pl-3 pr-3 mt-4 ml-auto mr-auto transition-colors rounded-sm bg-bg-1/60 hover:bg-bg-1/70 active:bg-bg-1/90"
         >
-          Switch to normal camera mode
+          Switch to normal mode
         </button>
       </div>
     </div>
