@@ -90,6 +90,13 @@ export default function FreeMode({ onChangeMode, onSubmit, onQuit }: Props) {
           <p>Decrease current race point radius</p>
         </div>
 
+        <div className="flex items-center space-x-4">
+          <div className="font text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50 relative">
+            <p className="absolute top-1/2 left-[1.45vh] -translate-x-1/2 -translate-y-1/2 ">M</p>
+          </div>
+          <p>Select a race point for moving</p>
+        </div>
+
         <div className="space-x-2">
           <Button variant="primary" onClick={onSubmit}>
             Submit
