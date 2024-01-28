@@ -1,4 +1,4 @@
-import { ReactNode, createContext, lazy, useCallback, useContext, useEffect, useState } from 'react';
+import { type ReactNode, createContext, lazy, useCallback, useContext, useEffect, useState } from 'react';
 
 type RouteRecord = Record<string, React.LazyExoticComponent<React.ComponentType<any>>>;
 type RouterContextValue = {
