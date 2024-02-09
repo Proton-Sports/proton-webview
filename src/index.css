@@ -53,4 +53,34 @@
   input {
     line-height: 1;
   }
+
+  body{
+    font-family: 'normal';
+  }
+}
+
+
+@font-face {
+  font-family: "light";
+  src: url("/fonts/SFProDisplay-Light.ttf");
+}
+
+@font-face {
+  font-family: "normal";
+  src: url("/fonts/SFProDisplay-Regular.ttf");
+}
+
+@font-face {
+  font-family: "medium";
+  src: url("/fonts/SFProDisplay-Medium.ttf");
+}
+
+@font-face {
+  font-family: "bold";
+  src: url("/fonts/SFProDisplay-Bold.ttf");
+}
+
+@font-face {
+  font-family: "semi-bold";
+  src: url("/fonts/SFProDisplay-Semibold.ttf");
 }

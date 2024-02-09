@@ -6,7 +6,7 @@ export default function App() {
   const { mountRoute, unmountRoute } = useRouter();
 
   useEffect(() => {
-    mountRoute('racing_menu');
+    mountRoute('auth');
   }, [])
 
   return (

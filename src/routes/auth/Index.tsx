@@ -1,9 +1,25 @@
 import { useState } from 'react';
 import { motion } from "framer-motion";
 import { BsDiscord } from "react-icons/bs";
+import { useEffect } from 'react';
 
-export default function Auth() {
-    const [register, setRegister] = useState<boolean>(true);
+
+export default function Index() {
+    const [register, setRegister] = useState<boolean>(false);
+
+    function OnClick() {
+        if(register){
+            //Register
+        }else{
+            //Login
+        }
+    }
+
+    useEffect(() => {
+        alt.on('auth.cache?', (isCached: boolean) => {
+            //setMenuOn(status) // true for open, false for close
+            setRegister(!isCached)
+        })})
 
     return (
         <div className='w-screen h-screen bg-cover bg-no-repeat flex items-center justify-center' style={{"backgroundImage": "url(/main/background.jpg)"}}>
@@ -14,7 +30,7 @@ export default function Auth() {
                 className="flex flex-col items-center gap-[3vh]"
             >
                 <img src="/main/protonsports.png" className='w-[25vh]'/>
-                <p className='flex items-center text-white text-[1.3vh]'>
+                <p className='flex items-center text-white text-md' onClick={OnClick}>
                     {
                         register ? 
                         "Register your account through Discord" : 
@@ -24,7 +40,7 @@ export default function Auth() {
                         </>
                     }
                 </p>
-                <button className='uppercase font-[bold] text-white bg-pr-secondary w-[20vh] h-[5vh] rounded-[0.5vh] text-[1.2vh] hover:bg-pr-primary transition-colors flex items-center justify-center'>
+                <button className='uppercase font-[bold] text-white bg-pr-secondary w-[30vh] h-[7vh] rounded-[0.5vh] text-lg hover:bg-pr-primary transition-colors flex items-center justify-center bg-gray-800'>
                     {
                         register ? <><BsDiscord className="mr-[0.5vh]"/>Register</> : 
                         "Confirm"
