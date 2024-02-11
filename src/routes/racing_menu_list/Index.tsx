@@ -56,7 +56,7 @@ export default function Index() {
           </Button>
           <Button
             variant={activeBtnHost ? 'primary' : 'base'}
-            className="uppercase text-left flex items-center w-48 ml-2 bg-bg-2/60"
+            className="uppercase text-left flex items-center w-48 ml-2 bg-bg-2/70"
             onClick={() => selectedCat('host')}
           >
             Host{' '}
@@ -71,7 +71,7 @@ export default function Index() {
           </Button>
           <Button
             variant={activeBtnCreator ? 'primary' : 'base'}
-            className="uppercase text-left flex items-center w-48 ml-4 bg-bg-2/60"
+            className="uppercase text-left flex items-center w-48 ml-4 bg-bg-2/70"
             onClick={() => selectedCat('creator_mode')}
           >
             Creator Mode{' '}
@@ -86,7 +86,7 @@ export default function Index() {
           </Button>
           <Button
             variant={activeBtnSettings ? 'primary' : 'base'}
-            className="uppercase text-left flex items-center w-48 ml-7 bg-bg-2/60"
+            className="uppercase text-left flex items-center w-48 ml-7 bg-bg-2/70"
             onClick={() => selectedCat('settings')}
           >
             Settings{' '}
@@ -101,7 +101,7 @@ export default function Index() {
           </Button>
           <Button
             variant={activeBtnCredits ? 'primary' : 'base'}
-            className="uppercase text-left flex items-center w-48 ml-9 bg-bg-2/60"
+            className="uppercase text-left flex items-center w-48 ml-9 bg-bg-2/70"
             onClick={() => selectedCat('credits')}
           >
             Credits{' '}
