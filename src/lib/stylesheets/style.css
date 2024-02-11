@@ -15,12 +15,21 @@
   src: url(../assets/fonts/SFPRODISPLAYMEDIUM.OTF);
 }
 
+@font-face {
+  font-family: 'fugaz';
+  src: url(../assets/fonts/FugazOne-Regular.ttf);
+}
+
 .font-bold {
   font-family: 'bold';
 }
 
 body {
   overflow: hidden !important;
+}
+
+.fugaz {
+  font-family: 'fugaz';
 }
 
 .font {
@@ -138,4 +147,11 @@ body {
 .item {
   opacity: 1 !important;
   transition: 0.3s;
+}
+
+.racing-menu-list-bg {
+  background-image: url('../assets/images/racing_menu_list_bg.png');
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: contain;
 }

@@ -1,5 +1,5 @@
-import Button from '../../lib/components/Button';
 import type { Mode } from './Index';
+import Button from '../../lib/components/Button';
 
 interface Props {
   onChangeMode: (mode: Mode) => void;

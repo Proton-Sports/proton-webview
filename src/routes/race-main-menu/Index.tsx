@@ -73,36 +73,11 @@ export default function Index() {
 
   return (
     <>
-      <div className="relative flex items-center justify-around w-screen h-screen gap-24">
+      <div className="relative flex items-center justify-center w-screen h-screen gap-24">
         <img src={Background} className="absolute object-cover w-full h-full -z-10" />
         <div className="absolute w-full h-full select-none -z-10 bg-black/80" />
-        <div className="space-y-2 w-[21vh] p-4">
-          <button
-            onClick={() => openCreatorMode('races')}
-            className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
-          >
-            Races
-          </button>
-          <button
-            onClick={() => openCreatorMode('hosts')}
-            className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
-          >
-            Hosts
-          </button>
-          <button
-            onClick={() => openCreatorMode('creator_mode')}
-            className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/80 hover:bg-bg-1/65"
-          >
-            Creator mode
-          </button>
-          <button
-            onClick={() => openCreatorMode('credits')}
-            className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
-          >
-            Credits
-          </button>
-        </div>
-        <div className="flex p-4">
+
+        <div className="flex p-4 m">
           <div className="">
             <div className="w-72 pb-3 ml-auto mr-auto border-b-[0.2vh] border-b-bg-1/60 mb-4">
               <img src={Logo} alt="logo" className="ml-auto mr-auto w-36" />
@@ -216,9 +191,6 @@ export default function Index() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="font z-10 absolute right-4 top-4 font text-[1.6vh] text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50">
-          <p>esc</p>
         </div>
       </div>
     </>

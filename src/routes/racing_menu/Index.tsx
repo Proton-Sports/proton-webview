@@ -1,12 +1,7 @@
 import { useState, useEffect } from 'react';
-import Logo from '../../lib/assets/images/logo.png';
 
 export default function Index() {
-  const [menuOn, setMenuOn] = useState(false);
-
-  function openCreatorMode(route: string) {
-    alt.emit('racing:creatorMode:changePage', route);
-  }
+  const [menuOn, setMenuOn] = useState(true);
 
   useEffect(() => {
     const handleMenuStatus = (status: boolean) => {
@@ -28,39 +23,6 @@ export default function Index() {
         }`}
       >
         <div className="flex ml-auto mr-auto">
-          <div className="w-[36vh] mr-8 mt-10">
-            <img src={Logo} alt="logo" className="mb-4 ml-auto mr-auto w-36" />
-            <p className="text-sm text-center">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum, minus.
-            </p>
-            <div className="space-y-4 w-[21vh] ml-auto mr-auto mt-8">
-              <button
-                onClick={() => openCreatorMode('races')}
-                className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/80 hover:bg-bg-1/65"
-              >
-                Races
-              </button>
-              <button
-                onClick={() => openCreatorMode('hosts')}
-                className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
-              >
-                Hosts
-              </button>
-              <button
-                onClick={() => openCreatorMode('creator_mode')}
-                className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
-              >
-                Creator mode
-              </button>
-              <button
-                onClick={() => openCreatorMode('credits')}
-                className="block w-full p-2 text-sm transition-colors rounded-md bg-bg-1/50 hover:bg-bg-1/65"
-              >
-                Credits
-              </button>
-            </div>
-          </div>
-
           <div className="">
             <div className="mb-2 space-x-8">
               <button>Button</button>
@@ -79,14 +41,6 @@ export default function Index() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div
-        className={`${
-          menuOn ? 'opacity-100 delay-200' : 'opacity-0'
-        } transition-opacity font z-10 absolute top-[10vh] right-[6vh] -translate-x-1/2 -translate-y-1/2 font text-[1.6vh] text-bg-1 uppercase bg-fg-1 text-fix rounded-md border-[0.5vh] border-bg-3/50`}
-      >
-        <p>esc</p>
       </div>
 
       <div className={menuOn ? 'lights opacity-100 transition-opacity' : 'opacity-0 transition-opacity'}>

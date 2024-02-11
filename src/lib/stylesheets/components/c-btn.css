@@ -1,5 +1,26 @@
 .c-btn {
-  @apply px-4 py-2 transition-colors rounded-sm;
+  @apply px-4 py-2 pt-3 transition-colors;
+  border: 0.5vh black solid;
+  border-top: 0.3vh black solid;
+  border-radius: 2vh;
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+  outline: none;
+}
+
+.c-btn::before {
+  content: '';
+  background-color: rgba(255, 255, 255, 0);
+  box-shadow: inset 0px 0.5vh 0.4vh rgba(255, 255, 255);
+  border-radius: 1.6vh;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
 }
 
 .c-btn--primary {

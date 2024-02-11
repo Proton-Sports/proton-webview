@@ -137,7 +137,7 @@ function Index() {
               </div>
               <div className="mt-[3vh] overflow-x-hidden pr-[0.8vh] max-h-[60vh]">
                 <div className=" bg-bg-1/50 pt-[2vh] rounded-md overflow-hidden w-[30vh] text-[1.8vh]">
-                  <h2 className="text-fg-1 uppercase mb-[2vh] text-center">Categories</h2>
+                  <h2 className="text-fg-1 uppercase mb-[2vh] text-center text-[1.8vh]">Categories</h2>
                   <motion.div>
                     {Object.keys(clothes).map((category) => (
                       <motion.button
@@ -177,7 +177,7 @@ function Index() {
 
                   {ownedClothes && (
                     <motion.div>
-                      <h2 className="text-fg-1 mb-[1.6vh] text-center mt-[2vh]">Already owned clothes</h2>
+                      <h2 className="text-fg-1 mb-[1.6vh] text-center mt-[2vh] text-[1.8vh]">Already owned clothes</h2>
                       {Object.keys(ownedClothes).map((category) => (
                         <motion.button
                           key={category}
@@ -230,7 +230,7 @@ function Index() {
                 {selectedOwnedCategory && (
                   <motion.div>
                     <motion.h2
-                      className="text-fg-1 uppercase mb-[2vh] text-center"
+                      className="text-fg-1 uppercase mb-[2vh] text-center text-[1.8vh]"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
@@ -282,7 +282,7 @@ function Index() {
                 {selectedCategory && (
                   <motion.div>
                     <motion.h2
-                      className="text-fg-1 uppercase mb-[2vh] text-center"
+                      className="text-fg-1 uppercase mb-[2vh] text-center text-[1.8vh]"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
