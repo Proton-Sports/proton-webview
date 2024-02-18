@@ -5,20 +5,23 @@ import { useEffect } from 'react';
 
 
 export default function Index() {
-    const [register, setRegister] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [AvatarUri, setAvatar] = useState<string>("");
+    const [Username, setUsername] = useState<string>("");
 
-    function OnClick() {
-        if(register){
-            //Register
-        }else{
-            //Login
+    function onClick(){
+        console.log("clicked")
+        if(!loading){
+            alt.emit("authentication:login")
         }
     }
 
     useEffect(() => {
-        alt.on('auth.cache?', (isCached: boolean) => {
-            //setMenuOn(status) // true for open, false for close
-            setRegister(!isCached)
+        alt.on('authentication:information', (avatarUri: string, username: string) => {
+            //setMenuOn(status) // true for open, false for close            
+            setAvatar(avatarUri)
+            setUsername(username)
+            setLoading(false)
         })})
 
     return (
@@ -30,19 +33,19 @@ export default function Index() {
                 className="flex flex-col items-center gap-[3vh]"
             >
                 <img src="/main/protonsports.png" className='w-[25vh]'/>
-                <p className='flex items-center text-white text-md' onClick={OnClick}>
+                <p className='flex items-center text-white text-md'>
                     {
-                        register ? 
+                        loading ? 
                         "Register your account through Discord" : 
                         <>
-                            <img src="/auth/placeholder.png" className='rounded-full w-[3vh] mr-[1vh]'/>
-                            continue as <span className='text-pr-primary ml-[0.35vh]'>elvito.</span>?
+                            <img src={AvatarUri} className='rounded-full w-[3vh] mr-[1vh]'/>
+                            continue as <span className='text-pr-primary ml-[0.35vh]'>{Username}</span>?
                         </>
                     }
                 </p>
-                <button className='uppercase font-[bold] text-white bg-pr-secondary w-[30vh] h-[7vh] rounded-[0.5vh] text-lg hover:bg-pr-primary transition-colors flex items-center justify-center bg-gray-800'>
+                <button className='uppercase font-[bold] text-white bg-pr-secondary w-[60vh] h-[7vh] rounded-[0.5vh] text-lg hover:bg-red transition-colors flex items-center justify-center bg-gray-800' onClick={onClick}>
                     {
-                        register ? <><BsDiscord className="mr-[0.5vh]"/>Register</> : 
+                        loading ? <><BsDiscord className="mr-[0.5vh]"/>Waiting for Discord...</> : 
                         "Confirm"
                     }
                 </button>
