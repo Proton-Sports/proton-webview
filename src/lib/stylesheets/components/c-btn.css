@@ -1,8 +1,8 @@
 .c-btn {
   @apply px-4 py-2 pt-3 transition-colors;
-  border: 0.5vh black solid;
-  border-top: 0.3vh black solid;
-  border-radius: 2vh;
+  border: theme('width.1') black solid;
+  border-top: theme('width[0.5]') black solid;
+  border-radius: theme('borderRadius.xl');
   position: relative;
   overflow: hidden;
   z-index: 10;
@@ -12,21 +12,29 @@
 .c-btn::before {
   content: '';
   background-color: rgba(255, 255, 255, 0);
-  box-shadow: inset 0px 0.5vh 0.4vh rgba(255, 255, 255);
-  border-radius: 1.6vh;
-  width: 100%;
+  box-shadow: inset 0 theme('width[1]') theme('width[0.5]') rgb(255, 255, 255);
+  border-radius: theme('borderRadius.xl');
+  width: 102%;
   height: 100%;
   position: absolute;
-  top: 47%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: calc(theme('width[0.5]') * -1);
+  /* top: 0; */
+  left: -1%;
   z-index: -1;
 }
 
 .c-btn--primary {
+  &.c-btn-transparent {
+    @apply bg-primary/70;
+  }
+
   @apply text-primary-fg bg-primary hover:bg-primary-hover active:bg-primary-active disabled:bg-primary-disabled;
 }
 
 .c-btn--base {
+  &.c-btn-transparent {
+    @apply bg-bg-2/70;
+  }
+
   @apply text-primary-fg bg-bg-2 hover:bg-bg-hover active:bg-bg-active disabled:bg-bg-disabled;
 }
