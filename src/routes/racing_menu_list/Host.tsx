@@ -13,7 +13,8 @@ export default function Host() {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    alt.emit('race-host:submit', Object.fromEntries(new FormData(e.currentTarget).entries()));
+    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+    alt.emit('race-host:submit', { ...data, ghosting: data.ghosting === 'on' });
   }
 
   return (
@@ -22,7 +23,7 @@ export default function Host() {
         <div className="space-y-2">
           <h4 className="leading-none uppercase fugaz text-fg-1/40 w-max">Available races</h4>
           <Input type="text" placeholder="Search" />
-          <RadioGroup aria-label="Races" name="race">
+          <RadioGroup aria-label="Races" name="raceId" isRequired>
             <ul className="pr-2 space-y-2 overflow-auto max-h-96">
               {availableRaces.map((race) => (
                 <AriaRadio key={race} value={race} className="block">
