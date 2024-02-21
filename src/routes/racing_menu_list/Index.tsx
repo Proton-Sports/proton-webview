@@ -9,7 +9,7 @@ import Host from './Host';
 
 const pages = [
   { id: 'races', label: 'Races', node: <div></div> },
-  { id: 'host', label: 'Host', node: Host() },
+  { id: 'host', label: 'Host', node: <Host /> },
   { id: 'creator-mode', label: 'Creator mode', node: <div></div> },
   { id: 'settings', label: 'Settings', node: <div></div> },
   { id: 'credits', label: 'Credits', node: <div></div> },
@@ -35,7 +35,8 @@ export default function Index() {
         initial="hidden"
         transition={{ duration: 0.8, ease: 'easeInOut' }}
       >
-        <img src={RightBackground} className="absolute object-cover w-full h-full" />
+        <img src={RightBackground} className="absolute object-cover w-full h-full blur-sm" />
+        <div className="absolute inset-0 bg-bg-1/60" />
         <AnimatePresence>
           {activePage && (
             <motion.div
@@ -51,11 +52,11 @@ export default function Index() {
         </AnimatePresence>
       </motion.div>
       <img src={LeftBackground} className="fixed h-full" />
-      <ol className="fixed w-full space-y-4 -translate-y-1/2 left-4 top-1/2">
-        {pages.map((page, index) => {
-          const active = activePage === page.id;
+      <ol className="fixed space-y-4 -translate-y-1/2 left-4 top-1/2">
+        {pages.map(({ id, label }, index) => {
+          const active = activePage === id;
           return (
-            <li key={page.id} style={{ marginLeft: `${index * 0.6}rem` }}>
+            <li key={id} className="w-full" style={{ marginLeft: `${index * 0.6}rem` }}>
               <Button
                 transparent={!active}
                 variant={active ? 'primary' : 'base'}
@@ -63,9 +64,9 @@ export default function Index() {
                   'flex items-center w-full text-left uppercase duration-100 group fugaz max-w-40 transition',
                   active && 'translate-x-8'
                 )}
-                onClick={() => handleChangePage(page.id)}
+                onClick={() => handleChangePage(id)}
               >
-                {page.label}
+                {label}
                 <img
                   src={Arrow}
                   className={clsx(

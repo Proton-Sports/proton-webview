@@ -33,6 +33,7 @@ export default {
           hover: 'hsl(var(--theme-bg-hover) / <alpha-value>)',
           active: 'hsl(var(--theme-bg-active) / <alpha-value>)',
           disabled: 'hsl(var(--theme-bg-disabled) / <alpha-value>)',
+          border: 'hsl(var(--theme-bg-border) / <alpha-value>)',
         },
       },
       fontSize: {
