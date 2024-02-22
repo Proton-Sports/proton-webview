@@ -1,11 +1,13 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Arrow from '../../lib/assets/images/arrow_button.png';
 import RightBackground from '../../lib/assets/images/race-main-menu-bg.webp';
 import LeftBackground from '../../lib/assets/images/racing_menu_list_bg.png';
 import Button from '../../lib/components/Button';
 import Host from './Host';
+
+type Page = (typeof pages)[number]['id'];
 
 const pages = [
   { id: 'races', label: 'Races', node: <div></div> },
@@ -16,8 +18,19 @@ const pages = [
 ] as const;
 
 export default function Index() {
-  type Page = (typeof pages)[number]['id'];
   const [activePage, setActivePage] = useState<Page | null>(null);
+
+	useEffect(() => {
+		function handleNavigate(page: Page | null) {
+			setActivePage(page);
+		}
+
+		alt.on('race-menu-list:navigate', handleNavigate);
+
+		return () => {
+			alt.off('race-menu-list:navigate', handleNavigate);
+		};
+	}, []);
 
   function handleChangePage(page: Page) {
     setActivePage((activePage) => (activePage === page ? null : page));
