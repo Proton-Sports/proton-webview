@@ -30,10 +30,12 @@
     outline: theme('width[0.5]') solid currentColor;
     outline-offset: theme('width[0.5]');
   }
+
   &[data-hovered]:before {
     border-color: theme('colors.fg.hover');
     transform: scale(1.1);
   }
+
   &[data-pressed]:before {
     transform: scale(0.8);
   }

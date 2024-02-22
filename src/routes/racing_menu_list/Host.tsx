@@ -8,17 +8,17 @@ import Checkbox from '../../lib/components/Checkbox';
 import { Radio as AriaRadio } from 'react-aria-components';
 import clsx from 'clsx';
 
+function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+  alt.emit('race-host:submit', { ...data, ghosting: data.ghosting === 'on' });
+}
+
 export default function Host() {
   const [availableRaces] = useState(new Array(10).fill(0).map((_, i) => `Race #${i}`));
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-    alt.emit('race-host:submit', { ...data, ghosting: data.ghosting === 'on' });
-  }
-
   return (
-    <div className="fixed p-8 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-bg-2 rounded-xl">
+    <div className="fixed p-8 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-bg-2 w-[56rem] rounded-xl">
       <form className="flex gap-8" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <h4 className="leading-none uppercase fugaz text-fg-1/40 w-max">Available races</h4>
@@ -78,8 +78,8 @@ export default function Host() {
                 {({ state: { selectedValue } }) => (
                   <>
                     <Label className="uppercase fugaz">Type</Label>
-                    <div className="flex">
-                      <Radio value="byLaps" className="w-full min-w-max">
+                    <div className="flex justify-between">
+                      <Radio value="byLaps" className="w-max">
                         By laps
                       </Radio>
                       <Input
@@ -87,7 +87,7 @@ export default function Host() {
                         defaultValue={1}
                         min={1}
                         name="laps"
-                        className="ml-5"
+                        className="ml-5 w-32"
                         disabled={selectedValue !== 'byLaps'}
                         required
                       />
@@ -104,14 +104,14 @@ export default function Host() {
                     <Radio value="earlyMorning">Early morning</Radio>
                     <Radio value="midday">Mid-day</Radio>
                     <Radio value="night">Night</Radio>
-                    <div className="flex">
-                      <Radio value="exactTime" className="w-full min-w-max">
+                    <div className="flex justify-between">
+                      <Radio value="exactTime" className="w-max">
                         Exact time
                       </Radio>
                       <Input
                         type="time"
                         name="exactTime"
-                        className="ml-5"
+                        className="ml-5 w-32"
                         disabled={state.selectedValue !== 'exactTime'}
                         defaultValue="08:00"
                         required
