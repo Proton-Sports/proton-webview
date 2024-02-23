@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, type FormEvent, useEffect, type ChangeEvent, useMemo } from 'react';
 import Button from '../../lib/components/Button';
 import TextArea from '../../lib/components/TextArea';
 import Input from '../../lib/components/Input';
@@ -7,26 +7,58 @@ import { Label, RadioGroup } from 'react-aria-components';
 import Checkbox from '../../lib/components/Checkbox';
 import { Radio as AriaRadio } from 'react-aria-components';
 import clsx from 'clsx';
+import Fuse from 'fuse.js';
 
-function handleSubmit(e: FormEvent<HTMLFormElement>) {
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-  alt.emit('race-host:submit', { ...data, ghosting: data.ghosting === 'on' });
-}
+type Map = { id: number; name: string };
 
 export default function Host() {
-  const [availableRaces] = useState(new Array(10).fill(0).map((_, i) => `Race #${i}`));
+  const [availableMaps, setAvailableMaps] = useState<Map[]>([]);
+  const fuse = useMemo(
+    () =>
+      new Fuse(availableMaps, {
+        keys: ['name'],
+      }),
+    [availableMaps]
+  );
+  const [query, setQuery] = useState('');
+  const filteredMaps = useMemo(
+    () => (query ? fuse.search(query).map(({ item }) => item) : availableMaps),
+    [fuse, query, availableMaps]
+  );
+  const [maxRacers, setMaxRacers] = useState(1);
+
+  useEffect(() => {
+    function handleAvailableMaps(maps: Map[]) {
+      setAvailableMaps(maps);
+    }
+
+    function handleGetMaxRacers(racers: number) {
+      setMaxRacers(racers);
+    }
+
+    alt.emit('race-host:availableMaps');
+    alt.on('race-host:availableMaps', handleAvailableMaps);
+    alt.on('race-host:getMaxRacers', handleGetMaxRacers);
+    return () => {
+      alt.off('race-host:availableMaps', handleAvailableMaps);
+      alt.off('race-host:getMaxRacers', handleGetMaxRacers);
+    };
+  }, []);
+
+  function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
+    setQuery(e.currentTarget.value);
+  }
 
   return (
     <div className="fixed p-8 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-bg-2 w-[56rem] rounded-xl">
       <form className="flex gap-8" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <h4 className="leading-none uppercase fugaz text-fg-1/40 w-max">Available races</h4>
-          <Input type="text" placeholder="Search" />
-          <RadioGroup aria-label="Races" name="raceId" isRequired>
+          <Input type="text" placeholder="Search" value={query} onChange={handleSearchChange} />
+          <RadioGroup aria-label="Races" name="mapId" onChange={handleMapChange} isRequired>
             <ul className="pr-2 space-y-2 overflow-auto max-h-96">
-              {availableRaces.map((race) => (
-                <AriaRadio key={race} value={race} className="block">
+              {filteredMaps.map(({ id, name }) => (
+                <AriaRadio key={id} value={id + ''} className="block">
                   {({ isSelected }) => (
                     <button
                       type="button"
@@ -35,7 +67,7 @@ export default function Host() {
                         isSelected ? 'bg-fg text-bg' : 'bg-bg-1 hover:bg-bg-hover'
                       )}
                     >
-                      {race}
+                      {name}
                     </button>
                   )}
                 </AriaRadio>
@@ -51,6 +83,10 @@ export default function Host() {
               <div>
                 <label htmlFor="vehicleName">Vehicle name</label>
                 <Input id="vehicleName" name="vehicleName" required />
+              </div>
+              <div>
+                <label htmlFor="racers">Number of racers ({maxRacers} max)</label>
+                <Input type="number" id="racers" name="racers" defaultValue={1} min={1} max={maxRacers} required />
               </div>
               <div>
                 <label htmlFor="duration">Duration (seconds)</label>
@@ -87,7 +123,7 @@ export default function Host() {
                         defaultValue={1}
                         min={1}
                         name="laps"
-                        className="ml-5 w-32"
+                        className="w-32 ml-5"
                         disabled={selectedValue !== 'byLaps'}
                         required
                       />
@@ -111,7 +147,7 @@ export default function Host() {
                       <Input
                         type="time"
                         name="exactTime"
-                        className="ml-5 w-32"
+                        className="w-32 ml-5"
                         disabled={state.selectedValue !== 'exactTime'}
                         defaultValue="08:00"
                         required
@@ -135,4 +171,24 @@ export default function Host() {
       </form>
     </div>
   );
+}
+
+function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+  const dto: Record<string, string | number | boolean> = {
+    ...data,
+    mapId: Number(data.mapId),
+    racers: Number(data.racers),
+    ghosting: data.ghosting === 'on',
+    duration: Number(data.duration),
+  };
+  if (dto.laps) {
+    dto.laps = Number(dto.laps);
+  }
+  alt.emit('race-host:submit', dto);
+}
+
+function handleMapChange(mapId: string) {
+  alt.emit('race-host:getMaxRacers', Number(mapId));
 }
