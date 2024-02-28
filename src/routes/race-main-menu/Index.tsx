@@ -48,9 +48,9 @@ export default function Index() {
     };
   }, []);
 
-  function openCreatorMode(route: string) {
-    alt.emit('race:creator:changePage', route);
-  }
+  // function openCreatorMode(route: string) {
+  //   alt.emit('race:creator:changePage', route);
+  // }
 
   function editMap(map: number) {
     if (!editType) return;
