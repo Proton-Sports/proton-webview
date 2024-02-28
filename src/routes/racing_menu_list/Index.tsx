@@ -6,13 +6,15 @@ import RightBackground from '../../lib/assets/images/race-main-menu-bg.webp';
 import LeftBackground from '../../lib/assets/images/racing_menu_list_bg.png';
 import Button from '../../lib/components/Button';
 import Host from './Host';
+import Races from './Races';
+import Creator from './Creator';
 
 type Page = (typeof pages)[number]['id'];
 
 const pages = [
-  { id: 'races', label: 'Races', node: <div></div> },
+  { id: 'races', label: 'Races', node: <Races /> },
   { id: 'host', label: 'Host', node: <Host /> },
-  { id: 'creator-mode', label: 'Creator mode', node: <div></div> },
+  { id: 'creator-mode', label: 'Creator', node: <Creator /> },
   { id: 'settings', label: 'Settings', node: <div></div> },
   { id: 'credits', label: 'Credits', node: <div></div> },
 ] as const;
@@ -20,17 +22,17 @@ const pages = [
 export default function Index() {
   const [activePage, setActivePage] = useState<Page | null>(null);
 
-	useEffect(() => {
-		function handleNavigate(page: Page | null) {
-			setActivePage(page);
-		}
+  useEffect(() => {
+    function handleNavigate(page: Page | null) {
+      setActivePage(page);
+    }
 
-		alt.on('race-menu-list:navigate', handleNavigate);
+    alt.on('race-menu-list:navigate', handleNavigate);
 
-		return () => {
-			alt.off('race-menu-list:navigate', handleNavigate);
-		};
-	}, []);
+    return () => {
+      alt.off('race-menu-list:navigate', handleNavigate);
+    };
+  }, []);
 
   function handleChangePage(page: Page) {
     setActivePage((activePage) => (activePage === page ? null : page));
