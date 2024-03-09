@@ -11,28 +11,11 @@ import { BiSolidPurchaseTag } from 'react-icons/bi';
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
-  const [menuStatus, setmenuStatus] = useState<boolean>(false);
+  const [menuStatus, setmenuStatus] = useState<boolean>(true);
   const [vehicles, setVehicles] = useState({
     Sedans: [
-      { name: 'Ford', price: '25000' },
-      { name: 'BMW', price: '20000' },
-    ],
-    SUVs: [
-      { name: 'Ford', price: '25000' },
-      { name: 'BMW', price: '20000' },
-    ],
-    Coupes: [
-      { name: 'Ford', price: '25000' },
-      { name: 'BMW', price: '20000' },
-    ],
-
-    Trucks: [
-      { name: 'Ford', price: '25000' },
-      { name: 'BMW', price: '20000' },
-    ],
-    Sports: [
-      { name: 'Lamborghini', price: '25000' },
-      { name: 'BMW', price: '20000' },
+      { Displayname: 'Ford', Price: '25000' },
+      { Displayname: 'BMW', Price: '20000' },
     ],
   });
   const [ownedVehicles, setOwnedVehicles] = useState({
@@ -63,7 +46,7 @@ function Index() {
     setmenuStatus(status); // sorry for that i made toggleMenu false opens, and true closes menu
   }
 
-  const [buyVehicleSelected, setbuyVehicleSelected] = useState<boolean>(false);
+  const [buyVehicleSelected, setbuyVehicleSelected] = useState<boolean>(true);
   const [selectedBuyItem, setSelectedBuyItem] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   function buySelectItem() {
@@ -74,7 +57,10 @@ function Index() {
   function selectItem(item: string) {
     setbuyVehicleSelected(true);
     setSelectedBuyItem(item);
+    console.log(item)
     const element = document.getElementById('hide-display') as HTMLElement;
+
+    alt.emit("shop:select:vehicle", item)
 
     if (element) {
       element.style.display = 'block';
@@ -95,6 +81,8 @@ function Index() {
 
   useEffect(() => {
     const notOwned = (data: any) => {
+      console.log("rec veh")
+      console.log(data);
       setVehicles(data);
 
       /*
@@ -130,6 +118,8 @@ function Index() {
     };
 
     const handleOwnedVehicles = (data: any) => {
+      console.log("rec owned")
+      console.log(data)
       setOwnedVehicles(data);
 
       /*
@@ -146,9 +136,9 @@ function Index() {
       */
     };
 
-    alt.on('shop:vehicles:notOwnedVehicles', notOwned);
+    alt.on('shop:vehicles:notOwned', notOwned);
     alt.on('shop:vehicles:menuStatus', menuStatus);
-    alt.on('shop:vehicles:ownedVehicles', handleOwnedVehicles);
+    alt.on('shop:vehicles:owned', handleOwnedVehicles);
 
     return () => {
       alt.off('shop:vehicles:notOwnedVehicles', notOwned);
@@ -164,7 +154,7 @@ function Index() {
 
   return (
     <>
-      <div className={menuStatus ? 'opacity-0 transition-opac z-50' : 'opacity-100 transition-opac z-50'}>
+      <div className={menuStatus ? 'hidden transition-opac z-50' : 'opacity-100 transition-opac z-50'}>
         <div className="font">
           <div className="rounded-sm absolute top-[50vh] left-[50vh] -translate-x-1/2 -translate-y-1/2 p-4 z-10 flex w-[82vh] h-[80vh]">
             <div className="">
@@ -329,8 +319,8 @@ function Index() {
                     </motion.h2>
                     {vehicles[selectedCategory as keyof typeof vehicles]?.map((item) => (
                       <motion.button
-                        onClick={() => selectItem(item.name)}
-                        key={item.name}
+                        onClick={() => selectItem(item.Displayname)}
+                        key={item.Displayname}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -346,10 +336,10 @@ function Index() {
                           }}
                         >
                           <div className="items-center flex mr-auto space-x-[0.8vh]">
-                            <p>{item.name} </p>
+                            <p>{item.Displayname} </p>
                           </div>
                           <div className="ml-auto text-[1.3vh]">
-                            <p>{item.price}$</p>
+                            <p>{item.Price}$</p>
                           </div>
                         </motion.div>
                       </motion.button>
