@@ -29,12 +29,17 @@ interface RaceDetails {
 }
 
 export default function Races() {
-  const [races, setRaces] = useState<Race[]>([]);
+  const [races, setRaces] = useState<Race[]>([
+    { id: 1, maxParticipants: 1, participants: 0, name: '', started: false },
+  ]);
   const [selectedRace, setSelectedRace] = useState<Race | null>(null);
   const [raceDetails, setRaceDetails] = useState<RaceDetails | null>(null);
   const [joiningRaceId, setJoiningRaceId] = useState(0);
 
   useEffect(() => {
+    setTimeout(() => {
+      setRaces([{ id: 1, maxParticipants: 1, participants: 1, name: '', started: false }]);
+    }, 1500);
     function handleGetRaces(races: Race[]) {
       setRaces(races);
     }
@@ -97,7 +102,10 @@ export default function Races() {
   }
 
   function handleConfirmJoin() {
-    alt.emit('race-menu-races:join', joiningRaceId);
+    const race = races.find((x) => x.id === joiningRaceId);
+    if (race && race.participants < race.maxParticipants) {
+      alt.emit('race-menu-races:join', joiningRaceId);
+    }
     setJoiningRaceId(0);
   }
 
