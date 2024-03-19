@@ -29,17 +29,12 @@ interface RaceDetails {
 }
 
 export default function Races() {
-  const [races, setRaces] = useState<Race[]>([
-    { id: 1, maxParticipants: 1, participants: 0, name: '', started: false },
-  ]);
+  const [races, setRaces] = useState<Race[]>([]);
   const [selectedRace, setSelectedRace] = useState<Race | null>(null);
   const [raceDetails, setRaceDetails] = useState<RaceDetails | null>(null);
   const [joiningRaceId, setJoiningRaceId] = useState(0);
 
   useEffect(() => {
-    setTimeout(() => {
-      setRaces([{ id: 1, maxParticipants: 1, participants: 1, name: '', started: false }]);
-    }, 1500);
     function handleGetRaces(races: Race[]) {
       setRaces(races);
     }
@@ -67,14 +62,22 @@ export default function Races() {
       }
     }
 
+    function handleRaceChanged(type: 'created' | string, race: Race) {
+      if (type === 'created') {
+        setRaces((races) => [...races, race]);
+      }
+    }
+
     alt.on('race-menu-races:getRaces', handleGetRaces);
     alt.on('race-menu-races:getDetails', handleGetDetails);
     alt.on('race-menu-races:participantChanged', handleParticipantChanged);
+    alt.on('race-menu-races:raceChanged', handleRaceChanged);
     alt.emit('race-menu-races:getRaces');
     return () => {
       alt.off('race-menu-races:getRaces', handleGetRaces);
       alt.off('race-menu-races:getDetails', handleGetDetails);
       alt.off('race-menu-races:participantChanged', handleParticipantChanged);
+      alt.off('race-menu-races:raceChanged', handleRaceChanged);
     };
   }, []);
 
