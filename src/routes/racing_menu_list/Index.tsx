@@ -39,7 +39,17 @@ export default function Index() {
   }
 
   return (
-    <>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      variants={{
+        visible: { translateX: '0%' },
+        hidden: { translateX: '-100%' },
+      }}
+      transition={{ duration: 0.4, ease: 'circInOut' }}
+      className="fixed inset-0"
+    >
       <motion.div
         className="fixed inset-0"
         animate={activePage ? 'visible' : 'hidden'}
@@ -48,7 +58,7 @@ export default function Index() {
           hidden: { translateX: '-100%' },
         }}
         initial="hidden"
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
+        transition={{ duration: 0.6, ease: 'easeInOut' }}
       >
         <img src={RightBackground} className="absolute object-cover w-full h-full blur-sm" />
         <div className="absolute inset-0 bg-bg-1/60" />
@@ -94,6 +104,6 @@ export default function Index() {
           );
         })}
       </ol>
-    </>
+    </motion.div>
   );
 }
