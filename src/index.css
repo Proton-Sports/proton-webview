@@ -5,6 +5,10 @@
 
 @import 'lib/stylesheets/tailwindcss/components.css';
 @import 'lib/stylesheets/components/c-btn.css';
+@import 'lib/stylesheets/components/c-checkbox.css';
+@import 'lib/stylesheets/components/c-input.css';
+@import 'lib/stylesheets/components/c-radio.css';
+@import 'lib/stylesheets/components/c-textarea.css';
 
 @tailwind utilities;
 
@@ -12,7 +16,7 @@
   :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 400;
-    font-size: calc(1.5vmin + 0.25vmax);
+    font-size: calc(1.6vmin + 0.1vmax);
     line-height: 1.5;
 
     color-scheme: light;
