@@ -16,11 +16,11 @@ export default function RouterProvider({ children }: { children: ReactNode }) {
       (async () => {
         setRoute(({ [path]: mounted, ...route }) => {
           if (mounted != null) {
-            alt.emit('webview.mount', path, true);
+            alt.emit('webview.mount', path, true, false);
           } else {
             mounted = lazy(() =>
               import(`../../routes/${path}/Index.tsx`).then((v) => {
-                alt.emit('webview.mount', path, true);
+                alt.emit('webview.mount', path, true, true);
                 return v;
               })
             );
@@ -38,7 +38,10 @@ export default function RouterProvider({ children }: { children: ReactNode }) {
   const unmountRoute = useCallback(
     (path: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      setRoute(({ [path]: _, ...route }) => route);
+      setRoute(({ [path]: unmountingRoute, ...route }) => {
+        alt.emit('webview.unmount', path, true, unmountingRoute != null);
+        return route;
+      });
     },
     [setRoute]
   );
