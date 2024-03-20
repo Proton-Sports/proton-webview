@@ -8,37 +8,43 @@ import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 import { BiSolidPurchaseTag } from 'react-icons/bi';
 
+interface Buy {
+  Name: string;
+  id: number;
+  ItemName: string;
+}
+
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
   const [menuStatus, setmenuStatus] = useState<boolean>(false);
   const [vehicles, setVehicles] = useState({
     Sedans: [
-      { name: 'Ford', price: '25000' },
-      { name: 'BMW', price: '20000' },
+      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
+      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
     ],
     SUVs: [
-      { name: 'Ford', price: '25000' },
-      { name: 'BMW', price: '20000' },
+      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
+      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
     ],
     Coupes: [
-      { name: 'Ford', price: '25000' },
-      { name: 'BMW', price: '20000' },
+      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
+      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
     ],
 
     Trucks: [
-      { name: 'Ford', price: '25000' },
-      { name: 'BMW', price: '20000' },
+      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
+      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
     ],
     Sports: [
-      { name: 'Lamborghini', price: '25000' },
-      { name: 'BMW', price: '20000' },
+      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
+      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
     ],
   });
   const [ownedVehicles, setOwnedVehicles] = useState({
-    Coupes: [{ name: 'Ford' }, { name: 'BMW' }],
+    Coupes: [{ Displayname: 'blista', id: 1, ItemName: 'blista2', Category: 'Sedans' }],
 
-    Trucks: [{ name: 'Ford' }, { name: 'BMW' }],
+    Trucks: [{ Displayname: 'blista', id: 1, ItemName: 'blista2', Category: 'Sedans' }],
   });
 
   const handleCategoryClick = (category: string) => {
@@ -64,16 +70,16 @@ function Index() {
   }
 
   const [buyVehicleSelected, setbuyVehicleSelected] = useState<boolean>(false);
-  const [selectedBuyItem, setSelectedBuyItem] = useState<string>('');
+  const [selectedBuyItem, setSelectedBuyItem] = useState<Buy>();
   const [selectedColor, setSelectedColor] = useState<string>('');
   function buySelectItem() {
     // @ts-ignore
-    alt.emit('shop:vehicles:buyVehicle', selectedBuyItem, selectedColor);
+    alt.emit('shop:vehicles:buyVehicle', selectedBuyItem, selectedColor); // selectedBuyItem contains: Displayname, id, ItemName
   }
 
-  function selectItem(item: string) {
+  function selectItem(Name: string, id: number, ItemName: string) {
     setbuyVehicleSelected(true);
-    setSelectedBuyItem(item);
+    setSelectedBuyItem({ Name, id, ItemName });
     const element = document.getElementById('hide-display') as HTMLElement;
 
     if (element) {
@@ -276,7 +282,7 @@ function Index() {
                     </motion.h2>
                     {ownedVehicles[selectedOwnedCategory as keyof typeof ownedVehicles]?.map((item) => (
                       <motion.button
-                        key={item.name}
+                        key={item.Displayname}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -292,7 +298,7 @@ function Index() {
                           }}
                         >
                           <div className="items-center flex mr-auto space-x-[0.8vh]">
-                            <p>{item.name} </p>
+                            <p>{item.Displayname} </p>
                           </div>
                           <div className="ml-auto text-[2vh]">
                             <p>
@@ -329,8 +335,8 @@ function Index() {
                     </motion.h2>
                     {vehicles[selectedCategory as keyof typeof vehicles]?.map((item) => (
                       <motion.button
-                        onClick={() => selectItem(item.name)}
-                        key={item.name}
+                        onClick={() => selectItem(item.Displayname, item.id, item.ItemName)}
+                        key={item.Displayname}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -346,10 +352,10 @@ function Index() {
                           }}
                         >
                           <div className="items-center flex mr-auto space-x-[0.8vh]">
-                            <p>{item.name} </p>
+                            <p>{item.Displayname} </p>
                           </div>
                           <div className="ml-auto text-[1.3vh]">
-                            <p>{item.price}$</p>
+                            <p>{item.Price}$</p>
                           </div>
                         </motion.div>
                       </motion.button>
