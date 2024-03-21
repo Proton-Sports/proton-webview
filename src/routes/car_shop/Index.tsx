@@ -14,37 +14,36 @@ interface Buy {
   ItemName: string;
 }
 
+interface Vehicle {
+  Displayname: string;
+  Id: number;
+  ItemName: string;
+  Price: string;
+  Category: string;
+}
+
+interface VehCat {
+  [category: string]: Vehicle[] | null;
+}
+
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
   const [menuStatus, setmenuStatus] = useState<boolean>(false);
-  const [vehicles, setVehicles] = useState({
-    Sedans: [
-      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
-      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
-    ],
-    SUVs: [
-      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
-      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
-    ],
-    Coupes: [
-      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
-      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
-    ],
+  const [vehicles, setVehicles] = useState<VehCat>({
+    Sedans: [],
+    SUVs: [],
+    Coupes: [],
 
-    Trucks: [
-      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
-      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
-    ],
-    Sports: [
-      { Displayname: 'blista', id: 1, ItemName: 'blista2', Price: '25000', Category: 'Sedans' },
-      { Displayname: 'bmow', id: 1, ItemName: 'bmw2', Price: '25000', Category: 'Sedans' },
-    ],
+    Trucks: [],
+    Sports: [],
   });
-  const [ownedVehicles, setOwnedVehicles] = useState({
-    Coupes: [{ Displayname: 'blista', id: 1, ItemName: 'blista2', Category: 'Sedans' }],
-
-    Trucks: [{ Displayname: 'blista', id: 1, ItemName: 'blista2', Category: 'Sedans' }],
+  const [ownedVehicles, setOwnedVehicles] = useState<VehCat>({
+    Sedans: [],
+    SUVs: [],
+    Coupes: [],
+    Trucks: [],
+    Sports: [],
   });
 
   const handleCategoryClick = (category: string) => {
@@ -102,33 +101,6 @@ function Index() {
   useEffect(() => {
     const notOwned = (data: any) => {
       setVehicles(data);
-
-      /*
-        send data in this format
-  
-        {
-          Sedans: [
-            { name: 'Ford', price: '25000' },
-            { name: 'BMW', price: '20000' },
-          ],
-          SUVs: [
-            { name: 'Ford', price: '25000' },
-            { name: 'BMW', price: '20000' },
-          ],
-          Coupes: [
-            { name: 'Ford', price: '25000' },
-            { name: 'BMW', price: '20000' },
-          ],
-          Trucks: [
-            { name: 'Ford', price: '25000' },
-            { name: 'BMW', price: '20000' },
-          ],
-          Sports: [
-            { name: 'Lamborghini', price: '25000' },
-            { name: 'BMW', price: '20000' },
-          ],
-        }
-      */
     };
 
     const menuStatus = (value: boolean) => {
@@ -137,19 +109,6 @@ function Index() {
 
     const handleOwnedVehicles = (data: any) => {
       setOwnedVehicles(data);
-
-      /*
-        {
-          Coupes: [
-            { name: 'Ford' },
-            { name: 'BMW' },
-          ],
-          Trucks: [
-            { name: 'Ford' },
-            { name: 'BMW' },
-          ],
-        }
-      */
     };
 
     alt.on('shop:vehicles:notOwnedVehicles', notOwned);
@@ -167,6 +126,24 @@ function Index() {
     alt.emit('shop:vehicles:choosenColor', color);
     setSelectedColor(color);
   }
+
+  /*
+  Function for testing dynamic data recieving
+
+  function test() {
+    console.log('runs')
+    setVehicles({
+      Sports: [{ Displayname: 'Comet', Id: 1, ItemName: 'comet2', Price: '1400', Category: 'Sport' }],
+    });
+
+    setOwnedVehicles({
+      Sports: [{ Displayname: 'Comet', Id: 1, ItemName: 'comet2', Price: '1400', Category: 'Sport' }],
+    });
+
+    // <button onClick={() => test()}>Test</button>
+  }
+  
+  */
 
   return (
     <>
@@ -335,7 +312,7 @@ function Index() {
                     </motion.h2>
                     {vehicles[selectedCategory as keyof typeof vehicles]?.map((item) => (
                       <motion.button
-                        onClick={() => selectItem(item.Displayname, item.id, item.ItemName)}
+                        onClick={() => selectItem(item.Displayname, item.Id, item.ItemName)}
                         key={item.Displayname}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
