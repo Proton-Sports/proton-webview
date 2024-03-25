@@ -22,6 +22,9 @@ if (!('alt' in globalThis)) {
     off() {},
     on() {},
     once() {},
+    getPermissionState() {
+      return false;
+    },
   };
 }
 
