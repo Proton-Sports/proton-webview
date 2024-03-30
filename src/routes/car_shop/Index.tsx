@@ -15,36 +15,49 @@ interface Buy {
 }
 
 interface Vehicle {
-  Displayname: string;
-  Id: number;
-  ItemName: string;
-  Price: string;
-  Category: string;
+  id: number;
+  displayname: string;
+  price: number;
+  vehiclename: string;
+  category: string;
 }
 
-interface VehCat {
-  [category: string]: Vehicle[] | null;
-}
+type VehicleCategory = Record<string, Vehicle[]>;
 
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
   const [menuStatus, setmenuStatus] = useState<boolean>(false);
-  const [vehicles, setVehicles] = useState<VehCat>({
-    Sedans: [],
-    SUVs: [],
-    Coupes: [],
-
-    Trucks: [],
-    Sports: [],
+  const [category, setCategory] = useState<VehicleCategory>({
+    Sports: [
+      {
+        displayname: 'Comet',
+        id: 1,
+        vehiclename: 'comet2',
+        price: 1400,
+        category: 'sport',
+      },
+    ],
+    Sedans: [
+      {
+        displayname: 'ABC',
+        id: 1,
+        vehiclename: 'abc',
+        price: 1400,
+        category: 'sport',
+      },
+    ],
+    SUVs: [
+      {
+        displayname: 'ABC',
+        id: 1,
+        vehiclename: 'abc',
+        price: 1400,
+        category: 'sport',
+      },
+    ],
   });
-  const [ownedVehicles, setOwnedVehicles] = useState<VehCat>({
-    Sedans: [],
-    SUVs: [],
-    Coupes: [],
-    Trucks: [],
-    Sports: [],
-  });
+  const [ownedCategory, setOwnedCategory] = useState<VehicleCategory>({});
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory((prevCategory) => (prevCategory === category ? null : category));
@@ -72,8 +85,7 @@ function Index() {
   const [selectedBuyItem, setSelectedBuyItem] = useState<Buy>();
   const [selectedColor, setSelectedColor] = useState<string>('');
   function buySelectItem() {
-    // @ts-ignore
-    alt.emit('shop:vehicles:buyVehicle', selectedBuyItem, selectedColor); // selectedBuyItem contains: Displayname, id, ItemName
+    alt.emit('shop:vehicles:buyVehicle', selectedBuyItem, selectedColor);
   }
 
   function selectItem(Name: string, id: number, ItemName: string) {
@@ -99,16 +111,16 @@ function Index() {
   // altv handlers
 
   useEffect(() => {
-    const notOwned = (data: any) => {
-      setVehicles(data);
+    const notOwned = (data: VehicleCategory) => {
+      setCategory(data);
     };
 
     const menuStatus = (value: boolean) => {
       toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
     };
 
-    const handleOwnedVehicles = (data: any) => {
-      setOwnedVehicles(data);
+    const handleOwnedVehicles = (data: VehicleCategory) => {
+      setOwnedCategory(data);
     };
 
     alt.on('shop:vehicles:notOwnedVehicles', notOwned);
@@ -133,11 +145,11 @@ function Index() {
   function test() {
     console.log('runs')
     setVehicles({
-      Sports: [{ Displayname: 'Comet', Id: 1, ItemName: 'comet2', Price: '1400', Category: 'Sport' }],
+      Sports: [{ displayname: 'Comet', Id: 1, ItemName: 'comet2', Price: '1400', Category: 'Sport' }],
     });
 
     setOwnedVehicles({
-      Sports: [{ Displayname: 'Comet', Id: 1, ItemName: 'comet2', Price: '1400', Category: 'Sport' }],
+      Sports: [{ displayname: 'Comet', Id: 1, ItemName: 'comet2', Price: '1400', Category: 'Sport' }],
     });
 
     // <button onClick={() => test()}>Test</button>
@@ -161,7 +173,7 @@ function Index() {
                 <div className=" bg-bg-1/50 pt-[2vh] rounded-md overflow-hidden w-[30vh] text-[1.8vh]">
                   <h2 className="text-fg-1 uppercase mb-[2vh] text-center text-[1.8vh]">Categories</h2>
                   <motion.div>
-                    {Object.keys(vehicles).map((category) => (
+                    {Object.keys(category).map((category) => (
                       <motion.button
                         key={category}
                         className={`w-full hover:bg-bg-1/60 transition-colors ${
@@ -194,10 +206,10 @@ function Index() {
                     ))}
                   </motion.div>
 
-                  {ownedVehicles && (
+                  {ownedCategory && (
                     <motion.div>
                       <h2 className="text-fg-1 mb-[1.6vh] text-center mt-[2vh] text-[1.8vh]">Already owned vehicles</h2>
-                      {Object.keys(ownedVehicles).map((category) => (
+                      {Object.keys(ownedCategory).map((category) => (
                         <motion.button
                           key={category}
                           className={`w-full hover:bg-bg-1/60 transition-colors ${
@@ -257,9 +269,9 @@ function Index() {
                     >
                       {selectedOwnedCategory}
                     </motion.h2>
-                    {ownedVehicles[selectedOwnedCategory as keyof typeof ownedVehicles]?.map((item) => (
+                    {ownedCategory[selectedOwnedCategory as keyof typeof ownedCategory]?.map((item) => (
                       <motion.button
-                        key={item.Displayname}
+                        key={item.displayname}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -275,7 +287,7 @@ function Index() {
                           }}
                         >
                           <div className="items-center flex mr-auto space-x-[0.8vh]">
-                            <p>{item.Displayname} </p>
+                            <p>{item.displayname}</p>
                           </div>
                           <div className="ml-auto text-[2vh]">
                             <p>
@@ -310,10 +322,10 @@ function Index() {
                     >
                       {selectedCategory}
                     </motion.h2>
-                    {vehicles[selectedCategory as keyof typeof vehicles]?.map((item) => (
+                    {category[selectedCategory as keyof typeof category]?.map((item) => (
                       <motion.button
-                        onClick={() => selectItem(item.Displayname, item.Id, item.ItemName)}
-                        key={item.Displayname}
+                        onClick={() => selectItem(item.displayname, item.id, item.vehiclename)}
+                        key={item.displayname}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -329,10 +341,10 @@ function Index() {
                           }}
                         >
                           <div className="items-center flex mr-auto space-x-[0.8vh]">
-                            <p>{item.Displayname} </p>
+                            <p>{item.displayname}</p>
                           </div>
                           <div className="ml-auto text-[1.3vh]">
-                            <p>{item.Price}$</p>
+                            <p>{item.price}$</p>
                           </div>
                         </motion.div>
                       </motion.button>
