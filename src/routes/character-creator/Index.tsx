@@ -121,11 +121,7 @@ export default function Index() {
 
   return (
     <>
-      <img
-        src="https://img.gta5-mods.com/q95/images/gta-v-real-fps-boost-mod/771e92-1.jpg"
-        className="fixed inset-0 object-cover w-screen h-screen"
-      />
-      <div className="absolute inset-0 bg-bg-1/80" />
+      <div className="absolute inset-0 bg-bg-1/40" />
       <div className="fixed flex gap-16 -translate-y-1/2 top-1/2 left-16">
         <ol className="flex flex-col flex-grow gap-4">
           {pages.map(({ id, label }) => {
