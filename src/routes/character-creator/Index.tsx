@@ -127,12 +127,12 @@ export default function Index() {
           {pages.map(({ id, label }) => {
             const active = activePage === id;
             return (
-              <li key={id} className="w-full min-w-40">
+              <li key={id} className="w-full min-w-36">
                 <Button
                   transparent={!active}
                   variant={active ? 'primary' : 'base'}
                   className={clsx(
-                    'flex items-center w-full text-left uppercase duration-100 group fugaz max-w-40 transition',
+                    'flex items-center w-full text-left uppercase duration-100 group fugaz transition',
                     active && 'translate-x-8'
                   )}
                   onClick={() => handleChangePage(id)}
@@ -199,7 +199,7 @@ export default function Index() {
           </li>
         </ol>
         <div className="relative px-1 py-2 c-btn bg-bg-1/60">
-          <div className="w-[24rem] h-[36rem] max-h-[36rem] overflow-y-auto px-3 py-2">
+          <div className="w-[22rem] h-[36rem] max-h-[36rem] overflow-y-auto px-3 py-2">
             <AnimatePresence mode="wait">
               {activePage && (
                 <motion.div
