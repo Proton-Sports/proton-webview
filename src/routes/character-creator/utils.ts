@@ -147,7 +147,7 @@ export function dto(dna: DNAData, face: FaceData, overlay: OverlayData, hair: Ha
     hairDrawable: hair.hair[0],
     firstHairColor: hair.hairColor1[0],
     secondHairColor: hair.hairColor2[0],
-    facialHairDrawable: hair.facialHair[0],
+    facialHair: hair.facialHair[0],
     firstFacialHairColor: hair.facialHairColor1[0],
     secondFacialHairColor: hair.facialHairColor2[0],
     facialHairOpacity: hair.facialHairOpacity[0],
