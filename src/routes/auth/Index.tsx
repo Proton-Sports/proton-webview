@@ -10,7 +10,6 @@ export default function Index() {
     const [Username, setUsername] = useState<string>("");
 
     function onClick(){
-        console.log("clicked")
         if(!loading){
             alt.emit("authentication:login")
         }

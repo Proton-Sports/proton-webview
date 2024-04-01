@@ -27,7 +27,7 @@ type VehicleCategory = Record<string, Vehicle[]>;
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
-  const [menuStatus, setmenuStatus] = useState<boolean>(false);
+  const [menuStatus, setmenuStatus] = useState<boolean>(true);
   const [category, setCategory] = useState<VehicleCategory>({
     Sports: [
       {
@@ -77,10 +77,6 @@ function Index() {
   const hiddenStyle = { display: 'none' };
   const visibleStyle = { display: 'block' };
 
-  function toggleMenu(status: boolean) {
-    setmenuStatus(status); // sorry for that i made toggleMenu false opens, and true closes menu
-  }
-
   const [buyVehicleSelected, setbuyVehicleSelected] = useState<boolean>(false);
   const [selectedBuyItem, setSelectedBuyItem] = useState<Buy>();
   const [selectedColor, setSelectedColor] = useState<string>('');
@@ -117,8 +113,9 @@ function Index() {
       setCategory(JSON.parse(data));
     };
 
-    const menuStatus = (value: boolean) => {
-      toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
+    const toggleMenuStatus = (value: boolean) => {
+      setmenuStatus(value)
+      //toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
     };
 
     const handleOwnedVehicles = (data: string) => {
@@ -126,15 +123,15 @@ function Index() {
     };
 
     alt.on('shop:vehicles:notOwnedVehicles', notOwned);
-    alt.on('shop:vehicles:menuStatus', menuStatus);
+    alt.on('shop:vehicles:menuStatus', toggleMenuStatus);
     alt.on('shop:vehicles:ownedVehicles', handleOwnedVehicles);
 
     return () => {
       alt.off('shop:vehicles:notOwnedVehicles', notOwned);
-      alt.off('shop:vehicles:menuStatus', menuStatus);
+      alt.off('shop:vehicles:menuStatus', toggleMenuStatus);
       alt.off('shop:vehicles:ownedVehicles', handleOwnedVehicles);
     };
-  }, []);
+  }, [setmenuStatus]);
 
   function choosenColor(color: string) {
     alt.emit('shop:vehicles:choosenColor', color);
@@ -161,7 +158,7 @@ function Index() {
 
   return (
     <>
-      <div className={menuStatus ? 'opacity-0 transition-opac z-50' : 'opacity-100 transition-opac z-50'}>
+      <div className={menuStatus ? 'opacity-100 transition-opac z-50 block' : 'opacity-0 transition-opac z-50 hidden'}>
         <div className="font">
           <div className="rounded-sm absolute top-[50vh] left-[50vh] -translate-x-1/2 -translate-y-1/2 p-4 z-10 flex w-[82vh] h-[80vh]">
             <div className="">
@@ -415,7 +412,7 @@ function Index() {
         </div>
       </div>
 
-      <div className={menuStatus ? 'opacity-0 transition-opac-bulbs' : 'opacity-100 transition-opac-bulbs'}>
+      <div className={menuStatus ? 'opacity-100 transition-opac-bulbs block' : 'opacity-0 transition-opac-bulbs hidden'}>
         <div className="light-bulb">
           <p>.</p>
         </div>
