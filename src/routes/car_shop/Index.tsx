@@ -111,16 +111,16 @@ function Index() {
   // altv handlers
 
   useEffect(() => {
-    const notOwned = (data: VehicleCategory) => {
-      setCategory(data);
+    const notOwned = (data: string) => {
+      setCategory(JSON.parse(data));
     };
 
     const menuStatus = (value: boolean) => {
       toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
     };
 
-    const handleOwnedVehicles = (data: VehicleCategory) => {
-      setOwnedCategory(data);
+    const handleOwnedVehicles = (data: string) => {
+      setOwnedCategory(JSON.parse(data));
     };
 
     alt.on('shop:vehicles:notOwnedVehicles', notOwned);
