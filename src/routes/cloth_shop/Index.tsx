@@ -7,30 +7,43 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { IoMdCheckmark } from 'react-icons/io';
 
+interface Clothes {
+  name: string;
+  price: number;
+}
+
+interface OwnedClothes {
+  name: string;
+  selected: boolean;
+}
+
+type ClothesCategory = Record<string, Clothes[]>;
+type OwnedClothesCategory = Record<string, OwnedClothes[]>;
+
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
   const [menuStatus, setmenuStatus] = useState<boolean>(false);
-  const [clothes, setClothes] = useState({
+  const [clothes, setClothes] = useState<ClothesCategory>({
     Shirts: [
-      { name: 'Striped Shirt', price: '25' },
-      { name: 'Graphic Tee', price: '20' },
+      { name: 'Striped Shirt', price: 25 },
+      { name: 'Graphic Tee', price: 20 },
     ],
     Pants: [
-      { name: 'Jeans', price: '40' },
-      { name: 'Chinos', price: '30' },
+      { name: 'Jeans', price: 40 },
+      { name: 'Chinos', price: 30 },
     ],
     Hats: [
-      { name: 'Blueberry Hat', price: '15' },
-      { name: 'Snapback Cap', price: '20' },
+      { name: 'Blueberry Hat', price: 15 },
+      { name: 'Snapback Cap', price: 20 },
     ],
   });
-  const [ownedClothes, setOwnedClothes] = useState({
+  const [ownedClothes, setOwnedClothes] = useState<OwnedClothesCategory>({
     Shirts: [
-      { name: 'Striped Shirt', choosed: true },
-      { name: 'Graphic Tee', choosed: false },
+      { name: 'Striped Shirt', selected: true },
+      { name: 'Graphic Tee', selected: false },
     ],
-    Pants: [{ name: 'Jeans', choosed: false }],
+    Pants: [{ name: 'Jeans', selected: false }],
   });
 
   const handleCategoryClick = (category: string) => {
@@ -62,39 +75,12 @@ function Index() {
       toggleMenu(value); // false opens, true closes the menu
     };
 
-    const handleOwnedClothes = (data: any) => {
-      setOwnedClothes(data);
-      /*
-        {
-          Shirts: [
-            { name: 'Striped Shirt', choosed: true },
-            { name: 'Graphic Tee', choosed: false },
-          ],
-          Pants: [
-            { name: 'Jeans', choosed: false },
-          ],
-        }
-      */
+    const handleOwnedClothes = (data: string) => {
+      setOwnedClothes(JSON.parse(data));
     };
 
-    const handleNotOwnedClothes = (data: any) => {
-      setClothes(data);
-      /*
-        {
-          Shirts: [
-            { name: 'Striped Shirt', price: '25' },
-            { name: 'Graphic Tee', price: '20' },
-          ],
-          Pants: [
-            { name: 'Jeans', price: '40' },
-            { name: 'Chinos', price: '30' },
-          ],
-          Hats: [
-            { name: 'Blueberry Hat', price: '15' },
-            { name: 'Snapback Cap', price: '20' },
-          ],
-        }
-      */
+    const handleNotOwnedClothes = (data: string) => {
+      setClothes(JSON.parse(data));
     };
 
     alt.on('shop:cloth:menuStatus', handleMenuStatus);
@@ -109,16 +95,13 @@ function Index() {
   }, []);
 
   function buyItem(item: string) {
-    // @ts-ignore
     alt.emit('shop:cloth:buyItem', item);
   }
 
   function wearItem(item: string, itemStatus: boolean) {
     if (itemStatus === true) {
-      // @ts-ignore
       alt.emit('shop:cloth:unequipItem', item);
     } else {
-      // @ts-ignore
       alt.emit('shop:cloth:wearItem', item);
     }
   }
@@ -240,7 +223,7 @@ function Index() {
                     </motion.h2>
                     {ownedClothes[selectedOwnedCategory as keyof typeof ownedClothes]?.map((item) => (
                       <motion.button
-                        onClick={() => wearItem(item.name, item.choosed)}
+                        onClick={() => wearItem(item.name, item.selected)}
                         key={item.name}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
@@ -260,7 +243,7 @@ function Index() {
                             <p>{item.name} </p>
                           </div>
                           <div className="ml-auto text-[2vh]">
-                            <p>{item.choosed ? <IoIosCheckmarkCircle /> : <IoMdCheckmark />}</p>
+                            <p>{item.selected ? <IoIosCheckmarkCircle /> : <IoMdCheckmark />}</p>
                           </div>
                         </motion.div>
                       </motion.button>
