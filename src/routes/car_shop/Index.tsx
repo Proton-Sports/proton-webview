@@ -18,7 +18,7 @@ interface Vehicle {
   id: number;
   displayname: string;
   price: number;
-  vehiclename: string;
+  itemname: string;
   category: string;
 }
 
@@ -33,7 +33,7 @@ function Index() {
       {
         displayname: 'Comet',
         id: 1,
-        vehiclename: 'comet2',
+        itemname: 'comet2',
         price: 1400,
         category: 'sport',
       },
@@ -42,7 +42,7 @@ function Index() {
       {
         displayname: 'ABC',
         id: 1,
-        vehiclename: 'abc',
+        itemname: 'abc',
         price: 1400,
         category: 'sport',
       },
@@ -51,7 +51,7 @@ function Index() {
       {
         displayname: 'ABC',
         id: 1,
-        vehiclename: 'abc',
+        itemname: 'abc',
         price: 1400,
         category: 'sport',
       },
@@ -96,6 +96,8 @@ function Index() {
     if (element) {
       element.style.display = 'block';
     }
+    console.log(Name, id, ItemName)
+    alt.emit("shop:select:vehicle", ItemName)
   }
 
   function closeSelectItem() {
@@ -324,8 +326,8 @@ function Index() {
                     </motion.h2>
                     {category[selectedCategory as keyof typeof category]?.map((item) => (
                       <motion.button
-                        onClick={() => selectItem(item.displayname, item.id, item.vehiclename)}
-                        key={item.displayname}
+                        onClick={() => selectItem(item.displayname, item.id, item.itemname)}
+                        key={item.id}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
                       >
