@@ -32,14 +32,6 @@ body {
   font-family: 'fugaz';
 }
 
-.font {
-  font-family: 'normal';
-}
-
-.font-medium {
-  font-family: 'medium';
-}
-
 .bg-light {
   background-color: rgb(69, 57, 241);
   opacity: 0.6;

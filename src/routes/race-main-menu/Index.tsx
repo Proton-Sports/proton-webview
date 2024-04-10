@@ -38,23 +38,23 @@ export default function Index() {
       setMaps((maps) => maps.filter((x) => x.id !== id));
     }
 
-    alt.on('race:creator:map', handleMapData);
-    alt.on('race:creator:deleteMap', handleDeleteMap);
-    alt.emit('race:creator:map');
+    alt.on('race-menu-creator:map', handleMapData);
+    alt.on('race-menu-creator:deleteMap', handleDeleteMap);
+    alt.emit('race-menu-creator:map');
 
     return () => {
-      alt.off('race:creator:map', handleMapData);
-      alt.off('race:creator:deleteMap', handleDeleteMap);
+      alt.off('race-menu-creator:map', handleMapData);
+      alt.off('race-menu-creator:deleteMap', handleDeleteMap);
     };
   }, []);
 
-  function openCreatorMode(route: string) {
-    alt.emit('race:creator:changePage', route);
-  }
+  // function openCreatorMode(route: string) {
+  //   alt.emit('race:creator:changePage', route);
+  // }
 
   function editMap(map: number) {
     if (!editType) return;
-    alt.emit('race:creator:editMap', map, editType);
+    alt.emit('race-menu-creator:editMap', map, editType);
   }
 
   function cancelMap() {
@@ -64,11 +64,11 @@ export default function Index() {
 
   function createMap() {
     if (!mapName) return;
-    alt.emit('race:creator:createMap', mapName);
+    alt.emit('race-menu-creator:createMap', mapName);
   }
 
   function deleteMap(id: number) {
-    alt.emit('race:creator:deleteMap', id);
+    alt.emit('race-menu-creator:deleteMap', id);
   }
 
   return (

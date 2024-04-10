@@ -6,13 +6,15 @@ import RightBackground from '../../lib/assets/images/race-main-menu-bg.webp';
 import LeftBackground from '../../lib/assets/images/racing_menu_list_bg.png';
 import Button from '../../lib/components/Button';
 import Host from './Host';
+import Races from './Races';
+import Creator from './Creator';
 
 type Page = (typeof pages)[number]['id'];
 
 const pages = [
-  { id: 'races', label: 'Races', node: <div></div> },
+  { id: 'races', label: 'Races', node: <Races /> },
   { id: 'host', label: 'Host', node: <Host /> },
-  { id: 'creator-mode', label: 'Creator mode', node: <div></div> },
+  { id: 'creator-mode', label: 'Creator', node: <Creator /> },
   { id: 'settings', label: 'Settings', node: <div></div> },
   { id: 'credits', label: 'Credits', node: <div></div> },
 ] as const;
@@ -20,24 +22,34 @@ const pages = [
 export default function Index() {
   const [activePage, setActivePage] = useState<Page | null>(null);
 
-	useEffect(() => {
-		function handleNavigate(page: Page | null) {
-			setActivePage(page);
-		}
+  useEffect(() => {
+    function handleNavigate(page: Page | null) {
+      setActivePage(page);
+    }
 
-		alt.on('race-menu-list:navigate', handleNavigate);
+    alt.on('race-menu-list:navigate', handleNavigate);
 
-		return () => {
-			alt.off('race-menu-list:navigate', handleNavigate);
-		};
-	}, []);
+    return () => {
+      alt.off('race-menu-list:navigate', handleNavigate);
+    };
+  }, []);
 
   function handleChangePage(page: Page) {
     setActivePage((activePage) => (activePage === page ? null : page));
   }
 
   return (
-    <>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      variants={{
+        visible: { translateX: '0%' },
+        hidden: { translateX: '-100%' },
+      }}
+      transition={{ duration: 0.4, ease: 'circInOut' }}
+      className="fixed inset-0"
+    >
       <motion.div
         className="fixed inset-0"
         animate={activePage ? 'visible' : 'hidden'}
@@ -46,7 +58,7 @@ export default function Index() {
           hidden: { translateX: '-100%' },
         }}
         initial="hidden"
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
+        transition={{ duration: 0.6, ease: 'easeInOut' }}
       >
         <img src={RightBackground} className="absolute object-cover w-full h-full blur-sm" />
         <div className="absolute inset-0 bg-bg-1/60" />
@@ -92,6 +104,6 @@ export default function Index() {
           );
         })}
       </ol>
-    </>
+    </motion.div>
   );
 }

@@ -93,6 +93,10 @@ export default function Host() {
                 <Input type="number" id="duration" name="duration" defaultValue={120} min={0} required />
               </div>
               <div>
+                <label htmlFor="countdown">Countdown time (seconds)</label>
+                <Input type="number" id="countdown" name="countdown" defaultValue={60} min={0} required />
+              </div>
+              <div>
                 <label htmlFor="description">Description</label>
                 <TextArea
                   id="description"
@@ -182,6 +186,7 @@ function handleSubmit(e: FormEvent<HTMLFormElement>) {
     racers: Number(data.racers),
     ghosting: data.ghosting === 'on',
     duration: Number(data.duration),
+    countdown: Number(data.countdown),
   };
   if (dto.laps) {
     dto.laps = Number(dto.laps);
