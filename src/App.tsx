@@ -1,13 +1,9 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { useRouter } from './lib/contexts/router-context';
 import { AnimatePresence } from 'framer-motion';
 
 export default function App() {
-  const { route, mountRoute } = useRouter();
-
-  useEffect(() => {
-    mountRoute('character-creator');
-  }, []);
+  const { route } = useRouter();
 
   return (
     <AnimatePresence initial={true}>
