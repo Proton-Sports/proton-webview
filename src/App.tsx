@@ -1,9 +1,13 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useRouter } from './lib/contexts/router-context';
 import { AnimatePresence } from 'framer-motion';
 
 export default function App() {
   const { route } = useRouter();
+
+  useEffect(() => {
+    alt.emit('webview:ready');
+  }, []);
 
   return (
     <AnimatePresence initial={true}>
