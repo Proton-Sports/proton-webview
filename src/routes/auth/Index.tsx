@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BsDiscord } from 'react-icons/bs';
 import { useEffect } from 'react';
+import Logo from '../../lib/assets/images/logo.png';
+import Bg from '../../lib/assets/images/background.jpg';
 
 export default function Index() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,7 +29,7 @@ export default function Index() {
   return (
     <div
       className="flex items-center justify-center w-screen h-screen bg-no-repeat bg-cover"
-      style={{ backgroundImage: 'url(/main/background.jpg)' }}
+      style={{ backgroundImage: `url(${Bg})` }}
     >
       <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -35,7 +37,7 @@ export default function Index() {
         transition={{ duration: 1.5, delay: 0, ease: 'easeInOut' }}
         className="flex flex-col items-center gap-[3vh]"
       >
-        <img src="/main/protonsports.png" className="w-[25vh]" />
+        <img src={Logo} className="w-[25vh]" />
         <p className="flex items-center text-white text-md">
           {loading ? (
             'Register your account through Discord'
