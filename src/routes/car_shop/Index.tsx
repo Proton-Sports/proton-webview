@@ -27,7 +27,7 @@ type VehicleCategory = Record<string, Vehicle[]>;
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
-  const [menuStatus, setmenuStatus] = useState<boolean>(true);
+  const [menuStatus, setmenuStatus] = useState<boolean>(false);
   const [category, setCategory] = useState<VehicleCategory>({
     Sports: [
       {
@@ -81,7 +81,7 @@ function Index() {
   const [selectedBuyItem, setSelectedBuyItem] = useState<Buy>();
   const [selectedColor, setSelectedColor] = useState<string>('');
   function buySelectItem() {
-    alt.emit('shop:vehicles:buyVehicle', selectedBuyItem, selectedColor);
+    alt.emit('shop:vehicles:buyVehicle', selectedBuyItem?.ItemName, selectedColor);
   }
 
   function selectItem(Name: string, id: number, ItemName: string) {
@@ -370,31 +370,31 @@ function Index() {
 
                 <button
                   className="bg-fg-1 text-fg-1 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('white')}
+                  onClick={() => choosenColor('111')}
                 >
                   .
                 </button>
                 <button
                   className="bg-red-600 text-red-600 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('red')}
+                  onClick={() => choosenColor('150')}
                 >
                   .
                 </button>
                 <button
                   className="bg-blue-500 text-blue-500 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('blue')}
+                  onClick={() => choosenColor('141')}
                 >
                   .
                 </button>
                 <button
                   className="bg-yellow-500 text-yellow-500 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('yellow')}
+                  onClick={() => choosenColor('126')}
                 >
                   .
                 </button>
                 <button
                   className="bg-green-600 text-green-600 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('green')}
+                  onClick={() => choosenColor('125')}
                 >
                   .
                 </button>
