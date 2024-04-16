@@ -5,6 +5,7 @@ import { BiRename } from 'react-icons/bi';
 import { HiTrash } from 'react-icons/hi2';
 import { Popover } from '@headlessui/react';
 import Button from '../../lib/components/Button';
+import IplListbox from './IplListbox';
 
 interface Map {
   id: number;
@@ -15,6 +16,8 @@ export default function Creator() {
   const [searchBar, setSearchBar] = useState<string>('');
   const [maps, setMaps] = useState<Map[]>([]);
   const [editType, setEditType] = useState<'start' | 'race' | null>(null);
+  const [ipls, setIpls] = useState<string[]>([]);
+  const [selectedIpl, setSelectedIpl] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchBar(e.target.value.toLowerCase());
@@ -28,20 +31,21 @@ export default function Creator() {
   };
 
   useEffect(() => {
-    const handleMapData = (maps: Map[]) => {
+    const handleMapData = ({ maps, ipls }: { maps: Map[]; ipls: string[] }) => {
       setMaps(maps);
+      setIpls(ipls);
     };
 
     function handleDeleteMap(id: number) {
       setMaps((maps) => maps.filter((x) => x.id !== id));
     }
 
-    alt.on('race-menu-creator:map', handleMapData);
+    alt.on('race-menu-creator:data', handleMapData);
     alt.on('race-menu-creator:deleteMap', handleDeleteMap);
-    alt.emit('race-menu-creator:map');
+    alt.emit('race-menu-creator:data');
 
     return () => {
-      alt.off('race-menu-creator:map', handleMapData);
+      alt.off('race-menu-creator:data', handleMapData);
       alt.off('race-menu-creator:deleteMap', handleDeleteMap);
     };
   }, []);
@@ -62,11 +66,15 @@ export default function Creator() {
 
   function createMap() {
     if (!mapName) return;
-    alt.emit('race-menu-creator:createMap', mapName);
+    alt.emit('race-menu-creator:createMap', mapName, selectedIpl);
   }
 
   function deleteMap(id: number) {
     alt.emit('race-menu-creator:deleteMap', id);
+  }
+
+  function handleIplChange(value: string) {
+    setSelectedIpl(value);
   }
 
   return (
@@ -146,6 +154,8 @@ export default function Creator() {
                   placeholder="Map name"
                 />
               </div>
+
+              <IplListbox ipls={ipls} selected={selectedIpl} onChange={handleIplChange} />
 
               <div className="mt-8">
                 <h1 className="font-bold text-center uppercase text-md">Controls</h1>
