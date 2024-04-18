@@ -79,7 +79,7 @@ function Index() {
 
   const [buyVehicleSelected, setbuyVehicleSelected] = useState<boolean>(false);
   const [selectedBuyItem, setSelectedBuyItem] = useState<Buy>();
-  const [selectedColor, setSelectedColor] = useState<string>('');
+  const [selectedColor, setSelectedColor] = useState<number>(0);
   function buySelectItem() {
     alt.emit('shop:vehicles:buyVehicle', selectedBuyItem?.ItemName, selectedColor);
   }
@@ -133,7 +133,7 @@ function Index() {
     };
   }, [setmenuStatus]);
 
-  function choosenColor(color: string) {
+  function choosenColor(color: number) {
     alt.emit('shop:vehicles:choosenColor', color);
     setSelectedColor(color);
   }
@@ -370,31 +370,31 @@ function Index() {
 
                 <button
                   className="bg-fg-1 text-fg-1 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('111')}
+                  onClick={() => choosenColor(111)}
                 >
                   .
                 </button>
                 <button
                   className="bg-red-600 text-red-600 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('150')}
+                  onClick={() => choosenColor(150)}
                 >
                   .
                 </button>
                 <button
                   className="bg-blue-500 text-blue-500 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('141')}
+                  onClick={() => choosenColor(141)}
                 >
                   .
                 </button>
                 <button
                   className="bg-yellow-500 text-yellow-500 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('126')}
+                  onClick={() => choosenColor(126)}
                 >
                   .
                 </button>
                 <button
                   className="bg-green-600 text-green-600 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor('125')}
+                  onClick={() => choosenColor(125)}
                 >
                   .
                 </button>
