@@ -73,7 +73,7 @@ export default function Creator() {
     alt.emit('race-menu-creator:deleteMap', id);
   }
 
-  function handleIplChange(value: string) {
+  function handleIplChange(value: string | null) {
     setSelectedIpl(value);
   }
 
