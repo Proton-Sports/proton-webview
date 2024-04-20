@@ -5,8 +5,8 @@ import { Fragment } from 'react/jsx-runtime';
 
 interface Props {
   ipls: string[];
-  selected: string;
-  onChange: (value: string) => void;
+  selected: string | null;
+  onChange: (value: string | null) => void;
 }
 
 export default function IplListbox({ ipls, selected, onChange }: Props) {
