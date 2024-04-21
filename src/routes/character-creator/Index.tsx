@@ -115,6 +115,14 @@ export default function Index() {
     emitSetAppearance();
   }
 
+  function handleMouseEnter() {
+    alt.emit('characterClient:mouseEntered', true);
+  }
+
+  function handleMouseLeave() {
+    alt.emit('characterClient:mouseEntered', false);
+  }
+
   function emitSetAppearance() {
     alt.emit('characterClient:setAppearance', JSON.stringify(appearaceDto(dnaData, faceData, overlayData, hairData)));
   }
@@ -198,7 +206,7 @@ export default function Index() {
             </Popover>
           </li>
         </ol>
-        <div className="relative px-1 py-2 c-btn bg-bg-1/60">
+        <div onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()} className="relative px-1 py-2 c-btn bg-bg-1/60">
           <div className="w-[22rem] h-[36rem] max-h-[36rem] overflow-y-auto px-3 py-2">
             <AnimatePresence mode="wait">
               {activePage && (
