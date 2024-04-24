@@ -27,7 +27,7 @@ type VehicleCategory = Record<string, Vehicle[]>;
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
-  const [menuStatus, setmenuStatus] = useState<boolean>(false);
+  const [menuStatus, setmenuStatus] = useState<boolean>(true);
   const [category, setCategory] = useState<VehicleCategory>({
     Sports: [
       {
@@ -125,6 +125,8 @@ function Index() {
     alt.on('shop:vehicles:notOwnedVehicles', notOwned);
     alt.on('shop:vehicles:menuStatus', toggleMenuStatus);
     alt.on('shop:vehicles:ownedVehicles', handleOwnedVehicles);
+
+    alt.emit("shop:vehicles:ready")
 
     return () => {
       alt.off('shop:vehicles:notOwnedVehicles', notOwned);

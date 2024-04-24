@@ -6,15 +6,18 @@ import { FaHatCowboySide } from 'react-icons/fa';
 import { IoIosArrowForward } from 'react-icons/io';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { IoMdCheckmark } from 'react-icons/io';
+import { FaShoePrints } from "react-icons/fa";
 
 interface Clothes {
   name: string;
   price: number;
+  id: number;
 }
 
 interface OwnedClothes {
   name: string;
   selected: boolean;
+  id: number;
 }
 
 type ClothesCategory = Record<string, Clothes[]>;
@@ -23,27 +26,28 @@ type OwnedClothesCategory = Record<string, OwnedClothes[]>;
 function Index() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
-  const [menuStatus, setmenuStatus] = useState<boolean>(false);
+  const [selectedBuyableCloth, setSelectedBuyableCloth] = useState<number>(0);
+  const [menuStatus, setmenuStatus] = useState<boolean>(true);
   const [clothes, setClothes] = useState<ClothesCategory>({
     Shirts: [
-      { name: 'Striped Shirt', price: 25 },
-      { name: 'Graphic Tee', price: 20 },
+      { name: 'Striped Shirt', price: 25, id: 1 },
+      { name: 'Graphic Tee', price: 20, id:2 },
     ],
     Pants: [
-      { name: 'Jeans', price: 40 },
-      { name: 'Chinos', price: 30 },
+      { name: 'Jeans', price: 40, id:3 },
+      { name: 'Chinos', price: 30, id:4 },
     ],
     Hats: [
-      { name: 'Blueberry Hat', price: 15 },
-      { name: 'Snapback Cap', price: 20 },
+      { name: 'Blueberry Hat', price: 15, id:5 },
+      { name: 'Snapback Cap', price: 20, id:6 },
     ],
   });
   const [ownedClothes, setOwnedClothes] = useState<OwnedClothesCategory>({
     Shirts: [
-      { name: 'Striped Shirt', selected: true },
-      { name: 'Graphic Tee', selected: false },
+      { name: 'Striped Shirt', selected: true, id:1 },
+      { name: 'Graphic Tee', selected: false, id:2 },
     ],
-    Pants: [{ name: 'Jeans', selected: false }],
+    Pants: [{ name: 'Jeans', selected: false, id:3 }],
   });
 
   const handleCategoryClick = (category: string) => {
@@ -87,6 +91,8 @@ function Index() {
     alt.on('shop:cloth:ownedClothes', handleOwnedClothes);
     alt.on('shop:cloth:notOwnedClothes', handleNotOwnedClothes);
 
+    alt.emit("shop:cloth:ready")
+
     return () => {
       alt.off('shop:cloth:menuStatus', handleMenuStatus);
       alt.off('shop:cloth:ownedClothes', handleOwnedClothes);
@@ -94,21 +100,22 @@ function Index() {
     };
   }, []);
 
-  function buyItem(item: string) {
-    alt.emit('shop:cloth:buyItem', item);
+  function buyItem(item: number) {
+    if(selectedBuyableCloth == item){
+      alt.emit('shop:cloth:buyItem', item);
+    }else{
+      setSelectedBuyableCloth(item)
+      alt.emit('shop:cloth:showcase', item);
+    }
   }
 
-  function wearItem(item: string, itemStatus: boolean) {
-    if (itemStatus === true) {
-      alt.emit('shop:cloth:unequipItem', item);
-    } else {
-      alt.emit('shop:cloth:wearItem', item);
-    }
+  function wearItem(item: number, itemStatus: boolean) {
+    alt.emit('shop:cloth:equip', !itemStatus, item);
   }
 
   return (
     <>
-      <div className={menuStatus ? 'opacity-0 transition-opac z-50' : 'opacity-100 transition-opac z-50'}>
+      <div className={menuStatus ? 'opacity-100 transition-opac z-50 block' : 'opacity-0 transition-opac z-50 hidden'}>
         <div className="font">
           <div className="rounded-sm absolute top-[50vh] left-[50vh] -translate-x-1/2 -translate-y-1/2 p-4 z-10 flex w-[82vh] h-[80vh]">
             <div className="">
@@ -143,7 +150,8 @@ function Index() {
                             <p>{category} </p>
                             {category === 'Shirts' && <FaTshirt />}
                             {category === 'Pants' && <PiPantsFill />}
-                            {category === 'Hats' && <FaHatCowboySide />}
+                            {category === 'Head' && <FaHatCowboySide />}
+                            {category === 'Shoes' && <FaShoePrints />}
                           </div>
                           <div className="ml-auto">
                             <IoIosArrowForward
@@ -223,7 +231,7 @@ function Index() {
                     </motion.h2>
                     {ownedClothes[selectedOwnedCategory as keyof typeof ownedClothes]?.map((item) => (
                       <motion.button
-                        onClick={() => wearItem(item.name, item.selected)}
+                        onClick={() => wearItem(item.id, item.selected)}
                         key={item.name}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
@@ -275,7 +283,7 @@ function Index() {
                     </motion.h2>
                     {clothes[selectedCategory as keyof typeof clothes]?.map((item) => (
                       <motion.button
-                        onClick={() => buyItem(item.name)}
+                        onClick={() => buyItem(item.id)}
                         key={item.name}
                         className={`w-full hover:bg-bg-1/60 transition-colors`}
                         whileTap={{ scale: 0.95 }}
@@ -312,7 +320,7 @@ function Index() {
         </div>
       </div>
 
-      <div className={menuStatus ? 'opacity-0 transition-opac-bulbs' : 'opacity-100 transition-opac-bulbs'}>
+      <div className={menuStatus ? 'opacity-100 transition-opac-bulbs block' : 'opacity-0 transition-opac-bulbs hidden'}>
         <div className="light-bulb">
           <p>.</p>
         </div>
