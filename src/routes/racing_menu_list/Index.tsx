@@ -8,6 +8,7 @@ import Button from '../../lib/components/Button';
 import Host from './Host';
 import Races from './Races';
 import Creator from './Creator';
+import Settings from './Settings';
 
 type Page = (typeof pages)[number]['id'];
 
@@ -15,7 +16,7 @@ const pages = [
   { id: 'races', label: 'Races', node: <Races /> },
   { id: 'host', label: 'Host', node: <Host /> },
   { id: 'creator-mode', label: 'Creator', node: <Creator /> },
-  { id: 'settings', label: 'Settings', node: <div></div> },
+  { id: 'settings', label: 'Settings', node: <Settings /> },
   { id: 'credits', label: 'Credits', node: <div></div> },
 ] as const;
 
