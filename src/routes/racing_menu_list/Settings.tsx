@@ -10,7 +10,7 @@ export default function Settings() {
   const [value, setValue] = useState(false);
   const handleChange = (isSelected: boolean) => {
     setValue(isSelected)
-    alt.emit('nametagsClient:setSetting', isSelected);
+    alt.emit('nametagsClient:setSetting', isSelected, false);
   };
 
   alt.on('settings-nametags:setValue', (isSelected: boolean) => {
