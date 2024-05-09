@@ -16,6 +16,11 @@
 }
 
 @font-face {
+  font-family: 'digital_dream';
+  src: url(../assets/fonts/DIGITALDREAMFATSKEW.ttf);
+}
+
+@font-face {
   font-family: 'fugaz';
   src: url(../assets/fonts/FugazOne-Regular.ttf);
 }
@@ -30,6 +35,10 @@ body {
 
 .fugaz {
   font-family: 'fugaz';
+}
+
+.digital-dream {
+  font-family: 'digital_dream';
 }
 
 .bg-light {
