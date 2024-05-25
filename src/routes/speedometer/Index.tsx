@@ -20,7 +20,8 @@ import gear9 from '../../lib/assets/images/speedometer/gears/9.png';
 import gearR from '../../lib/assets/images/speedometer/gears/R.png';
 
 export default function Index() {
-  const [engineOn, setEngineOn] = useState(false);
+  const [greenOn, setGreenOn] = useState(false);
+  const [redOn, setRedOn] = useState(false);
   const [gear, setGear] = useState(6);
   const [vehicleSpeed, setVehicleSpeed] = useState(90);
 
@@ -38,9 +39,11 @@ export default function Index() {
   ];
 
   useEffect(() => {
-    function handleEngine(state: boolean) {
-      console.log('engine', state);
-      setEngineOn(state);
+    function handleRed(state: boolean) {
+      setRedOn(state);
+    }
+    function handleGreen(state: boolean) {
+      setGreenOn(state);
     }
     function handleGear(g: number) {
       setGear(g);
@@ -49,22 +52,24 @@ export default function Index() {
       setVehicleSpeed(g);
     }
 
-    alt.on('vehicle:engine', handleEngine);
+    alt.on('vehicle:red', handleRed);
+    alt.on('vehicle:green', handleGreen);
     alt.on('vehicle:gear', handleGear);
     alt.on('vehicle:speed', handleSpeed);
 
     return () => {
-      alt.off('vehicle:engine', handleEngine);
+      alt.off('vehicle:red', handleRed);
+      alt.off('vehicle:green', handleGreen);
       alt.off('vehicle:gear', handleGear);
       alt.off('vehicle:speed', handleSpeed);
     };
   }, []);
 
   const customKmhStyle = {
-    fontSize: '4.5rem',
+    fontSize: '85px',
     lineHeight: 1,
-    top: '3.8rem',
-    right: '8.5rem',
+    top: '28%',
+    right: '37%',
     textShadow: '0 0 15px rgba(255,255,255,.5), 0 0 10px rgba(255,255,255,.5)',
   };
 
@@ -88,12 +93,12 @@ export default function Index() {
       transition={{ duration: 0.4, ease: 'circInOut' }}
       className="absolute -right-16 bottom-0"
     >
-      <img src={redLight} className="absolute z-50" style={engineOn ? customInactiveStyle : customActiveStyle} />
-      <img src={greenLight} className="absolute z-50" style={!engineOn ? customInactiveStyle : customActiveStyle} />
+      <img src={redLight} className="absolute z-50" style={!greenOn ? customInactiveStyle : customActiveStyle} />
+      <img src={greenLight} className="absolute z-50" style={!redOn ? customInactiveStyle : customActiveStyle} />
 
       <img src={gears[gear].source} className="absolute z-50" />
       <img src={kmh} className="absolute z-50" />
-      <h2 className="digital-dream absolute top-16 text-7x drop-shadow-xl" style={customKmhStyle}>
+      <h2 className="digital-dream absolute drop-shadow-xl" style={customKmhStyle}>
         {vehicleSpeed}
       </h2>
       <img src={background} className="-z-10" />

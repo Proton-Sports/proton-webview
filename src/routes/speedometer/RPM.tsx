@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 
 export default function RpmModule() {
   const custom = {
-    bottom: '2.9rem',
-    right: '-3.2rem',
+    bottom: '22%',
+    right: '-14.5%',
   };
   const [content, setContent] = useState<JSX.Element[]>([]);
   const [rpm, setRpm] = useState<number>(0);
@@ -19,9 +19,9 @@ export default function RpmModule() {
         if (i > 800) {
           color = 'bg-red-700';
         }
-        let classnames = 'h-4 w-2 mr-1 text-transparent';
+        let classnames = 'h-[16px] w-[8px] mr-[4.5px] text-transparent';
         if (i % 100 == 50) {
-          classnames = 'h-2 w-2 mr-1 overflow-hidden text-transparent';
+          classnames = 'h-[8px] w-[8px] mr-[4.5px] overflow-hidden text-transparent';
         }
 
         setContent((oldArray) => [...oldArray, <span className={`${classnames} ${color}`}>0</span>]);
@@ -45,7 +45,7 @@ export default function RpmModule() {
   }, []);
 
   return (
-    <motion.div className="absolute w-full flex items-end" style={custom}>
+    <motion.div className="absolute w-full flex items-end " style={custom}>
       {content}
     </motion.div>
   );

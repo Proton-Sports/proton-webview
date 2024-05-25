@@ -4,9 +4,10 @@ import { AnimatePresence } from 'framer-motion';
 
 export default function App() {
   const { route, mountRoute } = useRouter();
-  //mountRoute('speedometer')
+
   useEffect(() => {
     alt.emit('webview:ready');
+    mountRoute('speedometer');
   }, []);
 
   return (
