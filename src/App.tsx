@@ -3,11 +3,10 @@ import { useRouter } from './lib/contexts/router-context';
 import { AnimatePresence } from 'framer-motion';
 
 export default function App() {
-  const { route, mountRoute } = useRouter();
+  const { route } = useRouter();
 
   useEffect(() => {
     alt.emit('webview:ready');
-    mountRoute('speedometer');
   }, []);
 
   return (
