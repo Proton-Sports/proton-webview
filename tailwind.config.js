@@ -36,6 +36,9 @@ export default {
           border: 'hsl(var(--theme-bg-border) / <alpha-value>)',
         },
       },
+      fontFamily: {
+        number: 'var(--font-family-number)',
+      },
       fontSize: {
         xs: '0.694rem',
         sm: '0.833rem',
