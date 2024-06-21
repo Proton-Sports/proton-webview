@@ -232,7 +232,7 @@ function Right({
         <div className="flex w-full min-w-72">
           <span className="w-20 px-2 py-1 text-center rounded-l-md fugaz bg-primary/90 uppercase">Time</span>
           <RelativeTimeParts
-            relativeMs={relativeMs}
+            relativeMs={startTime <= 0 ? 0 : relativeMs}
             className="px-2 py-1 grow text-right bg-bg/90 rounded-r-md font-number"
           />
         </div>
