@@ -6,6 +6,7 @@ import RouterProvider from './lib/contexts/router-context.tsx';
 
 if (!('alt' in globalThis)) {
   globalThis.alt = {
+    isBrowser: true,
     emit() {},
     getBranch() {
       return '';

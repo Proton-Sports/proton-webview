@@ -1,0 +1,13 @@
+.scroller {
+  animation: scroll 6s linear infinite;
+}
+
+.wrapper {
+  mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(calc((-100% - 4rem) / 3));
+  }
+}
