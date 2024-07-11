@@ -11,6 +11,7 @@ export default function App() {
 
   return (
     <AnimatePresence initial={true}>
+      {alt.isBrowser && <div className="fixed inset-0 bg-black"></div>}
       {Object.entries(route).map(([key, Component]) => (
         <Suspense key={key}>
           <div className="fixed inset-0">
