@@ -15,10 +15,10 @@ export default function Index() {
     function handleSetStatus(value: Status) {
       setStatus(value);
     }
-    alt.on('race-countdown:setStatus', handleSetStatus);
+    alt.on('race-start-countdown:setStatus', handleSetStatus);
     return () => {
       audio.current.pause();
-      alt.off('race-countdown:setStatus', handleSetStatus);
+      alt.off('race-start-countdown:setStatus', handleSetStatus);
     };
   }, []);
 
@@ -77,7 +77,7 @@ export default function Index() {
       </motion.div>
       <motion.ol
         className="mt-8 flex gap-8"
-        transition={{ staggerChildren: 0.05 }}
+        variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
         initial="hidden"
         animate="visible"
         exit="hidden"
