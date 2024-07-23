@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import RedSound from '../../lib/assets/audio/race-start-countdown/red-sound.mp3';
+import GreenSound from '../../lib/assets/audio/race-start-countdown/green-sound.mp3';
 
 type Status = 'running' | null;
 
@@ -7,26 +9,28 @@ export default function Index() {
   const [status, setStatus] = useState<'running' | null>(null);
   const [step, setStep] = useState(-1);
   const interval = useRef<number>();
+  const audio = useRef(new Audio());
 
   useEffect(() => {
     function handleSetStatus(value: Status) {
       setStatus(value);
     }
-    handleSetStatus('running');
     alt.on('race-countdown:setStatus', handleSetStatus);
     return () => {
+      audio.current.pause();
       alt.off('race-countdown:setStatus', handleSetStatus);
     };
   }, []);
 
   useEffect(() => {
     if (status !== 'running') return;
-    setStep(0);
-    interval.current = setInterval(() => {
-      setStep((step) => step + 1);
-    }, 1000);
+    setStep(-1);
+    count();
+    interval.current = setInterval(count, 1000);
     return () => {
       clearInterval(interval.current);
+      interval.current = 0;
+      audio.current.pause();
     };
   }, [status]);
 
@@ -36,6 +40,26 @@ export default function Index() {
       interval.current = 0;
     }
   }, [step]);
+
+  const count = useCallback(() => {
+    setStep((step) => {
+      const a = audio.current!;
+      step += 1;
+      if (step < 5) {
+        if (a.src !== RedSound) {
+          a.src = RedSound;
+        }
+      } else {
+        a.src = GreenSound;
+      }
+
+      if (a.paused) {
+        a.play().catch(() => {});
+      }
+      a.currentTime = 0;
+      return step;
+    });
+  }, [setStep]);
 
   return (
     <div className="fixed top-20 left-1/2 -translate-x-1/2">
