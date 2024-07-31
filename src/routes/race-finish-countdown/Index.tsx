@@ -14,9 +14,9 @@ export default function Index() {
       setData(data);
     }
 
-    alt.on('race-end-countdown:setData', handleSetData);
+    alt.on('race-finish-countdown:setData', handleSetData);
     return () => {
-      alt.off('race-end-countdown:setData', handleSetData);
+      alt.off('race-finish-countdown:setData', handleSetData);
     };
   }, []);
 
