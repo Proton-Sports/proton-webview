@@ -1,8 +1,9 @@
 import clsx from 'clsx';
 import styles from './styles.module.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { formatRelativeTimeParts } from '../../lib/utils/format';
+import Marquee from 'react-fast-marquee';
 
 const flags = [
   'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fechesters.co.uk%2Fimages%2Fposts%2Fflag-of-spain.png&f=1&nofb=1&ipt=75e5c8ac77aa46c67ef0c9782e2c83812c51a1326dd7b589052a34b7650b2300&ipo=images',
@@ -105,29 +106,14 @@ export default function Index() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.05 * 13 + 0.4, ease: 'easeInOut' }}
             >
-              <td colSpan={4} className={clsx('max-w-full', styles.wrapper)}>
-                <ul
-                  className={clsx(
-                    'flex items-center justify-between flex-nowrap gap-16 select-none w-max min-w-full',
-                    styles.scroller
-                  )}
-                >
-                  {new Array(4).fill(0).map((_, i) => (
-                    <li>
-                      <img src={logos[i % logos.length]} className="w-16 h-auto object-cover" />
-                    </li>
-                  ))}
-                  {new Array(4).fill(0).map((_, i) => (
-                    <li aria-hidden>
-                      <img src={logos[i % logos.length]} className="w-16 h-auto object-cover" />
-                    </li>
-                  ))}
-                  {new Array(4).fill(0).map((_, i) => (
-                    <li aria-hidden>
-                      <img src={logos[i % logos.length]} className="w-16 h-auto object-cover" />
-                    </li>
-                  ))}
-                </ul>
+              <td colSpan={4} className={clsx('w-full')}>
+                <div className={styles.wrapper}>
+                  <Marquee autoFill>
+                    {logos.map((logo) => (
+                      <img src={logo} className="w-24 h-auto object-cover px-4" />
+                    ))}
+                  </Marquee>
+                </div>
               </td>
             </motion.tr>
           </tfoot>
