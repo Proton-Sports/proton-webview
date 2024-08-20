@@ -44,6 +44,7 @@ export default function Index() {
     alt.on('race-finish-scoreboard:toggle', handleToggle);
     return () => {
       alt.off('race-finish:getData', handleGetData);
+      alt.off('race-finish-scoreboard:toggle', handleToggle);
     };
   }, []);
 
