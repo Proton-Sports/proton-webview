@@ -1,11 +1,10 @@
-import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import background from '../../lib/assets/images/speedometer/background/back.png';
-import redLight from '../../lib/assets/images/speedometer/lights/redon.png';
-import greenLight from '../../lib/assets/images/speedometer/lights/greenon.png';
 import kmh from '../../lib/assets/images/speedometer/KMH/KMH.png';
+import greenLight from '../../lib/assets/images/speedometer/lights/greenon.png';
+import redLight from '../../lib/assets/images/speedometer/lights/redon.png';
 import RpmModule from './RPM';
 
 import gear1 from '../../lib/assets/images/speedometer/gears/1.png';
@@ -93,8 +92,8 @@ export default function Index() {
       transition={{ duration: 0.4, ease: 'circInOut' }}
       className="absolute -right-16 bottom-0"
     >
-      <img src={redLight} className="absolute z-50" style={!greenOn ? customInactiveStyle : customActiveStyle} />
-      <img src={greenLight} className="absolute z-50" style={!redOn ? customInactiveStyle : customActiveStyle} />
+      <img src={redLight} className="absolute z-50" style={!redOn ? customInactiveStyle : customActiveStyle} />
+      <img src={greenLight} className="absolute z-50" style={!greenOn ? customInactiveStyle : customActiveStyle} />
 
       <img src={gears[gear].source} className="absolute z-50" />
       <img src={kmh} className="absolute z-50" />
