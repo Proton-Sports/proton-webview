@@ -27,12 +27,12 @@ type Status = 'running' | 'finished';
 export default function Index() {
   const [localId, setLocalId] = useState<number>(3);
   const [participants, setParticipants] = useState<Participant[]>([
-    // { id: 1, name: 'Mason', distance: 410, speedPerHour: 50, partialDistance: 0 },
-    // { id: 2, name: 'DUYDANG', distance: 405, speedPerHour: 45, partialDistance: 0 },
-    // { id: 3, name: 'Sulfito', distance: 400, speedPerHour: 45, partialDistance: 0 },
-    // { id: 4, name: 'XxXProXx', distance: 390, speedPerHour: 25, partialDistance: 0 },
-    // { id: 5, name: 'poton', distance: 380, speedPerHour: 35, partialDistance: 0 },
-    // { id: 6, name: 'racingboi', distance: 375, speedPerHour: 30, partialDistance: 0 },
+    { id: 1, name: 'Mason', distance: 410, speedPerHour: 50, partialDistance: 0 },
+    { id: 2, name: 'DUYDANG', distance: 405, speedPerHour: 45, partialDistance: 0 },
+    { id: 3, name: 'Sulfito', distance: 400, speedPerHour: 45, partialDistance: 0 },
+    { id: 4, name: 'XxXProXx', distance: 390, speedPerHour: 25, partialDistance: 0 },
+    { id: 5, name: 'poton', distance: 380, speedPerHour: 35, partialDistance: 0 },
+    { id: 6, name: 'racingboi', distance: 375, speedPerHour: 30, partialDistance: 0 },
   ]);
   const [maxLaps, setMaxLaps] = useState<number>(1);
   const [startTime, setStartTime] = useState<number>(0);
@@ -130,16 +130,16 @@ function Left({ localId, participants }: { localId: number; participants: Partic
             <li key={id} className="flex w-full relative">
               <span
                 className={clsx(
-                  "w-8 px-2 py-1 text-right rounded-l-md font-['Chakra_Petch']",
+                  "w-8 px-2 py-1 text-right rounded-l-md font-['Chakra_Petch'] font-bold",
                   i === index ? 'bg-primary/90' : 'text-fg-3 bg-bg-3/90'
                 )}
               >
                 {i + 1}.
               </span>
-              <div className="flex px-2 py-1 justify-between items-center bg-bg/90 w-full rounded-r-md min-w-60">
-                <span className={clsx("font-['Chakra_Petch']", i !== index && 'text-fg-3')}>{name}</span>
+              <div className="flex px-2 py-1 justify-between items-center bg-bg/90 w-full rounded-r-md min-w-60 font-['Chakra_Petch'] font-medium">
+                <span className={clsx(i !== index && 'text-fg-3')}>{name}</span>
                 {i !== index && (
-                  <div className={clsx("text-center font-['Chakra_Petch']")}>
+                  <div className="text-center">
                     <span
                       className={clsx('inline-block w-4 font-black', sign === '-' ? 'text-red-500' : 'text-green-500')}
                     >
@@ -217,39 +217,33 @@ function Right({
   }, [status, startTime, setRelativeMs]);
 
   return (
-    <div className="fixed right-4 top-4">
+    <div className="fixed right-4 top-4 font-['Chakra_Petch']">
       <div className="flex items-center justify-end font-bold text-lg rounded-md">
         <div className="relative">
           <div className="absolute rounded-l-md inset-0 bg-bg/90" />
-          <div className="bg-primary/90 p-2 pr-4 -mr-2 rounded-l-md fugaz [clip-path:polygon(0_0,_100%_0,_75%_100%,_0%_100%)] uppercase">
+          <div className="bg-primary/90 p-2 pr-4 -mr-2 rounded-l-md [clip-path:polygon(0_0,_100%_0,_75%_100%,_0%_100%)] uppercase">
             Lap
           </div>
         </div>
-        <span className="p-2 rounded-r-md bg-bg/90 uppercase fugaz">
+        <span className="p-2 rounded-r-md bg-bg/90 uppercase">
           {lap}/{maxLaps}
         </span>
       </div>
       <div className="mt-8 space-y-2">
         <div className="flex w-full min-w-72">
-          <span className="w-20 px-2 py-1 text-center rounded-l-md fugaz bg-primary/90 uppercase">Time</span>
+          <span className="w-20 px-2 py-1 text-center rounded-l-md font-bold bg-primary/90 uppercase">Time</span>
           <RelativeTimeParts
             relativeMs={startTime <= 0 ? 0 : relativeMs}
-            className="px-2 py-1 grow text-right bg-bg/90 rounded-r-md font-number"
+            className="px-2 py-1 grow text-right bg-bg/90 rounded-r-md"
           />
         </div>
         <div className="flex w-full">
-          <span className="w-20 px-2 py-1 text-center rounded-l-md fugaz bg-primary/90 uppercase">Lap</span>
-          <RelativeTimeParts
-            relativeMs={lapRelativeMs}
-            className="px-2 py-1 grow text-right bg-bg/90 rounded-r-md font-number"
-          />
+          <span className="w-20 px-2 py-1 text-center rounded-l-md font-bold bg-primary/90 uppercase">Lap</span>
+          <RelativeTimeParts relativeMs={lapRelativeMs} className="px-2 py-1 grow text-right bg-bg/90 rounded-r-md" />
         </div>
         <div className="flex w-full">
-          <span className="w-20 px-2 py-1 text-center rounded-l-md fugaz bg-primary/90 uppercase">Best</span>
-          <RelativeTimeParts
-            relativeMs={bestRelativeMs}
-            className="px-2 py-1 grow text-right bg-bg/90 rounded-r-md font-number"
-          />
+          <span className="w-20 px-2 py-1 text-center rounded-l-md font-bold bg-primary/90 uppercase">Best</span>
+          <RelativeTimeParts relativeMs={bestRelativeMs} className="px-2 py-1 grow text-right bg-bg/90 rounded-r-md" />
         </div>
       </div>
     </div>
@@ -259,21 +253,21 @@ function Right({
 function RelativeTimeParts({ relativeMs, className }: { relativeMs: number; className?: string }) {
   const [_, minutes, seconds, milliseconds] = formatRelativeTimeParts(relativeMs);
   return (
-    <div className={clsx('text-center font-number font-medium', className)}>
+    <div className={clsx('text-center font-medium', className)}>
       {Array.from(minutes).map((digit, i) => (
-        <span key={i} className="inline-block w-[0.42rem]">
+        <span key={i} className="inline-block w-[0.6rem]">
           {digit}
         </span>
       ))}
       <span className="inline-block w-1">:</span>
       {Array.from(seconds).map((digit, i) => (
-        <span key={i} className="inline-block w-[0.42rem]">
+        <span key={i} className="inline-block w-[0.6rem]">
           {digit}
         </span>
       ))}
       <span className="inline-block w-1">.</span>
       {Array.from(milliseconds).map((digit, i) => (
-        <span key={i} className="inline-block w-[0.42rem]">
+        <span key={i} className="inline-block w-[0.6rem]">
           {digit}
         </span>
       ))}
