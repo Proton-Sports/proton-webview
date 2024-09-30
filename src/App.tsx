@@ -11,11 +11,11 @@ export default function App() {
 
   return (
     <AnimatePresence initial={true}>
-      {alt.isBrowser && <div className="fixed inset-0 bg-black"></div>}
-      {Object.entries(route).map(([key, Component]) => (
+      {alt.isBrowser && <div className="fixed inset-0 bg-green-500"></div>}
+      {Object.entries(route).map(([key, { Component, props }]) => (
         <Suspense key={key}>
           <div className="fixed inset-0">
-            <Component />
+            <Component {...props} />
           </div>
         </Suspense>
       ))}

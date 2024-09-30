@@ -1,9 +1,15 @@
 import { type ReactNode, createContext, lazy, useCallback, useContext, useEffect, useState } from 'react';
 
-type RouteRecord = Record<string, React.LazyExoticComponent<React.ComponentType<unknown>>>;
+type RouteRecord = Record<
+  string,
+  {
+    Component: React.LazyExoticComponent<React.ComponentType<object>>;
+    props: object;
+  }
+>;
 type RouterContextValue = {
   route: RouteRecord;
-  mountRoute: (path: string) => void;
+  mountRoute: (path: string, props: unknown) => void;
   unmountRoute: (path: string) => void;
 };
 const RouterContext = createContext<RouterContextValue>(null!);
@@ -12,18 +18,21 @@ export default function RouterProvider({ children }: { children: ReactNode }) {
   const [route, setRoute] = useState<RouteRecord>({});
 
   const mountRoute = useCallback(
-    (path: string) => {
+    (path: string, props: object) => {
       (async () => {
         setRoute(({ [path]: mounted, ...route }) => {
           if (mounted != null) {
             alt.emit('webview.mount', path, true, false);
           } else {
-            mounted = lazy(() =>
-              import(`../../routes/${path}/Index.tsx`).then((v) => {
-                alt.emit('webview.mount', path, true, true);
-                return v;
-              })
-            );
+            mounted = {
+              Component: lazy(() =>
+                import(`../../routes/${path}/Index.tsx`).then((v) => {
+                  alt.emit('webview.mount', path, true, true);
+                  return v;
+                })
+              ),
+              props,
+            };
           }
           return {
             ...route,
