@@ -1,68 +1,115 @@
-import { useEffect, useState } from 'react';
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
+import clsx from 'clsx';
+import { useEffect, useMemo, useState } from 'react';
+import { HiCheck, HiMiniChevronDown } from 'react-icons/hi2';
 import Background from '../../lib/assets/images/race-main-menu-bg.webp';
+import Button from '../../lib/components/Button';
 
-interface Data {
-  mapName: string;
-  endTime: number;
-  participants: number;
-  maxParticipants: number;
+interface Participant {
+  id: number;
+  name: string;
+  isHost: boolean;
+  isReady: boolean;
+  vehicleModel: string;
 }
 
-export default function Index() {
-  const [data, setData] = useState<Data | null>(null);
-  const [remainingSeconds, setRemainingSeconds] = useState(0);
+interface Props {
+  id: number;
+  mapName: string;
+  durationSeconds: number;
+  maxParticipants: number;
+  participants: Participant[];
+  vehicles: string[];
+}
+
+export default function Index(props: Props) {
+  const [data, setData] = useState<Props>(props);
+  const [isReady, setIsReady] = useState(data.participants.find((a) => a.id === props.id)?.isReady ?? false);
+  const [remainingSeconds, setRemainingSeconds] = useState(data.durationSeconds);
+  const [countdownEndTimeMs, setCountdownEndTimeMs] = useState<number>(0);
+  const selected = useMemo(
+    () => data.participants.find((a) => a.id === props.id)?.vehicleModel ?? '',
+    [data.participants]
+  );
 
   useEffect(() => {
-    function handleGetData(data: Data) {
-      setData(data);
-    }
+    const addParticipant = (participant: Participant) => {
+      setData((v) => ({ ...v, participants: v.participants ? [...v.participants, participant] : [participant] }));
+    };
 
-    function handleSetParticipants(participants: number) {
-      setData((x) => (x ? { ...x, participants } : null));
-    }
+    const removeParticipant = (id: number) => {
+      setData((v) => ({ ...v, participants: v.participants.filter((a) => a.id !== id) }));
+    };
 
-    alt.on('race-countdown:getData', handleGetData);
-    alt.on('race-countdown:setParticipants', handleSetParticipants);
-    alt.emit('race-countdown:getData');
+    const changeParticipantReady = (id: number, ready: boolean) => {
+      setData((v) => ({ ...v, participants: v.participants.map((a) => (a.id === id ? { ...a, isReady: ready } : a)) }));
+    };
+
+    const setCountdownEndTime = (ms: number) => {
+      setCountdownEndTimeMs(ms);
+    };
+
+    const changeParticipantVehicle = (id: number, vehicleModel: string) => {
+      setData((v) => ({ ...v, participants: v.participants.map((a) => (a.id === id ? { ...a, vehicleModel } : a)) }));
+    };
+
+    alt.on('race-countdown.participants.add', addParticipant);
+    alt.on('race-countdown.participants.remove', removeParticipant);
+    alt.on('race-countdown.ready.change', changeParticipantReady);
+    alt.on('race-countdown.countdown.set', setCountdownEndTime);
+    alt.on('race-countdown.vehicle.change', changeParticipantVehicle);
     return () => {
-      alt.off('race-countdown:getData', handleGetData);
-      alt.off('race-countdown:setParticipants', handleSetParticipants);
+      alt.off('race-countdown.participants.add', addParticipant);
+      alt.off('race-countdown.participants.remove', removeParticipant);
+      alt.off('race-countdown.ready.change', changeParticipantReady);
+      alt.off('race-countdown.countdown.set', setCountdownEndTime);
+      alt.off('race-countdown.vehicle.change', changeParticipantVehicle);
     };
   }, []);
 
   useEffect(() => {
-    if (!data) return;
-    setRemainingSeconds(Math.max(0, Math.floor((data.endTime - Date.now()) / 1000)));
+    if (countdownEndTimeMs === 0) return;
+    setRemainingSeconds(Math.ceil((countdownEndTimeMs - Date.now()) / 1000));
     const interval = setInterval(() => {
-      setRemainingSeconds(Math.max(0, Math.floor((data.endTime - Date.now()) / 1000)));
+      setRemainingSeconds(Math.ceil((countdownEndTimeMs - Date.now()) / 1000));
     }, 500);
     return () => {
       clearInterval(interval);
     };
-  }, [data]);
+  }, [countdownEndTimeMs]);
+
+  function handleReadyChange() {
+    setIsReady((a) => {
+      alt.emit('race-countdown.ready.change', !a);
+      setData((b) => ({ ...b, participants: b.participants.map((c) => (c.id === b.id ? { ...c, isReady: !a } : c)) }));
+      return !a;
+    });
+  }
 
   return (
-    <div className="fixed w-96 top-4 right-4">
-      <div className="space-y-4 overflow-hidden rounded-xl bg-bg-1 proton-container">
-        <img src={Background} className="absolute inset-0 object-cover max-w-[400%] opacity-10 rounded-xl" />
+    <div className="fixed w-96 top-4 right-4 fugaz">
+      <div className="space-y-4 overflow-hidden rounded-xl bg-bg-1 proton-container mb-4">
+        <img src={Background} className="absolute inset-0 object-cover max-w-[400%] opacity-5 rounded-xl" />
         <div className="relative p-4 space-y-4 rounded-xl">
           {data && (
             <>
-              <h2 className="text-center uppercase text-md fugaz">{data.mapName}</h2>
+              <h2 className="text-center uppercase text-md">{data.mapName}</h2>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="flex justify-center text-4xl font-bold leading-none text-center">
-                    {Array.from(remainingSeconds.toString()).map((digit, i) => (
-                      <span key={i} className="block w-8 text-center">
-                        {digit}
-                      </span>
-                    ))}
+                    {countdownEndTimeMs === 0
+                      ? '--'
+                      : Array.from(remainingSeconds.toString()).map((digit, i) => (
+                          <span key={i} className="block w-8 text-center">
+                            {digit}
+                          </span>
+                        ))}
                   </p>
                   <p className="text-xs text-center uppercase text-fg/40">remaining seconds</p>
                 </div>
                 <div>
                   <p className="flex justify-center text-4xl font-bold leading-none">
-                    {Array.from(`${data.participants}/${data.maxParticipants}`).map((digit, i) => (
+                    {Array.from(`${data.participants.length}/${data.maxParticipants}`).map((digit, i) => (
                       <span key={i} className="block w-8 text-center">
                         {digit}
                       </span>
@@ -73,11 +120,113 @@ export default function Index() {
               </div>
             </>
           )}
-          <p className="text-center">
-            Press <span className="px-2 leading-none uppercase rounded fugaz bg-bg-3">Q</span> to leave the race
-          </p>
+          <div className={clsx('grid gap-4', data.vehicles.length > 1 ? 'grid-cols-2' : 'grid-cols-1')}>
+            {data.vehicles.length > 1 ? (
+              <Vehicles
+                vehicles={data.vehicles}
+                selected={selected}
+                onSelectedChange={(vehicleModel) => {
+                  alt.emit('race-countdown.vehicle.change', vehicleModel);
+                  setData((v) => ({
+                    ...v,
+                    participants: v.participants.map((a) => (a.id === data.id ? { ...a, vehicleModel } : a)),
+                  }));
+                }}
+              />
+            ) : (
+              <Ready isReady={isReady} handleReadyChange={handleReadyChange} />
+            )}
+            {data.vehicles.length > 1 && <Ready isReady={isReady} handleReadyChange={handleReadyChange} />}
+          </div>
         </div>
       </div>
+      <Participants participants={data.participants} />
+      <div className="text-right mt-4">
+        Press <span className="px-2 leading-none uppercase rounded bg-bg-2 border border-bg-1">Q</span> to leave the
+        race
+      </div>
     </div>
+  );
+}
+
+function Ready({ isReady, handleReadyChange }: { isReady: boolean; handleReadyChange: () => void }) {
+  return (
+    <Button variant={isReady ? 'primary' : 'base'} className="fugaz" onClick={handleReadyChange}>
+      {isReady ? 'Ready' : 'Not ready'}
+    </Button>
+  );
+}
+
+function Vehicles({
+  vehicles,
+  selected,
+  onSelectedChange,
+}: {
+  vehicles: string[];
+  selected: string;
+  onSelectedChange: (value: string) => void;
+}) {
+  return (
+    <Listbox value={selected} onChange={onSelectedChange}>
+      <ListboxButton
+        className={clsx(
+          'c-input relative whitespace-nowrap overflow-hidden text-ellipsis text-left',
+          'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-fg-1/25'
+        )}
+      >
+        {selected}
+        <HiMiniChevronDown
+          className="group pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 size-5"
+          aria-hidden="true"
+        />
+      </ListboxButton>
+      <ListboxOptions
+        anchor="bottom"
+        transition
+        className={clsx(
+          'w-[var(--button-width)] fugaz p-1 mt-1 overflow-auto text-base rounded-md shadow-lg bg-bg max-h-60 border border-bg-border focus:outline-none',
+          'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0'
+        )}
+      >
+        {vehicles.map((vehicle) => (
+          <ListboxOption
+            key={vehicle}
+            value={vehicle}
+            className={({ selected }) =>
+              clsx(
+                'group flex items-center gap-2 relative cursor-default select-none py-2 pl-4 pr-4 rounded',
+                selected ? 'bg-primary text-primary-fg' : 'data-[focus]:bg-primary/20'
+              )
+            }
+          >
+            <HiCheck className="invisible size-4 group-data-[selected]:visible stroke-2" />
+            <span>{vehicle}</span>
+          </ListboxOption>
+        ))}
+      </ListboxOptions>
+    </Listbox>
+  );
+}
+
+function Participants({ participants }: { participants: Participant[] }) {
+  return (
+    <ol className="space-y-2">
+      {participants.map(({ id, name, isHost, isReady, vehicleModel }, i) => (
+        <li
+          key={id}
+          className={clsx('flex items-center justify-between bg-bg-1 px-4 py-2 rounded', !isReady && 'text-fg-3')}
+        >
+          <div>
+            <span className="inline-block w-8 text-fg-3">{i + 1}.</span>
+            <span>{name}</span>
+            {isHost && <span className="inline-block text-primary ml-2">Host</span>}
+          </div>
+          <div className="space-x-4">
+            <span>{vehicleModel}</span>
+            <span>{isReady ? 'Ready' : 'Joined'}</span>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
