@@ -4,12 +4,12 @@ type RouteRecord = Record<
   string,
   {
     Component: React.LazyExoticComponent<React.ComponentType<object>>;
-    props: object;
+    props?: object;
   }
 >;
 type RouterContextValue = {
   route: RouteRecord;
-  mountRoute: (path: string, props: unknown) => void;
+  mountRoute: (path: string, props?: object) => void;
   unmountRoute: (path: string) => void;
 };
 const RouterContext = createContext<RouterContextValue>(null!);
@@ -18,7 +18,7 @@ export default function RouterProvider({ children }: { children: ReactNode }) {
   const [route, setRoute] = useState<RouteRecord>({});
 
   const mountRoute = useCallback(
-    (path: string, props: object) => {
+    (path: string, props?: object) => {
       (async () => {
         setRoute(({ [path]: mounted, ...route }) => {
           if (mounted != null) {
@@ -56,8 +56,8 @@ export default function RouterProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    function handleMountRoute(path: string) {
-      mountRoute(path);
+    function handleMountRoute(path: string, props?: object) {
+      mountRoute(path, props);
     }
 
     function handleUnmountRoute(path: string) {
