@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import RouterProvider from './lib/contexts/router-context.tsx';
+import RouterProvider from './lib/components/RouterProvider.tsx';
 
 if (!('alt' in globalThis)) {
   globalThis.alt = {

@@ -1,18 +1,5 @@
-import { type ReactNode, createContext, lazy, useCallback, useContext, useEffect, useState } from 'react';
-
-type RouteRecord = Record<
-  string,
-  {
-    Component: React.LazyExoticComponent<React.ComponentType<object>>;
-    props?: object;
-  }
->;
-type RouterContextValue = {
-  route: RouteRecord;
-  mountRoute: (path: string, props?: object) => void;
-  unmountRoute: (path: string) => void;
-};
-const RouterContext = createContext<RouterContextValue>(null!);
+import { lazy, useCallback, useEffect, useState, type ReactNode } from 'react';
+import { RouterContext, type RouteRecord } from '../contexts/router-context';
 
 export default function RouterProvider({ children }: { children: ReactNode }) {
   const [route, setRoute] = useState<RouteRecord>({});
@@ -74,8 +61,4 @@ export default function RouterProvider({ children }: { children: ReactNode }) {
   }, [mountRoute, unmountRoute]);
 
   return <RouterContext.Provider value={{ route, mountRoute, unmountRoute }}>{children}</RouterContext.Provider>;
-}
-
-export function useRouter() {
-  return useContext(RouterContext);
 }
