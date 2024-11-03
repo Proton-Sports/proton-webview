@@ -1,27 +1,24 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import Arrow from '../../lib/assets/images/arrow_button.png';
 import RightBackground from '../../lib/assets/images/race-main-menu-bg.webp';
 import LeftBackground from '../../lib/assets/images/racing_menu_list_bg.png';
 import Button from '../../lib/components/Button';
-import Host from './Host';
-import Races from './Races';
-import Creator from './Creator';
-import Settings from './Settings';
 
 type Page = (typeof pages)[number]['id'];
 
 const pages = [
-  { id: 'races', label: 'Races', node: <Races /> },
-  { id: 'host', label: 'Host', node: <Host /> },
-  { id: 'creator-mode', label: 'Creator', node: <Creator /> },
-  { id: 'settings', label: 'Settings', node: <Settings /> },
-  { id: 'credits', label: 'Credits', node: <div></div> },
+  { id: 'races', label: 'Races', node: lazy(() => import('./Races')) },
+  { id: 'collection', label: 'Collection', node: lazy(() => import('./Collection')) },
+  { id: 'host', label: 'Host', node: lazy(() => import('./Host')) },
+  { id: 'creator-mode', label: 'Creator', node: lazy(() => import('./Creator')) },
+  { id: 'settings', label: 'Settings', node: lazy(() => import('./Settings')) },
 ] as const;
 
 export default function Index() {
   const [activePage, setActivePage] = useState<Page | null>(null);
+  const ActivePage = useMemo(() => pages.find((x) => x.id === activePage)?.node, [activePage]);
 
   useEffect(() => {
     function handleNavigate(page: Page | null) {
@@ -64,7 +61,7 @@ export default function Index() {
         <img src={RightBackground} className="absolute object-cover w-full h-full blur-sm" />
         <div className="absolute inset-0 bg-bg-1/60" />
         <AnimatePresence>
-          {activePage && (
+          {ActivePage && (
             <motion.div
               key={activePage}
               transition={{ duration: 0.4, ease: 'easeInOut' }}
@@ -72,7 +69,9 @@ export default function Index() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {pages.find((x) => x.id === activePage)?.node}
+              <Suspense>
+                <ActivePage />
+              </Suspense>
             </motion.div>
           )}
         </AnimatePresence>

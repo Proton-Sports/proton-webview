@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Checkbox from '../../lib/components/Checkbox';
 
-
 export default function Settings() {
   useEffect(() => {
     alt.emit('nametagsClient:getSetting');
@@ -9,12 +8,12 @@ export default function Settings() {
 
   const [value, setValue] = useState(false);
   const handleChange = (isSelected: boolean) => {
-    setValue(isSelected)
+    setValue(isSelected);
     alt.emit('nametagsClient:setSetting', isSelected, false);
   };
 
   alt.on('settings-nametags:setValue', (isSelected: boolean) => {
-    setValue(isSelected)
+    setValue(isSelected);
   });
 
   return (
