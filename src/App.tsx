@@ -14,7 +14,7 @@ export default function App() {
       {alt.isBrowser && <div className="fixed inset-0 bg-green-500"></div>}
       {Object.entries(route).map(([key, { Component, props }]) => (
         <Suspense key={key}>
-          <div className="fixed inset-0">
+          <div className="fixed">
             <Component {...props} />
           </div>
         </Suspense>

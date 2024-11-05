@@ -90,7 +90,7 @@ export default function Index() {
         hidden: { translateX: '-100%' },
       }}
       transition={{ duration: 0.4, ease: 'circInOut' }}
-      className="absolute -right-16 bottom-0"
+      className="fixed -right-16 bottom-0"
     >
       <img src={redLight} className="absolute z-50" style={!redOn ? customInactiveStyle : customActiveStyle} />
       <img src={greenLight} className="absolute z-50" style={!greenOn ? customInactiveStyle : customActiveStyle} />
