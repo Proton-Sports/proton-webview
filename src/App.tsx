@@ -3,10 +3,11 @@ import { useRouter } from './lib/contexts/router-context';
 import { AnimatePresence } from 'framer-motion';
 
 export default function App() {
-  const { route } = useRouter();
+  const { route, mountRoute } = useRouter();
 
   useEffect(() => {
     alt.emit('webview:ready');
+    mountRoute('racing_menu_list');
   }, []);
 
   return (
