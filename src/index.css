@@ -63,4 +63,9 @@
   input {
     line-height: 1;
   }
+
+  .slanted {
+    --p: 7%;
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
+  }
 }
