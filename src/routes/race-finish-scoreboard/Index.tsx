@@ -26,24 +26,17 @@ interface Data {
   }[];
 }
 
-export default function Index() {
-  const [data, setData] = useState<Data | null>(null);
+export default function Index(props: Data) {
+  const [data, setData] = useState<Data | null>(props);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    function handleGetData(data: Data) {
-      setData(data);
-    }
-
     function handleToggle() {
       setVisible((v) => !v);
     }
 
-    alt.emit('race-finish:getData');
-    alt.on('race-finish:getData', handleGetData);
     alt.on('race-finish-scoreboard:toggle', handleToggle);
     return () => {
-      alt.off('race-finish:getData', handleGetData);
       alt.off('race-finish-scoreboard:toggle', handleToggle);
     };
   }, []);
