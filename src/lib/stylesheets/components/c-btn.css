@@ -47,7 +47,7 @@
     @apply bg-bg-2/70;
   }
 
-  @apply text-primary-fg bg-bg-2 hover:bg-bg-hover active:bg-bg-active disabled:text-fg-disabled disabled:bg-bg-disabled;
+  @apply text-fg bg-bg-2 hover:bg-bg-hover active:bg-bg-active disabled:text-fg-disabled disabled:bg-bg-disabled;
 }
 
 .proton-container {
