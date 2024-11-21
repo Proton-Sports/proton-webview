@@ -87,7 +87,7 @@ export default function Index() {
       exit="hidden"
       variants={{
         visible: { translateX: '0%' },
-        hidden: { translateX: '-100%' },
+        hidden: { translateX: '100%' },
       }}
       transition={{ duration: 0.4, ease: 'circInOut' }}
       className="fixed -right-16 bottom-0"
