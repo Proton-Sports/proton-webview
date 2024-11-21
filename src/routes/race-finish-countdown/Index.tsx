@@ -47,7 +47,7 @@ export default function Index() {
   if (!data) return null;
 
   return (
-    <div className="fixed -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+    <div className="fixed -translate-x-1/2 left-1/2 bottom-8">
       <AnimatePresence mode="wait">
         <motion.div
           key={remainingSeconds}
