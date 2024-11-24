@@ -1,6 +1,5 @@
-import { MenuButton, MenuItems } from '@headlessui/react';
+import { Menu, MenuItem, MenuButton, MenuItems } from '@headlessui/react';
 import { useState, useEffect } from 'react';
-import { Menu, MenuItem } from 'react-aria-components';
 import { MdMenu } from 'react-icons/md';
 
 interface Player {
@@ -28,7 +27,7 @@ export default function BanTab() {
       alt.off('admin-panel.ban.getPlayers', getPlayers);
       alt.off('admin-panel.ban.removePlayer', removePlayer);
     };
-  });
+  }, []);
 
   return (
     <div className="grid grid-rows-[auto_1fr] overflow-hidden">
@@ -36,7 +35,7 @@ export default function BanTab() {
       <div className="overflow-auto">
         <table className="text-left table-fixed w-full">
           <colgroup>
-            <col className="w-12"></col>
+            <col></col>
             <col></col>
             <col className="w-12"></col>
           </colgroup>
@@ -48,7 +47,7 @@ export default function BanTab() {
           </thead>
           <tbody>
             {players == null ? (
-              <tr className="*:px-4 *:py-2">
+              <tr className="*:px-4 *:py-2 text-fg-3">
                 <td colSpan={3}>Loading...</td>
               </tr>
             ) : (
