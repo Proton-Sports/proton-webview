@@ -10,6 +10,7 @@ interface Props {
 
 const PlayerTab = lazy(() => import('./PlayerTab'));
 const VehicleTab = lazy(() => import('./VehicleTab'));
+const BanTab = lazy(() => import('./BanTab'));
 
 export default function Index(props: Props) {
   const defaultIndex = props.tab ?? 0;
@@ -45,6 +46,13 @@ export default function Index(props: Props) {
           >
             Vehicle
           </Tab>
+          <Tab
+            className="px-8 py-4 uppercase text-fg-3 focus:outline-none
+            data-[focus]:bg-bg-hover data-[focus]:outline data-[focus]:outline-red-500 data-[hover]:bg-bg-hover data-[selected]:bg-primary
+            data-[focus]:text-fg-hover data-[hover]:text-fg-hover data-[selected]:text-primary-fg"
+          >
+            Ban
+          </Tab>
         </TabList>
         <TabPanels className="w-[40rem] h-[32rem] grid bg-bg-2 py-4">
           <TabPanel className="focus:outline-none grid overflow-hidden">
@@ -71,6 +79,11 @@ export default function Index(props: Props) {
                   setVehicles((vehicles) => (vehicles ? vehicles.filter((b) => b.id !== a) : vehicles));
                 }}
               />
+            </Suspense>
+          </TabPanel>
+          <TabPanel className="focus:outline-none grid overflow-hidden">
+            <Suspense>
+              <BanTab />
             </Suspense>
           </TabPanel>
         </TabPanels>
