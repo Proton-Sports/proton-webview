@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
 import Badge, { type Variant } from '../../lib/components/Badge';
+
 interface Props {
   author: string;
   message: string;

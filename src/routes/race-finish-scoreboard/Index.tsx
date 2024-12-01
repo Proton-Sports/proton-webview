@@ -27,7 +27,7 @@ interface Data {
 }
 
 export default function Index(props: Data) {
-  const [data, setData] = useState<Data | null>(props);
+  const [data] = useState<Data | null>(props);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {

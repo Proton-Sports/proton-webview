@@ -26,14 +26,7 @@ type Status = 'running' | 'finished';
 
 export default function Index() {
   const [localId, setLocalId] = useState<number>(3);
-  const [participants, setParticipants] = useState<Participant[]>([
-    { id: 1, name: 'Mason', distance: 410, speedPerHour: 50, partialDistance: 0 },
-    { id: 2, name: 'DUYDANG', distance: 405, speedPerHour: 45, partialDistance: 0 },
-    { id: 3, name: 'Sulfito', distance: 400, speedPerHour: 45, partialDistance: 0 },
-    { id: 4, name: 'XxXProXx', distance: 390, speedPerHour: 25, partialDistance: 0 },
-    { id: 5, name: 'poton', distance: 380, speedPerHour: 35, partialDistance: 0 },
-    { id: 6, name: 'racingboi', distance: 375, speedPerHour: 30, partialDistance: 0 },
-  ]);
+  const [participants, setParticipants] = useState<Participant[]>([]);
   const [maxLaps, setMaxLaps] = useState<number>(1);
   const [startTime, setStartTime] = useState<number>(0);
   const [lapTimes, setLapTimes] = useState<number[]>([]);
