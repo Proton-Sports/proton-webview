@@ -37,10 +37,7 @@ export default function Index() {
     function onGetData(data: Data) {
       setLocalId(data.localId ?? 1);
       setMaxLaps(data.maxLaps);
-      setParticipants([
-        ...data.participants,
-        { id: 100, lap: 1, name: 'Test', distance: 0, speedPerHour: 10, partialDistance: 0 },
-      ]);
+      setParticipants(data.participants);
       setStartTime(data.startTime);
     }
 
