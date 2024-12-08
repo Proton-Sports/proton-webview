@@ -206,7 +206,11 @@ export default function Index() {
             </Popover>
           </li>
         </ol>
-        <div onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()} className="relative px-1 py-2 c-btn bg-bg-1/60">
+        <div
+          onMouseEnter={() => handleMouseEnter()}
+          onMouseLeave={() => handleMouseLeave()}
+          className="relative px-1 py-2 c-btn bg-bg-1/60"
+        >
           <div className="w-[22rem] h-[36rem] max-h-[36rem] overflow-y-auto px-3 py-2">
             <AnimatePresence mode="wait">
               {activePage && (
