@@ -80,7 +80,7 @@ export default function Index(props: Data) {
                 </thead>
                 <tbody className="overflow-y-scroll">
                   {data.participants.map(({ name, team, timeMs }, i) => {
-                    const parts = formatRelativeTimeParts(timeMs);
+                    const parts = timeMs === 0 ? null : formatRelativeTimeParts(timeMs);
                     return (
                       <motion.tr
                         className="*:px-2 *:py-1 *:even:bg-bg-3/30"
@@ -98,9 +98,7 @@ export default function Index(props: Data) {
                         </td>
                         <td>{team}</td>
                         <td>
-                          <span>
-                            {parts[1]}:{parts[2]}.{parts[3]}
-                          </span>
+                          <span>{parts == null ? 'DF' : `${parts[1]}:${parts[2]}.${parts[3]}`}</span>
                         </td>
                       </motion.tr>
                     );
