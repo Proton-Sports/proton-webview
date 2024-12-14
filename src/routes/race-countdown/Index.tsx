@@ -26,10 +26,10 @@ export default function Index(props: Props) {
   const [data, setData] = useState<Props>(props);
   const [isReady, setIsReady] = useState(data.participants.find((a) => a.id === props.id)?.isReady ?? false);
   const [remainingSeconds, setRemainingSeconds] = useState(data.durationSeconds);
-  const [countdownEndTimeMs, setCountdownEndTimeMs] = useState<number>(0);
+  const [countdownSeconds, setCountdownSeconds] = useState<number>(0);
   const selected = useMemo(
     () => data.participants.find((a) => a.id === props.id)?.vehicleModel ?? '',
-    [data.participants]
+    [props.id, data.participants]
   );
 
   useEffect(() => {
@@ -45,8 +45,8 @@ export default function Index(props: Props) {
       setData((v) => ({ ...v, participants: v.participants.map((a) => (a.id === id ? { ...a, isReady: ready } : a)) }));
     };
 
-    const setCountdownEndTime = (ms: number) => {
-      setCountdownEndTimeMs(ms);
+    const setCountdown = (seconds: number) => {
+      setCountdownSeconds(seconds);
     };
 
     const changeParticipantVehicle = (id: number, vehicleModel: string) => {
@@ -56,27 +56,36 @@ export default function Index(props: Props) {
     alt.on('race-countdown.participants.add', addParticipant);
     alt.on('race-countdown.participants.remove', removeParticipant);
     alt.on('race-countdown.ready.change', changeParticipantReady);
-    alt.on('race-countdown.countdown.set', setCountdownEndTime);
+    alt.on('race-countdown.countdown.set', setCountdown);
     alt.on('race-countdown.vehicle.change', changeParticipantVehicle);
     return () => {
       alt.off('race-countdown.participants.add', addParticipant);
       alt.off('race-countdown.participants.remove', removeParticipant);
       alt.off('race-countdown.ready.change', changeParticipantReady);
-      alt.off('race-countdown.countdown.set', setCountdownEndTime);
+      alt.off('race-countdown.countdown.set', setCountdown);
       alt.off('race-countdown.vehicle.change', changeParticipantVehicle);
     };
   }, []);
 
   useEffect(() => {
-    if (countdownEndTimeMs === 0) return;
-    setRemainingSeconds(Math.ceil((countdownEndTimeMs - Date.now()) / 1000));
+    if (countdownSeconds === 0) return;
+    let cleared = false;
     const interval = setInterval(() => {
-      setRemainingSeconds(Math.ceil((countdownEndTimeMs - Date.now()) / 1000));
-    }, 500);
+      setRemainingSeconds((a) => {
+        if (a === 0) {
+          cleared = true;
+          clearInterval(interval);
+          return 0;
+        }
+        return a - 1;
+      });
+    }, 1000);
     return () => {
-      clearInterval(interval);
+      if (!cleared) {
+        clearInterval(interval);
+      }
     };
-  }, [countdownEndTimeMs]);
+  }, [countdownSeconds]);
 
   function handleReadyChange() {
     setIsReady((a) => {
@@ -97,7 +106,7 @@ export default function Index(props: Props) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="flex justify-center text-4xl font-bold leading-none text-center">
-                    {countdownEndTimeMs === 0
+                    {countdownSeconds === 0
                       ? '--'
                       : Array.from(remainingSeconds.toString()).map((digit, i) => (
                           <span key={i} className="block w-8 text-center">
