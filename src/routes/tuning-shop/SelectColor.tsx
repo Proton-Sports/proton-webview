@@ -5,10 +5,9 @@ import { useCategoryValues } from './context';
 
 interface Props {
   id: number;
-  name: string;
 }
 
-export default function SelectColor({ id, name }: Props) {
+export default function SelectColor({ id }: Props) {
   const { categories, setCategories } = useCategoryValues();
   const category = useMemo(() => categories[id], [categories, id]);
   const color = (category?.color as string) ?? '#ffffff';
@@ -20,7 +19,7 @@ export default function SelectColor({ id, name }: Props) {
         color,
       },
     }));
-    alt.emit('tuning-shop.colors.change', name, color);
+    alt.emit('tuning-shop.colors.change', id, color);
   };
 
   return (
@@ -34,7 +33,7 @@ export default function SelectColor({ id, name }: Props) {
             <Color key={a} color={a} onClick={handleChange} />
           ))}
         </div>
-        <HexColorInput prefixed alpha color={color} onChange={handleChange} className="c-input" />
+        <HexColorInput prefixed color={color} onChange={handleChange} className="c-input" />
       </div>
     </div>
   );

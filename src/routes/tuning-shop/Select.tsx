@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useCategoryValues } from './context';
 
@@ -62,7 +62,7 @@ export default function Select({ id, name, items: propItems, defaultId }: Props)
               return;
             }
             setCategories((a) => {
-              alt.emit('tuning-shop.values.change', name, index + 1);
+              alt.emit('tuning-shop.values.change', id, index + 1);
               return {
                 ...a,
                 [id]: {
