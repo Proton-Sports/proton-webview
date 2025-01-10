@@ -1,16 +1,32 @@
 import { Accordion } from '@ark-ui/react/accordion';
 import { lazy, Suspense, useRef, useState, type MouseEventHandler } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
+import { BsEye } from 'react-icons/bs';
 import { Virtualizer } from 'virtua';
 import CategoryValuesProvider from './CategoryValuesProvider';
-import { BsEye } from 'react-icons/bs';
 
-export default function Index({ categoryProps }: { categoryProps?: Record<number, Record<string, unknown>> }) {
+interface Props {
+  mods: Mod[];
+}
+
+interface Mod {
+  id: number;
+  name: string;
+  category: number;
+  model: number;
+  value: number;
+  price: number;
+}
+
+export default function Index({ mods }: Props) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [props] = useState<Record<number, Record<string, unknown>>>(categoryProps ?? {});
+  const [categorizedMods] = useState<Partial<Record<number, Mod[]>>>(
+    mods ? Object.groupBy(mods, (a) => a.category) : {}
+  );
   const handleCamera: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
   };
+
   return (
     <div className="fixed inset-y-16 left-16 bg-bg-1/80 overflow-hidden grid grid-rows-[auto_1fr] rounded-lg min-w-96">
       <div className="p-4">
@@ -51,7 +67,7 @@ export default function Index({ categoryProps }: { categoryProps?: Record<number
                         <Accordion.ItemContent>
                           <div className="p-4">
                             <Suspense fallback="Loading...">
-                              <Content {...item.props} {...props[item.id]} />
+                              <Content {...item.props} items={categorizedMods[item.id]} />
                             </Suspense>
                           </div>
                         </Accordion.ItemContent>
@@ -69,8 +85,8 @@ export default function Index({ categoryProps }: { categoryProps?: Record<number
 }
 
 const categories = [
-  colorCategory(66, 'Primary Color', { name: 'primary-color' }),
-  colorCategory(67, 'Secondary Color', { name: 'secondary-color' }),
+  colorCategory(66, 'Primary Color'),
+  colorCategory(67, 'Secondary Color'),
   category(0, 'Spoilers', { name: 'spoilers' }),
   category(1, 'Front Bumper', { name: 'front-bumper' }),
   category(2, 'Rear Bumper', { name: 'rear-bumper' }),
@@ -118,7 +134,7 @@ const categories = [
   category(48, 'Livery', { name: 'livery' }),
 ];
 
-function colorCategory(id: number, name: string, props: Record<string, unknown>) {
+function colorCategory(id: number, name: string, props?: Record<string, unknown>) {
   return {
     id,
     name,
