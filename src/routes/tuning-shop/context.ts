@@ -1,6 +1,6 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from 'react';
 
-interface CategoryValues {
+export interface CategoryValues {
   categories: Record<number, Record<string, unknown>>;
   setCategories: Dispatch<SetStateAction<Record<number, Record<string, unknown>>>>;
 }
