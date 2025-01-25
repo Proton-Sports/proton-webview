@@ -22,41 +22,75 @@ interface Vehicle {
   category: string;
 }
 
+interface Vehicle2 {
+  id: number;
+  displayName: string;
+  price: number;
+  itemName: string;
+  category: string;
+}
+
 type VehicleCategory = Record<string, Vehicle[]>;
 
-function Index() {
+function Index({ vehicles }: { vehicles: Vehicle2[] }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
   const [menuStatus, setmenuStatus] = useState<boolean>(true);
-  const [category, setCategory] = useState<VehicleCategory>({
-    Sports: [
-      {
-        displayname: 'Comet',
-        id: 1,
-        itemname: 'comet2',
-        price: 1400,
-        category: 'sport',
-      },
-    ],
-    Sedans: [
-      {
-        displayname: 'ABC',
-        id: 1,
-        itemname: 'abc',
-        price: 1400,
-        category: 'sport',
-      },
-    ],
-    SUVs: [
-      {
-        displayname: 'ABC',
-        id: 1,
-        itemname: 'abc',
-        price: 1400,
-        category: 'sport',
-      },
-    ],
-  });
+  const [category, setCategory] = useState(
+    Object.groupBy(
+      vehicles.map((a) => ({
+        id: a.id,
+        displayname: a.displayName,
+        price: a.price,
+        itemname: a.itemName,
+        category: a.category,
+      })),
+      (a) => a.category
+    ) as VehicleCategory
+  );
+  // const [category, setCategory] = useState<VehicleCategory>({
+  //   Sports: [
+  //     {
+  //       displayname: 'Comet',
+  //       id: 1,
+  //       itemname: 'comet2',
+  //       price: 1400,
+  //       category: 'sport',
+  //     },
+  //     {
+  //       displayname: 'Elegy',
+  //       id: 1,
+  //       itemname: 'elegy',
+  //       price: 1400,
+  //       category: 'sport',
+  //     },
+  //     {
+  //       displayname: 'Buffalo',
+  //       id: 1,
+  //       itemname: 'buffalo',
+  //       price: 1400,
+  //       category: 'sport',
+  //     },
+  //   ],
+  //   Sedans: [
+  //     {
+  //       displayname: 'ABC',
+  //       id: 1,
+  //       itemname: 'abc',
+  //       price: 1400,
+  //       category: 'sport',
+  //     },
+  //   ],
+  //   SUVs: [
+  //     {
+  //       displayname: 'ABC',
+  //       id: 1,
+  //       itemname: 'abc',
+  //       price: 1400,
+  //       category: 'sport',
+  //     },
+  //   ],
+  // });
   const [ownedCategory, setOwnedCategory] = useState<VehicleCategory>({});
 
   const handleCategoryClick = (category: string) => {
@@ -92,8 +126,8 @@ function Index() {
     if (element) {
       element.style.display = 'block';
     }
-    console.log(Name, id, ItemName)
-    alt.emit("shop:select:vehicle", ItemName)
+    console.log(Name, id, ItemName);
+    alt.emit('shop:select:vehicle', ItemName);
   }
 
   function closeSelectItem() {
@@ -109,12 +143,24 @@ function Index() {
   // altv handlers
 
   useEffect(() => {
-    const notOwned = (data: string) => {
-      setCategory(JSON.parse(data));
+    const notOwned = (vehicles: Vehicle2[]) => {
+      console.log('notOwned', JSON.stringify(vehicles));
+      setCategory(
+        Object.groupBy(
+          vehicles.map((a) => ({
+            id: a.id,
+            displayname: a.displayname,
+            price: a.price,
+            itemname: a.itemName,
+            category: a.category,
+          })),
+          (a) => a.category
+        ) as VehicleCategory
+      );
     };
 
     const toggleMenuStatus = (value: boolean) => {
-      setmenuStatus(value)
+      setmenuStatus(value);
       //toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
     };
 
@@ -126,7 +172,7 @@ function Index() {
     alt.on('shop:vehicles:menuStatus', toggleMenuStatus);
     alt.on('shop:vehicles:ownedVehicles', handleOwnedVehicles);
 
-    alt.emit("shop:vehicles:ready")
+    alt.emit('shop:vehicles:ready');
 
     return () => {
       alt.off('shop:vehicles:notOwnedVehicles', notOwned);
@@ -155,12 +201,16 @@ function Index() {
 
     // <button onClick={() => test()}>Test</button>
   }
-  
+
   */
 
   return (
     <>
-      <div className={menuStatus ? 'opacity-100 transition-opac z-50 block' : 'opacity-0 transition-opac z-50 hidden'}>
+      <div
+        className={
+          menuStatus ? 'opacity-100 transition-opacity z-50 block' : 'opacity-0 transition-opacity z-50 hidden'
+        }
+      >
         <div className="font">
           <div className="rounded-sm absolute top-[50vh] left-[50vh] -translate-x-1/2 -translate-y-1/2 p-4 z-10 flex w-[82vh] h-[80vh]">
             <div className="">
@@ -361,7 +411,7 @@ function Index() {
           <p>esc</p>
         </div>
 
-        <div className="bottom-[8vh] right-[10vh] absolute text-bg-1 font">
+        <div className="bottom-[8vh] right-[10vh] fixed text-bg-1 font">
           <div
             className={buyVehicleSelected ? 'opacity-100 transition-opacity' : 'opacity-0 transition-opacity'}
             id="hide-display"
@@ -414,7 +464,9 @@ function Index() {
         </div>
       </div>
 
-      <div className={menuStatus ? 'opacity-100 transition-opac-bulbs block' : 'opacity-0 transition-opac-bulbs hidden'}>
+      <div
+        className={menuStatus ? 'opacity-100 transition-opac-bulbs block' : 'opacity-0 transition-opac-bulbs hidden'}
+      >
         <div className="light-bulb">
           <p>.</p>
         </div>
