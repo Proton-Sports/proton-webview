@@ -36,7 +36,7 @@ function Index({ vehicles }: { vehicles: Vehicle2[] }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
   const [menuStatus, setmenuStatus] = useState<boolean>(true);
-  const [category, setCategory] = useState(
+  const [category] = useState(
     Object.groupBy(
       vehicles.map((a) => ({
         id: a.id,
@@ -143,22 +143,6 @@ function Index({ vehicles }: { vehicles: Vehicle2[] }) {
   // altv handlers
 
   useEffect(() => {
-    const notOwned = (vehicles: Vehicle2[]) => {
-      console.log('notOwned', JSON.stringify(vehicles));
-      setCategory(
-        Object.groupBy(
-          vehicles.map((a) => ({
-            id: a.id,
-            displayname: a.displayname,
-            price: a.price,
-            itemname: a.itemName,
-            category: a.category,
-          })),
-          (a) => a.category
-        ) as VehicleCategory
-      );
-    };
-
     const toggleMenuStatus = (value: boolean) => {
       setmenuStatus(value);
       //toggleMenu(value); // sorry for that I made toggleMenu false opens, and true closes the menu
@@ -168,14 +152,12 @@ function Index({ vehicles }: { vehicles: Vehicle2[] }) {
       setOwnedCategory(JSON.parse(data));
     };
 
-    alt.on('shop:vehicles:notOwnedVehicles', notOwned);
     alt.on('shop:vehicles:menuStatus', toggleMenuStatus);
     alt.on('shop:vehicles:ownedVehicles', handleOwnedVehicles);
 
     alt.emit('shop:vehicles:ready');
 
     return () => {
-      alt.off('shop:vehicles:notOwnedVehicles', notOwned);
       alt.off('shop:vehicles:menuStatus', toggleMenuStatus);
       alt.off('shop:vehicles:ownedVehicles', handleOwnedVehicles);
     };
