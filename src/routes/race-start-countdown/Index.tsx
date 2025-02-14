@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import RedSound from '../../lib/assets/audio/race-start-countdown/red-sound.mp3';
 import GreenSound from '../../lib/assets/audio/race-start-countdown/green-sound.mp3';
+import RedSound from '../../lib/assets/audio/race-start-countdown/red-sound.mp3';
+import Logo from '../../lib/assets/images/proton-text-logo.png';
 
 type Status = 'running' | null;
 
@@ -10,36 +11,6 @@ export default function Index() {
   const [step, setStep] = useState(-1);
   const interval = useRef<number>();
   const audio = useRef(new Audio());
-
-  useEffect(() => {
-    function handleSetStatus(value: Status) {
-      setStatus(value);
-    }
-    alt.on('race-start-countdown:setStatus', handleSetStatus);
-    return () => {
-      audio.current.pause();
-      alt.off('race-start-countdown:setStatus', handleSetStatus);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (status !== 'running') return;
-    setStep(-1);
-    count();
-    interval.current = setInterval(count, 1000);
-    return () => {
-      clearInterval(interval.current);
-      interval.current = 0;
-      audio.current.pause();
-    };
-  }, [status]);
-
-  useEffect(() => {
-    if (step === 5) {
-      clearInterval(interval.current);
-      interval.current = 0;
-    }
-  }, [step]);
 
   const count = useCallback(() => {
     setStep((step) => {
@@ -61,10 +32,43 @@ export default function Index() {
     });
   }, [setStep]);
 
+  useEffect(() => {
+    const currentAudio = audio.current;
+    function handleSetStatus(value: Status) {
+      setStatus(value);
+    }
+    alt.on('race-start-countdown:setStatus', handleSetStatus);
+    return () => {
+      currentAudio.pause();
+      alt.off('race-start-countdown:setStatus', handleSetStatus);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (status !== 'running') return;
+    const currentAudio = audio.current;
+    setStep(-1);
+    count();
+    interval.current = setInterval(count, 1000);
+    return () => {
+      clearInterval(interval.current);
+      interval.current = 0;
+      currentAudio.pause();
+    };
+  }, [status, count]);
+
+  useEffect(() => {
+    if (step === 5) {
+      clearInterval(interval.current);
+      interval.current = 0;
+    }
+  }, [step]);
+
   return (
     <div className="fixed top-20 left-1/2 -translate-x-1/2">
-      <motion.div
-        className="w-96 h-20 rounded-full bg-bg-2 mx-auto text-center content-center"
+      <motion.img
+        src={Logo}
+        className="w-96 object-cover mx-auto"
         variants={{
           hidden: { opacity: 0, transition: { duration: 0.4, ease: 'backInOut' } },
           visible: { opacity: 1, transition: { delay: 0.6, duration: 0.6, ease: 'easeInOut' } },
@@ -72,9 +76,7 @@ export default function Index() {
         initial="hidden"
         animate="visible"
         exit="hidden"
-      >
-        Logo goes here...
-      </motion.div>
+      />
       <motion.ol
         className="mt-8 flex gap-8"
         variants={{ visible: { transition: { staggerChildren: 0.05 } } }}

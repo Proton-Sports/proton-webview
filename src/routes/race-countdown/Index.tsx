@@ -29,7 +29,7 @@ export default function Index(props: Props) {
   const [countdownSeconds, setCountdownSeconds] = useState<number>(0);
   const selected = useMemo(
     () => data.participants.find((a) => a.id === props.id)?.vehicleModel ?? '',
-    [props.id, data.participants]
+    [props.id, data.participants],
   );
 
   useEffect(() => {
@@ -47,6 +47,7 @@ export default function Index(props: Props) {
 
     const setCountdown = (seconds: number) => {
       setCountdownSeconds(seconds);
+      setRemainingSeconds(seconds);
     };
 
     const changeParticipantVehicle = (id: number, vehicleModel: string) => {
@@ -88,11 +89,12 @@ export default function Index(props: Props) {
   }, [countdownSeconds]);
 
   function handleReadyChange() {
-    setIsReady((a) => {
-      alt.emit('race-countdown.ready.change', !a);
-      setData((b) => ({ ...b, participants: b.participants.map((c) => (c.id === b.id ? { ...c, isReady: !a } : c)) }));
-      return !a;
-    });
+    setIsReady(!isReady);
+    setData((b) => ({
+      ...b,
+      participants: b.participants.map((c) => (c.id === b.id ? { ...c, isReady: !isReady } : c)),
+    }));
+    alt.emit('race-countdown.ready.change', !isReady);
   }
 
   return (
@@ -180,7 +182,7 @@ function Vehicles({
       <ListboxButton
         className={clsx(
           'c-input relative whitespace-nowrap overflow-hidden text-ellipsis text-left',
-          'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-fg-1/25'
+          'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-fg-1/25',
         )}
       >
         {selected}
@@ -194,7 +196,7 @@ function Vehicles({
         transition
         className={clsx(
           'w-[var(--button-width)] fugaz p-1 mt-1 overflow-auto text-base rounded-md shadow-lg bg-bg max-h-60 border border-bg-border focus:outline-none',
-          'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0'
+          'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0',
         )}
       >
         {vehicles.map((vehicle) => (
@@ -204,7 +206,7 @@ function Vehicles({
             className={({ selected }) =>
               clsx(
                 'group flex items-center gap-2 relative cursor-default select-none py-2 pl-4 pr-4 rounded',
-                selected ? 'bg-primary text-primary-fg' : 'data-[focus]:bg-primary/20'
+                selected ? 'bg-primary text-primary-fg' : 'data-[focus]:bg-primary/20',
               )
             }
           >
