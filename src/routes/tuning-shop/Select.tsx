@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useCategoryValues } from './context';
 import Button from '../../lib/components/Button';
@@ -6,26 +6,32 @@ import type { Mod, OwnedMod } from './Index';
 
 interface Props {
   id: number;
-  items: Mod[];
-  ownedItems?: OwnedMod[];
   defaultId?: number;
   onBuy: (modId: number) => void;
   onToggle: (modId: number, value: boolean) => void;
 }
 
-export default function Select({ id, items: propItems, defaultId, ownedItems, onBuy, onToggle }: Props) {
+export default function Select({ id, defaultId, onBuy, onToggle }: Props) {
   const { categories, setCategories } = useCategoryValues();
   const category = useMemo(() => categories[id] ?? {}, [categories, id]);
-  const items = useMemo(() => propItems ?? [], [propItems]);
+  const mods = useMemo(() => (category.mods ?? []) as Mod[], [category]);
+  const ownedMods = useMemo(() => (category.ownedMods ?? []) as OwnedMod[], [category]);
   const index = useMemo(
-    () => (category.index as number) ?? items.findIndex((a) => a.id === defaultId),
-    [category.index, items, defaultId]
+    () => (category.index as number) ?? mods.findIndex((a) => a.id === defaultId),
+    [category.index, mods, defaultId],
   );
-  const activeItem = useMemo(() => (index === -1 ? undefined : items[index]), [items, index]);
+  const activeItem = useMemo(() => (index === -1 ? undefined : mods[index]), [mods, index]);
   const activeOwnedMod = useMemo(
-    () => (activeItem ? ownedItems?.find((a) => a.modId === activeItem.id) : undefined),
-    [ownedItems, activeItem]
+    () => (activeItem ? ownedMods?.find((a) => a.modId === activeItem.id) : undefined),
+    [ownedMods, activeItem],
   );
+
+  useEffect(() => {
+    if (category != null && category.mods != null && category.ownedMods != null) {
+      return;
+    }
+    alt.emit('tuning-shop.mods.requestData', id);
+  }, [category, id]);
 
   return (
     <div className="flex flex-col justify-center gap-2">
@@ -39,7 +45,7 @@ export default function Select({ id, items: propItems, defaultId, ownedItems, on
               return;
             }
             setCategories((a) => {
-              alt.emit('tuning-shop.values.change', id, items[index - 1].value);
+              alt.emit('tuning-shop.values.change', id, mods[index - 1].value);
               return {
                 ...a,
                 [id]: {
@@ -61,14 +67,14 @@ export default function Select({ id, items: propItems, defaultId, ownedItems, on
         </div>
         <button
           type="button"
-          disabled={index >= items.length - 1}
+          disabled={index >= mods.length - 1}
           className="disabled:text-fg-disabled"
           onClick={() => {
-            if (index >= items.length - 1) {
+            if (index >= mods.length - 1) {
               return;
             }
             setCategories((a) => {
-              alt.emit('tuning-shop.values.change', id, items[index + 1].value);
+              alt.emit('tuning-shop.values.change', id, mods[index + 1].value);
               return {
                 ...a,
                 [id]: {
@@ -83,7 +89,7 @@ export default function Select({ id, items: propItems, defaultId, ownedItems, on
         </button>
       </div>
       {activeItem &&
-        (ownedItems == null || activeOwnedMod == null ? (
+        (ownedMods == null || activeOwnedMod == null ? (
           <Button
             type="button"
             variant="base"
@@ -107,7 +113,7 @@ export default function Select({ id, items: propItems, defaultId, ownedItems, on
           </Button>
         ))}
       <p className="text-xs text-fg-3 text-center">
-        {activeItem == null ? `There are ${items.length ?? 0} items in total.` : `${index + 1}/${items.length}`}
+        {activeItem == null ? `There are ${mods.length ?? 0} items in total.` : `${index + 1}/${mods.length}`}
       </p>
     </div>
   );

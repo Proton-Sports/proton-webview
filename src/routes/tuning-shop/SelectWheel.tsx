@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import Button from '../../lib/components/Button';
 import { useCategoryValues } from './context';
@@ -7,44 +7,55 @@ import { wheelTypeNames } from './utils';
 
 interface Props {
   id: number;
-  wheelVariations: WheelVariation[];
-  wheelType: number;
-  ownedWheelVariations?: OwnedWheelVariation[];
   onWheelTypeChange: (value: number) => void;
   onBuy: (wheelVariation: WheelVariation) => void;
   onToggle: (wheelVariation: WheelVariation, value: boolean) => void;
 }
 
-export default function Select({
-  id,
-  wheelVariations: initialWheelVariations,
-  ownedWheelVariations,
-  wheelType,
-  onBuy,
-  onToggle,
-  onWheelTypeChange,
-}: Props) {
+export default function Select({ id, onBuy, onToggle, onWheelTypeChange }: Props) {
   const { categories, setCategories } = useCategoryValues();
   const category = useMemo(() => categories[id] ?? {}, [categories, id]);
-  const wheels = useMemo(() => initialWheelVariations ?? [], [initialWheelVariations]);
+  const wheels = useMemo(() => (category.wheelVariations ?? []) as WheelVariation[], [category]);
+  const ownedWheels = useMemo(() => (category.ownedWheelVariations ?? []) as OwnedWheelVariation[], [category]);
+  const wheelType = useMemo(() => category.wheelType as number | undefined, [category]);
   const categorizedWheels = useMemo(() => Object.groupBy(wheels, (a) => a.type), [wheels]);
   const index = (category.index as number) ?? -1;
   const activeWheel = useMemo(
-    () => (index === -1 ? undefined : categorizedWheels[wheelType]?.[index]),
-    [categorizedWheels, wheelType, index]
+    () => (index === -1 || wheelType == null ? undefined : categorizedWheels[wheelType]?.[index]),
+    [categorizedWheels, wheelType, index],
   );
   const activeOwnedWheel = useMemo(
-    () => (activeWheel ? ownedWheelVariations?.find((a) => a.wheelVariationId === activeWheel.id) : undefined),
-    [ownedWheelVariations, activeWheel]
+    () => (activeWheel ? ownedWheels?.find((a) => a.wheelVariationId === activeWheel.id) : undefined),
+    [ownedWheels, activeWheel],
   );
   const wheelTypes = useMemo(
     () =>
       Object.keys(categorizedWheels)
         .map((a) => Number(a))
         .toSorted((a, b) => a - b),
-    [categorizedWheels]
+    [categorizedWheels],
   );
-  const wheelTypeIndex = useMemo(() => wheelTypes.indexOf(wheelType), [wheelTypes, wheelType]);
+  const wheelTypeIndex = useMemo(
+    () => (wheelType == null ? -1 : wheelTypes.indexOf(wheelType)),
+    [wheelTypes, wheelType],
+  );
+
+  useEffect(() => {
+    if (
+      category != null &&
+      category.wheelVariations != null &&
+      category.wheelType != null &&
+      category.ownedWheelVariations != null
+    ) {
+      return;
+    }
+
+    alt.emit('tuning-shop.wheels.requestData');
+  }, [category]);
+
+  if (wheelType == null) {
+    return <p>Loading</p>;
+  }
 
   return (
     <div className="flex flex-col justify-center gap-2">
@@ -135,7 +146,7 @@ export default function Select({
         </button>
       </div>
       {activeWheel &&
-        (ownedWheelVariations == null || activeOwnedWheel == null ? (
+        (ownedWheels == null || activeOwnedWheel == null ? (
           <Button
             type="button"
             variant="base"

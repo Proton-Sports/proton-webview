@@ -6,11 +6,6 @@ import { Virtualizer } from 'virtua';
 import CategoryValuesProvider from './CategoryValuesProvider';
 
 interface Props {
-  mods: Mod[];
-  wheelVariations: WheelVariation[];
-  ownedMods: OwnedMod[];
-  ownedWheelVariations: OwnedWheelVariation[];
-  wheelType: number;
   primaryColor: { r: number; g: number; b: number; a: number };
   secondaryColor: { r: number; g: number; b: number; a: number };
 }
@@ -46,38 +41,56 @@ export interface OwnedWheelVariation {
   isActive: boolean;
 }
 
+interface RequestModData {
+  mods: Mod[];
+  ownedMods: OwnedMod[];
+}
+
+interface RequestWheelsData {
+  wheelVariations: WheelVariation[];
+  ownedWheelVariations: OwnedWheelVariation[];
+  wheelType: number;
+}
+
 export default function Index({
-  mods,
-  wheelVariations,
-  ownedMods,
-  ownedWheelVariations: initialOwnedWheelVariations,
-  wheelType: initialWheelType,
+  // mods,
+  // wheelVariations,
+  // ownedMods,
+  // ownedWheelVariations: initialOwnedWheelVariations,
+  // wheelType: initialWheelType,
   primaryColor: initialPrimaryColor,
   secondaryColor: initialSecondaryColor,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [categorizedMods] = useState<Partial<Record<number, Mod[]>>>(
-    mods ? Object.groupBy(mods, (a) => a.category) : {}
-  );
-  const [categorizedOwnedMods, setCategorizedOwnedMods] = useState<Partial<Record<number, OwnedMod[]>>>(
-    mods ? Object.groupBy(ownedMods, (a) => a.category) : {}
-  );
-  const [wheelType, setWheelType] = useState(initialWheelType);
+  // const [categorizedMods] = useState<Partial<Record<number, Mod[]>>>(
+  //   mods ? Object.groupBy(mods, (a) => a.category) : {},
+  // );
+  // const [categorizedOwnedMods, setCategorizedOwnedMods] = useState<Partial<Record<number, OwnedMod[]>>>(
+  //   mods ? Object.groupBy(ownedMods, (a) => a.category) : {},
+  // );
+  // const [wheelType, setWheelType] = useState(initialWheelType);
   const handleCamera: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
   };
   const [primaryColor] = useState(initialPrimaryColor);
   const [secondaryColor] = useState(initialSecondaryColor);
   const [categoryValues, setCategoryValues] = useState<Record<number, Record<string, unknown>>>({});
-  const [ownedWheelVariations, setOwnedWheelVariations] = useState(initialOwnedWheelVariations);
+  // const [ownedWheelVariations, setOwnedWheelVariations] = useState(initialOwnedWheelVariations);
 
   useEffect(() => {
     const handleBuy = (category: number, modId: number, success: boolean) => {
       if (!success) {
-        setCategorizedOwnedMods((a) => ({
+        setCategoryValues((a) => ({
           ...a,
-          [category]: a[category]?.filter((a) => a.modId !== modId),
+          [category]: {
+            ...a[category],
+            ownedMods: (a[category]?.ownedMods as OwnedMod[] | undefined)?.filter((a) => a.modId !== modId),
+          },
         }));
+        // setCategorizedOwnedMods((a) => ({
+        //   ...a,
+        //   [category]: a[category]?.filter((a) => a.modId !== modId),
+        // }));
       }
     };
 
@@ -102,13 +115,37 @@ export default function Index({
       }
     };
 
+    const handleModRequestData = (id: number, data: RequestModData) => {
+      setCategoryValues((a) => ({
+        ...a,
+        [id]: {
+          ...a[id],
+          ...data,
+        },
+      }));
+    };
+
+    const handleWheelsRequestData = (data: RequestWheelsData) => {
+      setCategoryValues((a) => ({
+        ...a,
+        1000: {
+          ...a[id],
+          ...data,
+        },
+      }));
+    };
+
     alt.on('tuning-shop.buy', handleBuy);
     alt.on('tuning-shop.colors.buy', handleBuyColor);
     alt.on('tuning-shop.wheels.buy', handleWheelsBuy);
+    alt.on('tuning-shop.mods.requestData', handleModRequestData);
+    alt.on('tuning-shop.wheels.requestData', handleWheelsRequestData);
     return () => {
       alt.off('tuning-shop.buy', handleBuy);
       alt.off('tuning-shop.colors.buy', handleBuyColor);
       alt.off('tuning-shop.wheels.buy', handleWheelsBuy);
+      alt.off('tuning-shop.mods.requestData', handleModRequestData);
+      alt.off('tuning-shop.wheels.requestData', handleWheelsRequestData);
     };
   }, [primaryColor.r, primaryColor.g, primaryColor.b, secondaryColor.r, secondaryColor.g, secondaryColor.b]);
 
@@ -155,9 +192,9 @@ export default function Index({
                               {category.tag === 'wheel' ? (
                                 <Content
                                   {...category.props}
-                                  wheelType={wheelType}
-                                  wheelVariations={wheelVariations}
-                                  ownedWheelVariations={ownedWheelVariations}
+                                  // wheelType={wheelType}
+                                  // wheelVariations={wheelVariations}
+                                  // ownedWheelVariations={ownedWheelVariations}
                                   onWheelTypeChange={(value: number) => {
                                     setWheelType(value);
                                     setCategoryValues((a) => ({
@@ -191,9 +228,9 @@ export default function Index({
                                                 isActive: true,
                                               }
                                             : b.isActive
-                                            ? { ...b, isActive: false }
-                                            : b
-                                        )
+                                              ? { ...b, isActive: false }
+                                              : b,
+                                        ),
                                       );
                                     } else {
                                       setOwnedWheelVariations((a) =>
@@ -203,8 +240,8 @@ export default function Index({
                                                 ...b,
                                                 isActive: false,
                                               }
-                                            : b
-                                        )
+                                            : b,
+                                        ),
                                       );
                                     }
                                   }}
@@ -217,40 +254,79 @@ export default function Index({
                               ) : (
                                 <Content
                                   {...category.props}
-                                  items={categorizedMods[category.id]}
-                                  ownedItems={categorizedOwnedMods[category.id]}
                                   onBuy={(modId: number) => {
                                     alt.emit('tuning-shop.buy', category.id, modId);
-                                    setCategorizedOwnedMods((a) => ({
+                                    setCategoryValues((a) => ({
                                       ...a,
-                                      [category.id]: [
-                                        ...(a[category.id]?.map((a) => ({ ...a, isActive: false })) ?? []),
-                                        { category: category.id, modId, isActive: true },
-                                      ],
+                                      [category.id]: {
+                                        ...a[category.id],
+                                        ownedMods: [
+                                          ...((a[category.id]?.ownedMods as OwnedMod[] | undefined)?.map((a) =>
+                                            a.isActive
+                                              ? {
+                                                  ...a,
+                                                  isActive: false,
+                                                }
+                                              : a,
+                                          ) ?? []),
+                                          { category: category.id, modId, isActive: true },
+                                        ],
+                                      },
                                     }));
+                                    // setCategorizedOwnedMods((a) => ({
+                                    //   ...a,
+                                    //   [category.id]: [
+                                    //     ...(a[category.id]?.map((a) => ({ ...a, isActive: false })) ?? []),
+                                    //     { category: category.id, modId, isActive: true },
+                                    //   ],
+                                    // }));
                                   }}
                                   onToggle={(modId: number, value: boolean) => {
                                     alt.emit('tuning-shop.toggle', category.id, modId, value);
                                     if (value) {
-                                      setCategorizedOwnedMods((a) => ({
+                                      setCategoryValues((a) => ({
                                         ...a,
-                                        [category.id]:
-                                          a[category.id]?.map((a) =>
-                                            a.modId === modId
-                                              ? { ...a, isActive: value }
-                                              : a.isActive
-                                              ? { ...a, isActive: false }
-                                              : a
-                                          ) ?? [],
+                                        [category.id]: {
+                                          ...a[category.id],
+                                          ownedMods:
+                                            (a[category.id]?.ownedMods as OwnedMod[] | undefined)?.map((a) =>
+                                              a.modId === modId
+                                                ? { ...a, isActive: value }
+                                                : a.isActive
+                                                  ? { ...a, isActive: false }
+                                                  : a,
+                                            ) ?? [],
+                                        },
                                       }));
+                                      // setCategorizedOwnedMods((a) => ({
+                                      //   ...a,
+                                      //   [category.id]:
+                                      //     a[category.id]?.map((a) =>
+                                      //       a.modId === modId
+                                      //         ? { ...a, isActive: value }
+                                      //         : a.isActive
+                                      //           ? { ...a, isActive: false }
+                                      //           : a,
+                                      //     ) ?? [],
+                                      // }));
                                     } else {
-                                      setCategorizedOwnedMods((a) => ({
+                                      setCategoryValues((a) => ({
                                         ...a,
-                                        [category.id]:
-                                          a[category.id]?.map((a) =>
-                                            a.modId === modId ? { ...a, isActive: value } : a
-                                          ) ?? [],
+                                        [category.id]: {
+                                          ...a[category.id],
+                                          ownedMods:
+                                            (a[category.id]?.ownedMods as OwnedMod[] | undefined)?.map((a) =>
+                                              a.modId === modId ? { ...a, isActive: value } : a,
+                                            ) ?? [],
+                                        },
                                       }));
+                                      // setCategorizedOwnedMods((a) => ({
+                                      //   ...a,
+                                      //   [category.id]:
+                                      //     a[category.id]?.map((a) =>
+                                      //       a.modId === modId ? { ...a, isActive: value } : a,
+                                      //     ) ?? [],
+                                      // }));
                                     }
                                   }}
                                 />
