@@ -6,15 +6,17 @@ import { FaHatCowboySide } from 'react-icons/fa';
 import { IoIosArrowForward } from 'react-icons/io';
 import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { IoMdCheckmark } from 'react-icons/io';
-import { FaShoePrints } from "react-icons/fa";
+import { FaShoePrints } from 'react-icons/fa';
 
 interface Clothes {
+  category: string;
   name: string;
   price: number;
   id: number;
 }
 
 interface OwnedClothes {
+  category: string;
   name: string;
   selected: boolean;
   id: number;
@@ -23,32 +25,17 @@ interface OwnedClothes {
 type ClothesCategory = Record<string, Clothes[]>;
 type OwnedClothesCategory = Record<string, OwnedClothes[]>;
 
-function Index() {
+function Index(props?: { clothes?: Clothes[]; ownedClothes?: OwnedClothes[] }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOwnedCategory, setSelectedOwnedCategory] = useState<string | null>(null);
   const [selectedBuyableCloth, setSelectedBuyableCloth] = useState<number>(0);
   const [menuStatus, setmenuStatus] = useState<boolean>(true);
-  const [clothes, setClothes] = useState<ClothesCategory>({
-    Shirts: [
-      { name: 'Striped Shirt', price: 25, id: 1 },
-      { name: 'Graphic Tee', price: 20, id:2 },
-    ],
-    Pants: [
-      { name: 'Jeans', price: 40, id:3 },
-      { name: 'Chinos', price: 30, id:4 },
-    ],
-    Hats: [
-      { name: 'Blueberry Hat', price: 15, id:5 },
-      { name: 'Snapback Cap', price: 20, id:6 },
-    ],
-  });
-  const [ownedClothes, setOwnedClothes] = useState<OwnedClothesCategory>({
-    Shirts: [
-      { name: 'Striped Shirt', selected: true, id:1 },
-      { name: 'Graphic Tee', selected: false, id:2 },
-    ],
-    Pants: [{ name: 'Jeans', selected: false, id:3 }],
-  });
+  const [clothes] = useState(
+    props?.clothes ? (Object.groupBy(props.clothes, (a) => a.category) as ClothesCategory) : {},
+  );
+  const [ownedClothes] = useState(
+    props?.ownedClothes ? (Object.groupBy(props.ownedClothes, (a) => a.category) as OwnedClothesCategory) : {},
+  );
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory((prevCategory) => (prevCategory === category ? null : category));
@@ -79,32 +66,17 @@ function Index() {
       toggleMenu(value); // false opens, true closes the menu
     };
 
-    const handleOwnedClothes = (data: string) => {
-      setOwnedClothes(JSON.parse(data));
-    };
-
-    const handleNotOwnedClothes = (data: string) => {
-      setClothes(JSON.parse(data));
-    };
-
     alt.on('shop:cloth:menuStatus', handleMenuStatus);
-    alt.on('shop:cloth:ownedClothes', handleOwnedClothes);
-    alt.on('shop:cloth:notOwnedClothes', handleNotOwnedClothes);
-
-    alt.emit("shop:cloth:ready")
-
     return () => {
       alt.off('shop:cloth:menuStatus', handleMenuStatus);
-      alt.off('shop:cloth:ownedClothes', handleOwnedClothes);
-      alt.off('shop:cloth:notOwnedClothes', handleNotOwnedClothes);
     };
   }, []);
 
   function buyItem(item: number) {
-    if(selectedBuyableCloth == item){
+    if (selectedBuyableCloth == item) {
       alt.emit('shop:cloth:buyItem', item);
-    }else{
-      setSelectedBuyableCloth(item)
+    } else {
+      setSelectedBuyableCloth(item);
       alt.emit('shop:cloth:showcase', item);
     }
   }
@@ -320,7 +292,9 @@ function Index() {
         </div>
       </div>
 
-      <div className={menuStatus ? 'opacity-100 transition-opac-bulbs block' : 'opacity-0 transition-opac-bulbs hidden'}>
+      <div
+        className={menuStatus ? 'opacity-100 transition-opac-bulbs block' : 'opacity-0 transition-opac-bulbs hidden'}
+      >
         <div className="light-bulb">
           <p>.</p>
         </div>
