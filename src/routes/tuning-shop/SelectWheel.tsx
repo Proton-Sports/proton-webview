@@ -7,12 +7,9 @@ import { wheelTypeNames } from './utils';
 
 interface Props {
   id: number;
-  onWheelTypeChange: (value: number) => void;
-  onBuy: (wheelVariation: WheelVariation) => void;
-  onToggle: (wheelVariation: WheelVariation, value: boolean) => void;
 }
 
-export default function Select({ id, onBuy, onToggle, onWheelTypeChange }: Props) {
+export default function Select({ id }: Props) {
   const { categories, setCategories } = useCategoryValues();
   const category = useMemo(() => categories[id] ?? {}, [categories, id]);
   const wheels = useMemo(() => (category.wheelVariations ?? []) as WheelVariation[], [category]);
@@ -41,21 +38,12 @@ export default function Select({ id, onBuy, onToggle, onWheelTypeChange }: Props
   );
 
   useEffect(() => {
-    if (
-      category != null &&
-      category.wheelVariations != null &&
-      category.wheelType != null &&
-      category.ownedWheelVariations != null
-    ) {
+    if (category != null && category.wheelVariations != null && category.ownedWheelVariations != null) {
       return;
     }
 
     alt.emit('tuning-shop.wheels.requestData');
   }, [category]);
-
-  if (wheelType == null) {
-    return <p>Loading</p>;
-  }
 
   return (
     <div className="flex flex-col justify-center gap-2">
@@ -68,7 +56,15 @@ export default function Select({ id, onBuy, onToggle, onWheelTypeChange }: Props
             if (wheelTypeIndex <= -1) {
               return;
             }
-            onWheelTypeChange(wheelTypes[wheelTypeIndex - 1]);
+
+            setCategories((a) => ({
+              ...a,
+              1000: {
+                ...a[1000],
+                wheelType: wheelTypes[wheelTypeIndex - 1],
+                index: undefined,
+              },
+            }));
           }}
         >
           <BiChevronLeft />
@@ -86,7 +82,15 @@ export default function Select({ id, onBuy, onToggle, onWheelTypeChange }: Props
             if (wheelTypeIndex >= wheelTypes.length - 1) {
               return;
             }
-            onWheelTypeChange(wheelTypes[wheelTypeIndex + 1]);
+
+            setCategories((a) => ({
+              ...a,
+              1000: {
+                ...a[1000],
+                wheelType: wheelTypes[wheelTypeIndex + 1],
+                index: undefined,
+              },
+            }));
           }}
         >
           <BiChevronRight />
@@ -152,7 +156,22 @@ export default function Select({ id, onBuy, onToggle, onWheelTypeChange }: Props
             variant="base"
             className="text-sm font-medium mx-auto"
             onClick={() => {
-              onBuy(activeWheel);
+              alt.emit('tuning-shop.wheels.buy', activeWheel.id);
+              setCategories((a) => ({
+                ...a,
+                1000: {
+                  ...a[1000],
+                  ownedWheelVariations: [
+                    ...((a[1000]?.ownedWheelVariations as OwnedWheelVariation[]) ?? []),
+                    {
+                      wheelVariationId: activeWheel.id,
+                      type: activeWheel.type,
+                      value: activeWheel.value,
+                      isActive: true,
+                    },
+                  ],
+                },
+              }));
             }}
           >
             Buy for {activeWheel?.price ?? 0}PT
@@ -163,7 +182,43 @@ export default function Select({ id, onBuy, onToggle, onWheelTypeChange }: Props
             variant="base"
             className="text-sm font-medium mx-auto"
             onClick={() => {
-              onToggle(activeWheel, !activeOwnedWheel.isActive);
+              const isActive = !activeOwnedWheel.isActive;
+              alt.emit('tuning-shop.wheels.toggle', activeWheel, isActive);
+              if (isActive) {
+                setCategories((a) => ({
+                  ...a,
+                  1000: {
+                    ...a[1000],
+                    ownedWheelVariations: (a[1000]?.ownedWheelVariations as OwnedWheelVariation[] | undefined)?.map(
+                      (b) =>
+                        b.wheelVariationId === activeWheel.id
+                          ? {
+                              ...b,
+                              isActive: true,
+                            }
+                          : b.isActive
+                            ? { ...b, isActive: false }
+                            : b,
+                    ),
+                  },
+                }));
+              } else {
+                setCategories((a) => ({
+                  ...a,
+                  1000: {
+                    ...a[1000],
+                    ownedWheelVariations: (a[1000]?.ownedWheelVariations as OwnedWheelVariation[] | undefined)?.map(
+                      (b) =>
+                        b.wheelVariationId === activeWheel.id
+                          ? {
+                              ...b,
+                              isActive: false,
+                            }
+                          : b,
+                    ),
+                  },
+                }));
+              }
             }}
           >
             {activeOwnedWheel.isActive ? 'Detach' : 'Attach'}
@@ -172,8 +227,8 @@ export default function Select({ id, onBuy, onToggle, onWheelTypeChange }: Props
       <p className="text-xs text-fg-3 text-center">
         {wheelTypeIndex !== -1 &&
           (activeWheel == null
-            ? `There are ${categorizedWheels[wheelType]?.length ?? 0} items in total.`
-            : `${index + 1}/${categorizedWheels[wheelType]?.length ?? 0}`)}
+            ? `There are ${categorizedWheels[wheelType!]?.length ?? 0} items in total.`
+            : `${index + 1}/${categorizedWheels[wheelType!]?.length ?? 0}`)}
       </p>
     </div>
   );

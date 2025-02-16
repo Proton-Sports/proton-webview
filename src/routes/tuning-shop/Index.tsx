@@ -52,30 +52,14 @@ interface RequestWheelsData {
   wheelType: number;
 }
 
-export default function Index({
-  // mods,
-  // wheelVariations,
-  // ownedMods,
-  // ownedWheelVariations: initialOwnedWheelVariations,
-  // wheelType: initialWheelType,
-  primaryColor: initialPrimaryColor,
-  secondaryColor: initialSecondaryColor,
-}: Props) {
+export default function Index({ primaryColor: initialPrimaryColor, secondaryColor: initialSecondaryColor }: Props) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  // const [categorizedMods] = useState<Partial<Record<number, Mod[]>>>(
-  //   mods ? Object.groupBy(mods, (a) => a.category) : {},
-  // );
-  // const [categorizedOwnedMods, setCategorizedOwnedMods] = useState<Partial<Record<number, OwnedMod[]>>>(
-  //   mods ? Object.groupBy(ownedMods, (a) => a.category) : {},
-  // );
-  // const [wheelType, setWheelType] = useState(initialWheelType);
   const handleCamera: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
   };
   const [primaryColor] = useState(initialPrimaryColor);
   const [secondaryColor] = useState(initialSecondaryColor);
   const [categoryValues, setCategoryValues] = useState<Record<number, Record<string, unknown>>>({});
-  // const [ownedWheelVariations, setOwnedWheelVariations] = useState(initialOwnedWheelVariations);
 
   useEffect(() => {
     const handleBuy = (category: number, modId: number, success: boolean) => {
@@ -87,10 +71,6 @@ export default function Index({
             ownedMods: (a[category]?.ownedMods as OwnedMod[] | undefined)?.filter((a) => a.modId !== modId),
           },
         }));
-        // setCategorizedOwnedMods((a) => ({
-        //   ...a,
-        //   [category]: a[category]?.filter((a) => a.modId !== modId),
-        // }));
       }
     };
 
@@ -111,7 +91,15 @@ export default function Index({
 
     const handleWheelsBuy = (wheelVariationId: number, success: boolean) => {
       if (!success) {
-        setOwnedWheelVariations((a) => a.filter((b) => b.wheelVariationId !== wheelVariationId));
+        setCategoryValues((a) => ({
+          ...a,
+          1000: {
+            ...a[1000],
+            ownedWheelVariations: (a[1000]?.ownedWheelVariations as OwnedWheelVariation[] | undefined)?.filter(
+              (b) => b.wheelVariationId !== wheelVariationId,
+            ),
+          },
+        }));
       }
     };
 
@@ -129,7 +117,7 @@ export default function Index({
       setCategoryValues((a) => ({
         ...a,
         1000: {
-          ...a[id],
+          ...a[1000],
           ...data,
         },
       }));
@@ -156,7 +144,7 @@ export default function Index({
       </div>
       <CategoryValuesProvider categories={categoryValues} setCategories={setCategoryValues}>
         <div ref={scrollRef} className="overflow-auto p-4 pt-0" style={{ overflowAnchor: 'none' }}>
-          <Accordion.Root multiple>
+          <Accordion.Root multiple lazyMount={true}>
             <Accordion.Context>
               {(context) => (
                 <Virtualizer scrollRef={scrollRef}>
@@ -190,62 +178,7 @@ export default function Index({
                           <div className="p-4">
                             <Suspense fallback="Loading...">
                               {category.tag === 'wheel' ? (
-                                <Content
-                                  {...category.props}
-                                  // wheelType={wheelType}
-                                  // wheelVariations={wheelVariations}
-                                  // ownedWheelVariations={ownedWheelVariations}
-                                  onWheelTypeChange={(value: number) => {
-                                    setWheelType(value);
-                                    setCategoryValues((a) => ({
-                                      ...a,
-                                      [category.id]: {
-                                        ...a[category.id],
-                                        index: undefined,
-                                      },
-                                    }));
-                                  }}
-                                  onBuy={(wheelVariation: WheelVariation) => {
-                                    alt.emit('tuning-shop.wheels.buy', wheelVariation.id);
-                                    setOwnedWheelVariations((a) => [
-                                      ...a,
-                                      {
-                                        wheelVariationId: wheelVariation.id,
-                                        type: wheelVariation.type,
-                                        value: wheelVariation.value,
-                                        isActive: true,
-                                      },
-                                    ]);
-                                  }}
-                                  onToggle={(wheel: WheelVariation, value: boolean) => {
-                                    alt.emit('tuning-shop.wheels.toggle', wheel, value);
-                                    if (value) {
-                                      setOwnedWheelVariations((a) =>
-                                        a.map((b) =>
-                                          b.wheelVariationId === wheel.id
-                                            ? {
-                                                ...b,
-                                                isActive: true,
-                                              }
-                                            : b.isActive
-                                              ? { ...b, isActive: false }
-                                              : b,
-                                        ),
-                                      );
-                                    } else {
-                                      setOwnedWheelVariations((a) =>
-                                        a.map((b) =>
-                                          b.wheelVariationId === wheel.id
-                                            ? {
-                                                ...b,
-                                                isActive: false,
-                                              }
-                                            : b,
-                                        ),
-                                      );
-                                    }
-                                  }}
-                                />
+                                <Content {...category.props} />
                               ) : category.tag === 'color' ? (
                                 <Content
                                   {...category.props}
@@ -273,13 +206,6 @@ export default function Index({
                                         ],
                                       },
                                     }));
-                                    // setCategorizedOwnedMods((a) => ({
-                                    //   ...a,
-                                    //   [category.id]: [
-                                    //     ...(a[category.id]?.map((a) => ({ ...a, isActive: false })) ?? []),
-                                    //     { category: category.id, modId, isActive: true },
-                                    //   ],
-                                    // }));
                                   }}
                                   onToggle={(modId: number, value: boolean) => {
                                     alt.emit('tuning-shop.toggle', category.id, modId, value);
@@ -298,17 +224,6 @@ export default function Index({
                                             ) ?? [],
                                         },
                                       }));
-                                      // setCategorizedOwnedMods((a) => ({
-                                      //   ...a,
-                                      //   [category.id]:
-                                      //     a[category.id]?.map((a) =>
-                                      //       a.modId === modId
-                                      //         ? { ...a, isActive: value }
-                                      //         : a.isActive
-                                      //           ? { ...a, isActive: false }
-                                      //           : a,
-                                      //     ) ?? [],
-                                      // }));
                                     } else {
                                       setCategoryValues((a) => ({
                                         ...a,
@@ -320,13 +235,6 @@ export default function Index({
                                             ) ?? [],
                                         },
                                       }));
-                                      // setCategorizedOwnedMods((a) => ({
-                                      //   ...a,
-                                      //   [category.id]:
-                                      //     a[category.id]?.map((a) =>
-                                      //       a.modId === modId ? { ...a, isActive: value } : a,
-                                      //     ) ?? [],
-                                      // }));
                                     }
                                   }}
                                 />
