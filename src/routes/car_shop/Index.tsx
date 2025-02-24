@@ -114,8 +114,14 @@ function Index({ vehicles }: { vehicles: Vehicle2[] }) {
   const [buyVehicleSelected, setbuyVehicleSelected] = useState<boolean>(false);
   const [selectedBuyItem, setSelectedBuyItem] = useState<Buy>();
   const [selectedColor, setSelectedColor] = useState<number>(0);
+  const [selectedPaint, setSelectedPaint] = useState<string>('');
+  
   function buySelectItem() {
-    alt.emit('shop:vehicles:buyVehicle', selectedBuyItem?.ItemName, selectedColor);
+        if (!selectedPaint) {
+        alert('Please, choose a paint color.');
+        return;
+    }
+    alt.emit('shop:vehicles:buyVehicle', selectedBuyItem?.ItemName, selectedColor, selectedPaint);
   }
 
   function selectItem(Name: string, id: number, ItemName: string) {
