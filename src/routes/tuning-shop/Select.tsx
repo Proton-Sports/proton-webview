@@ -45,7 +45,7 @@ export default function Select({ id, defaultId, onBuy, onToggle }: Props) {
               return;
             }
             setCategories((a) => {
-              alt.emit('tuning-shop.values.change', id, mods[index - 1].value);
+              alt.emit('tuning-shop.values.change', id, mods[index - 1]?.value ?? 0);
               return {
                 ...a,
                 [id]: {
