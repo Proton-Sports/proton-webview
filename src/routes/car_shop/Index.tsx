@@ -403,34 +403,34 @@ function Index({ vehicles }: { vehicles: Vehicle2[] }) {
                 <p>Pick a color</p>
 
                 <button
-                  className="bg-fg-1 text-fg-1 w-[2.6vh] h-[2.6vh] rounded-full"
+                  type="button"
+                  className="bg-[rgb(255_255_246)] w-[2.6vh] h-[2.6vh] rounded-full"
                   onClick={() => choosenColor(111)}
                 >
-                  .
                 </button>
                 <button
-                  className="bg-red-600 text-red-600 w-[2.6vh] h-[2.6vh] rounded-full"
+                  type="button"
+                  className="bg-[rgb(188_25_23)] w-[2.6vh] h-[2.6vh] rounded-full"
                   onClick={() => choosenColor(150)}
                 >
-                  .
                 </button>
                 <button
-                  className="bg-blue-500 text-blue-500 w-[2.6vh] h-[2.6vh] rounded-full"
-                  onClick={() => choosenColor(141)}
+                  type="button"
+                  className="bg-[rgb(66_113_225)] w-[2.6vh] h-[2.6vh] rounded-full"
+                  onClick={() => choosenColor(80)}
                 >
-                  .
                 </button>
                 <button
-                  className="bg-yellow-500 text-yellow-500 w-[2.6vh] h-[2.6vh] rounded-full"
+                  type="button"
+                  className="bg-[rgb(241_204_64)] w-[2.6vh] h-[2.6vh] rounded-full"
                   onClick={() => choosenColor(126)}
                 >
-                  .
                 </button>
                 <button
-                  className="bg-green-600 text-green-600 w-[2.6vh] h-[2.6vh] rounded-full"
+                  type="button"
+                  className="bg-[rgb(131_197_102)] w-[2.6vh] h-[2.6vh] rounded-full"
                   onClick={() => choosenColor(125)}
                 >
-                  .
                 </button>
               </div>
               <div className="space-x-[1.4vh] text-[2vh]  bg-bg-1/60 p-[1vh] pl-[2vh] pr-[2vh] rounded-sm">
