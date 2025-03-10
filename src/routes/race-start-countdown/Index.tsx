@@ -66,17 +66,19 @@ export default function Index() {
 
   return (
     <div className="fixed top-20 left-1/2 -translate-x-1/2">
-      <motion.img
-        src={Logo}
-        className="w-96 object-cover mx-auto"
-        variants={{
-          hidden: { opacity: 0, transition: { duration: 0.4, ease: 'backInOut' } },
-          visible: { opacity: 1, transition: { delay: 0.6, duration: 0.6, ease: 'easeInOut' } },
-        }}
-        initial="hidden"
-        animate="visible"
-        exit="hidden"
-      />
+      <div className="p-4 bg-bg-2 mx-auto rounded-full">
+        <motion.img
+          src={Logo}
+          className="object-cover max-w-72 mx-auto"
+          variants={{
+            hidden: { opacity: 0, transition: { duration: 0.4, ease: 'backInOut' } },
+            visible: { opacity: 1, transition: { delay: 0.6, duration: 0.6, ease: 'easeInOut' } },
+          }}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        />
+      </div>
       <motion.ol
         className="mt-8 flex gap-8"
         variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
